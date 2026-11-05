@@ -1,0 +1,1678 @@
+<title>Joy Command</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#09090b"><link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Joy Command">
+<style>html,body{margin:0;background:#09090b}body{min-height:100vh}#gate{position:fixed;inset:0;z-index:9999;background:#09090b;color:#f4f4f5;display:flex;align-items:center;justify-content:center;font-family:Inter,system-ui,sans-serif;padding:24px}#gate form{width:min(340px,100%);display:grid;gap:12px;text-align:center}#gate h1{font-size:22px;margin:0}#gate p{margin:0;color:#a1a1aa;font-size:13px}#gate input{padding:14px;border-radius:12px;border:1px solid #3f3f46;background:#121216;color:#fff;font-size:16px}#gate button{padding:14px;border-radius:12px;border:0;background:#dc2626;color:#fff;font-weight:700;font-size:15px}#gate .e{color:#f87171;min-height:18px;font-size:13px}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap">
+<style>
+:root{color-scheme:light;--forest:#0C221B;--forest2:#16352B;--sun:#F4C13A;--cream:#F6F4EA;--sage:#A9C9A4;--sand:#E2D2B8;
+--bg:#F3EBDD;--panel:#F6F4EA;--fg:#0C221B;--muted:#4E5D55;--line:#D9CBB2;--accent:#0C221B;--accent-fg:#F6F4EA;--soft:#DDE8D3;--warn:#8A5A00;--bad:#B3402A;--axis:#9A8F78;--refl:#6B6A5A;--cmuted:#D9CBB2;--popover:#fff;--shadow:0 6px 18px rgba(12,34,27,.16);
+--s1:#16352B;--s2:#F4C13A;--s3:#A9C9A4;--s4:#B66E60;--s5:#B37493;--s6:#5A6F6F;--s7:#E2D2B8;--s8:#4E5D55;
+--color-fg:var(--fg);--color-fg-muted:var(--muted);--color-panel:var(--panel);--color-border-line:var(--line);--color-bg:var(--bg);--color-bad:var(--bad);
+--cds-radius:16px;--cds-pad-xs:6px;--cds-pad-sm:10px;--cds-pad-md:14px;--cds-pad-lg:18px;--cds-gap-xs:6px;--cds-gap-sm:10px;--cds-gap-md:16px;
+--cds-font-size-caption:.8rem;--cds-font-size-body:.95rem;--cds-font-size-heading:1.15rem;--cds-font-weight-medium:600;
+--cds-chart-grid:var(--line);--cds-chart-axis:var(--axis);--cds-chart-reference:var(--refl);--cds-chart-muted:var(--cmuted);--cds-chart-status-critical:var(--bad);
+--cds-surface-popover:var(--popover);--cds-border:var(--line);--cds-shadow-popover:var(--shadow);--cds-text-secondary:var(--muted);--cds-dur-slow:.3s;--cds-ease-out:cubic-bezier(.2,.7,.2,1);
+--display:"Anton","Impact","Arial Narrow",sans-serif;--sans:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;--font-anthropic-sans:var(--sans);--font-anthropic-serif:var(--display)}
+*{box-sizing:border-box}
+.tk-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.tk-stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;min-width:0}
+.tk-stat b{font-family:var(--font-anthropic-serif);font-weight:700;font-size:1.7rem;display:block;line-height:1.1;font-variant-numeric:tabular-nums}
+.tk-stat span{color:var(--muted);font-size:.8rem}
+.tk-bar{height:5px;background:var(--line);border-radius:9px;margin-top:8px;overflow:hidden}.tk-bar i{display:block;height:100%;background:var(--sun)}
+.tk-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.tk-tools input,.tk-tools select{font:inherit;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:8px 10px;min-width:0}
+.tk-tools input{flex:1 1 180px}
+.tk-chips{display:flex;flex-wrap:wrap;gap:6px}
+.tk-chips button{font:inherit;font-size:.85rem;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:999px;padding:6px 12px;cursor:pointer}
+.tk-chips button[aria-pressed=true]{background:var(--accent);color:var(--accent-fg);border-color:var(--accent)}
+.tk-list{display:flex;flex-direction:column;gap:8px}
+.tk-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:8px;min-width:0}
+.tk-card.tk-done{background:var(--soft)}
+.tk-top{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.tk-nm{font-weight:600;overflow-wrap:anywhere}.tk-meta{color:var(--muted);font-size:.8rem;font-variant-numeric:tabular-nums}
+.tk-checks{display:flex;flex-wrap:wrap;gap:6px}
+.tk-checks label{display:flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:9px;padding:7px 10px;cursor:pointer;font-size:.88rem;user-select:none}
+.tk-checks input{accent-color:var(--accent);width:17px;height:17px;margin:0}
+.tk-checks label:has(input:checked){background:var(--soft);border-color:var(--accent)}
+.tk-note{font:inherit;font-size:.88rem;width:100%;box-sizing:border-box;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:9px;padding:7px 9px}
+.tk-msg{color:var(--warn);font-size:.85rem;margin:0}
+.tk-empty{color:var(--muted);padding:24px 0;text-align:center}
+.tk-tools button{font:inherit;font-size:.85rem;font-weight:700;background:var(--panel);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:8px 12px;cursor:pointer}
+.tk-stat b{font-weight:400!important}
+.jt {  font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+.jt h1 { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: 2rem; margin: 0 0 .25rem; text-wrap: balance; }
+.jt h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+.jt h3 { font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+.jt p, .jt li { line-height: 1.55; max-width: 68ch; }
+.jt .lede { font-size: var(--cds-font-size-heading); color: var(--color-fg-muted); max-width: 62ch; margin: 0 0 var(--cds-gap-md); }
+.jt .muted { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.jt b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.jt .tabs { display: flex; flex-wrap: wrap; gap: var(--cds-gap-xs); margin: var(--cds-gap-md) 0; border-bottom: 1px solid var(--color-border-line); padding-bottom: var(--cds-gap-xs); }
+.jt .tabs button { font: inherit; font-size: var(--cds-font-size-body); background: none; border: 1px solid transparent; border-radius: var(--cds-radius); color: var(--color-fg-muted); padding: .35rem .7rem; cursor: pointer; }
+.jt .tabs button[aria-selected=true] { color: var(--color-fg); background: var(--color-panel); border-color: var(--color-border-line); font-weight: 600; }
+.jt section[hidden] { display: none; }
+.jt .page { display: flex; flex-direction: column; gap: var(--cds-gap-md); }
+.jt .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: var(--cds-gap-md); }
+.jt .grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); gap: var(--cds-gap-md); }
+.jt .card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+.jt .kpi .n { font-family: var(--font-anthropic-serif); font-size: 2.2rem; line-height: 1.1; display: block; }
+.jt .kpi .n b { font-weight: 400; }
+.jt .kpi .l { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); }
+.jt .bad { color: var(--color-bad); }
+.jt ul, .jt ol { margin: .25rem 0 0; padding-left: 1.2rem; }
+.jt li { margin-bottom: .35rem; }
+.jt .chart { position: relative; min-height: 240px; }
+.jt .chart svg { display: block; width: 100%; height: auto; }
+.jt .tt { position: absolute; pointer-events: none; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); border-radius: var(--cds-radius); box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; z-index: 5; }
+.jt .tt .h { color: var(--cds-text-secondary); }
+.jt .tblbox { max-height: 26rem; overflow: auto; border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); }
+.jt table { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.jt th { position: sticky; top: 0; background: var(--color-panel); text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--color-border-line); cursor: pointer; white-space: nowrap; user-select: none; }
+.jt td { padding: .4rem .6rem; border-bottom: 1px solid var(--color-border-line); }
+.jt input[type=search], .jt input[type=number] { font: inherit; background: var(--color-bg); color: var(--color-fg); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: .35rem .6rem; }
+.jt input[type=range] { width: 100%; }
+.jt .row { display: flex; flex-wrap: wrap; gap: var(--cds-gap-sm); align-items: center; margin-bottom: var(--cds-gap-sm); }
+.jt .bar { height: .6rem; background: var(--cds-chart-grid); border-radius: 999px; overflow: hidden; margin-top: .3rem; }
+.jt .bar > i { display: block; height: 100%; background: var(--color-fg); }
+.jt .legrow { display: grid; grid-template-columns: minmax(7rem, 11rem) 1fr auto; gap: var(--cds-gap-sm); align-items: center; padding: .3rem 0; font-size: var(--cds-font-size-body); }
+.jt .callout { border-left: 3px solid var(--cds-chart-status-critical); padding: .2rem 0 .2rem var(--cds-pad-md); }
+@media (prefers-reduced-motion: no-preference) { .jt .page { animation: jtin var(--cds-dur-slow) var(--cds-ease-out); } }
+@keyframes jtin { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+.jt{max-width:none!important;margin:0!important}
+.jt h1,.jt h2,.jt h3{font-family:var(--display);font-weight:400!important;text-transform:uppercase;letter-spacing:.01em;line-height:1.05;text-wrap:balance}
+.jt h1{font-size:clamp(56px,14vw,112px)!important;margin:0!important}
+.jt h2{font-size:clamp(26px,5vw,38px)!important;margin:0 0 6px!important}
+.jt h3{font-size:20px!important}
+.jt .hero{position:relative;overflow:hidden;background:var(--forest);color:var(--cream);padding:calc(26px + env(safe-area-inset-top,0px)) max(16px,calc((100% - 960px)/2)) 30px}
+.jt .hero>*{position:relative;z-index:1}
+.jt .hero .brandname{font-weight:700;font-size:13px;letter-spacing:.12em;margin-bottom:14px}
+.jt .hero-row{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.jt .hero h1 .sun{color:var(--sun)}
+.mark{width:68px;height:68px;border-radius:50%;object-fit:cover;flex:none;box-shadow:0 0 0 2px rgba(244,193,58,.55)}
+.hero-swirl{position:absolute!important;z-index:0!important;right:-150px;top:50%;width:440px;height:440px;margin-top:-220px;border-radius:50%;object-fit:cover;opacity:.5;-webkit-mask-image:radial-gradient(circle,#000 36%,transparent 70%);mask-image:radial-gradient(circle,#000 36%,transparent 70%);pointer-events:none}
+@media (prefers-reduced-motion:no-preference){.hero-swirl{animation:jtspin 90s linear infinite}}
+@keyframes jtspin{to{transform:rotate(360deg)}}
+.jt .hero .lede{color:#CFD5CB;max-width:56ch;margin:0 0 14px;font-size:1rem}
+.jt .hero .lede b{color:var(--cream)}
+.jt .hero .meta{display:flex;flex-wrap:wrap;gap:8px}
+.pill{display:inline-flex;border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
+.pill.dark{background:#000;color:var(--cream)}.pill.sunp{background:var(--sun);color:var(--forest)}.pill.ghost{border:1px solid #3B574C;color:var(--cream)}
+.jt .tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;display:flex;flex-wrap:nowrap!important;gap:4px;overflow-x:auto;scrollbar-width:none;margin:0!important;border:0!important;border-top:1px solid #23443A!important;background:var(--forest);padding:8px max(16px,calc((100% - 960px)/2))!important}
+.jt .tabs::-webkit-scrollbar{display:none}
+.jt .tabs button{white-space:nowrap;flex:none;border-radius:999px!important;color:#CFD5CB!important;background:none!important;border:0!important;font-weight:700;padding:8px 14px!important;font-size:14px}
+.jt .tabs button[aria-selected=true]{background:var(--sun)!important;color:var(--forest)!important}
+.jt>section{max-width:960px;margin-inline:auto;padding:28px max(16px,env(safe-area-inset-right,0px)) 56px max(16px,env(safe-area-inset-left,0px))}
+.jt .card{background:var(--cream)!important;border:0!important;border-radius:16px!important}
+.jt .kpi .n{font-family:var(--display);font-size:2.7rem!important;font-weight:400!important;line-height:1}
+.jt .kpi .n b{font-weight:400!important}
+.jt .callout{border-left:5px solid var(--sun)!important}
+.jt .bar>i{background:var(--forest)!important}
+.jt .bad{color:var(--bad)}
+.jt input[type=range]{accent-color:var(--forest)}
+.jt .tblbox{background:var(--cream)}
+.jt th{background:var(--cream)!important}
+[hidden]{display:none!important}
+:root{--bg:#09090b;--panel:#121216;--fg:#f4f4f5;--muted:#9a9aa5;--line:#25252c;--accent:#dc2626;--accent-fg:#fff;--soft:#1c1214;--warn:#f0b34a;--bad:#f87171;--ok:#4ade80;--axis:#6b6b76;--refl:#8a8a95;--cmuted:#2c2c34;--popover:#18181d;--shadow:0 12px 40px rgba(0,0,0,.55);
+--forest:#09090b;--forest2:#131318;--sun:#e5484d;--gold:#f4c13a;--cream:#f4f4f5;--sage:#8f8f99;--sand:#3a3a42;
+--s1:#ef4444;--s2:#f4c13a;--s3:#9fc79a;--s4:#f0866f;--s5:#d68fb2;--s6:#7fb0b0;--s7:#d8c7a8;--s8:#a1a1aa;
+--display:"Plus Jakarta Sans","Inter",system-ui,sans-serif;--sans:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;--font-anthropic-sans:var(--sans);--font-anthropic-serif:var(--display);
+--glow:rgba(220,38,38,.16);color-scheme:dark}
+html,body{margin:0}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:15px;line-height:1.5;min-height:100vh}
+*{box-sizing:border-box}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid rgba(239,68,68,.7);outline-offset:2px}
+body::before{content:"";position:fixed;z-index:0;left:58%;top:30%;width:min(1200px,150vw);aspect-ratio:1;transform:translate(-50%,-50%);background:radial-gradient(circle,var(--glow) 0%,rgba(9,9,11,0) 62%);pointer-events:none;animation:cp 12s ease-in-out infinite}
+@keyframes cp{0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}}
+@media (prefers-reduced-motion:reduce){body::before,.ring-c img{animation:none!important}}
+.app{position:relative;z-index:1;display:grid;grid-template-columns:88px minmax(0,1fr);min-height:100vh}
+@media (min-width:1180px){.app{grid-template-columns:88px minmax(0,1fr) 410px}}
+/* rail */
+.rail{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:16px 8px;background:rgba(12,12,15,.86);border-right:1px solid var(--line);backdrop-filter:blur(14px);z-index:30}
+.brand{display:grid;place-items:center;margin-bottom:12px}
+.brand img{width:46px;height:46px;border-radius:50%;box-shadow:0 0 0 1px var(--line),0 0 26px rgba(220,38,38,.35)}
+.rail button{display:flex;flex-direction:column;align-items:center;gap:4px;background:none;border:1px solid transparent;border-radius:14px;padding:10px 4px;cursor:pointer;color:var(--muted);font-size:11.5px;font-weight:500;position:relative}
+.rail button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.rail button:hover{color:var(--fg)}
+.rail button[aria-current=true]{color:#fff;background:rgba(220,38,38,.14);border-color:rgba(220,38,38,.4)}
+#navPipe:not([data-n="0"])::after{content:attr(data-n);position:absolute;top:4px;right:8px;background:var(--accent);color:#fff;font-size:10.5px;font-weight:700;border-radius:999px;padding:1px 6px}
+.rail-end{margin-top:auto;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--muted);text-align:center}
+.rail-end small{font-size:10.5px;line-height:1.2}
+.dbdot{width:8px;height:8px;border-radius:50%;background:var(--warn)}.dbdot[data-on="1"]{background:var(--ok);box-shadow:0 0 10px var(--ok)}
+/* stage */
+.stage{min-width:0;padding-bottom:110px}
+.top{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;padding:26px 32px 8px}
+.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--sun);font-weight:700}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,4vw,40px);letter-spacing:-.02em;margin:2px 0 0;line-height:1.1}
+.top-r{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600;color:var(--fg)}
+.chip.hot[data-hot="1"]{border-color:rgba(248,113,113,.5);color:#fca5a5;background:rgba(220,38,38,.14)}
+.coachbtn{display:inline-flex}
+@media (min-width:1180px){.coachbtn{display:none}}
+main{padding:0 32px}
+.view{display:flex;flex-direction:column;gap:18px;padding-top:12px}
+.muted{color:var(--muted);font-size:13px}
+h2{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0 0 12px;display:flex;justify-content:space-between;align-items:center;font-family:var(--display)}
+h3{font-size:14px;margin:0 0 6px;font-family:var(--display)}
+.card{background:linear-gradient(180deg,rgba(24,24,29,.78),rgba(15,15,18,.78));border:1px solid var(--line);border-radius:18px;padding:18px 20px;backdrop-filter:blur(8px);min-width:0}
+.grid{display:grid;gap:18px}
+.g12{grid-template-columns:repeat(12,minmax(0,1fr))}
+.c4{grid-column:span 4}.c5{grid-column:span 5}.c6{grid-column:span 6}.c7{grid-column:span 7}.c12{grid-column:span 12}
+@media (max-width:1100px){.c4,.c5,.c6,.c7{grid-column:span 12}}
+.btn{border:0;background:var(--accent);color:#fff;padding:9px 16px;border-radius:11px;cursor:pointer;font-weight:600;font-size:14px}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.ghost{background:transparent;border:1px solid var(--line);color:var(--fg)}
+.btn.ghost:hover{border-color:var(--sun)}
+.btn.go{background:#16a34a}
+.lnk{background:none;border:0;color:#fca5a5;cursor:pointer;font-size:13px;font-weight:600;padding:2px 4px;text-transform:none;letter-spacing:0}
+.lnk.r{margin-left:auto}
+.x{border:0;background:none;color:var(--muted);cursor:pointer;font-size:18px;padding:2px 8px;border-radius:6px}.x:hover{color:var(--bad)}
+input,select,textarea{background:#0d0d10;border:1px solid var(--line);border-radius:10px;padding:9px 11px;min-width:0}
+input:focus,select:focus,textarea:focus{outline:2px solid rgba(220,38,38,.5);outline-offset:1px}
+input[type=checkbox]{accent-color:var(--accent);width:18px;height:18px;padding:0}
+.add{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.add input:not([type=checkbox]),.add select{flex:1 1 150px}
+.chk{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted)}
+.sub{margin-top:18px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips button,.chip.st{border:1px solid var(--line);background:#0d0d10;color:var(--muted);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer}
+.chips button[aria-pressed=true]{background:rgba(220,38,38,.16);border-color:rgba(220,38,38,.5);color:#fff}
+.chips button:hover{color:#fff}
+/* banner */
+.banner{border:1px solid var(--line);border-left:4px solid var(--sage);border-radius:16px;padding:16px 20px;background:rgba(18,18,22,.7);backdrop-filter:blur(12px)}
+.banner[data-mood=boos]{border-left-color:var(--bad);box-shadow:0 0 44px rgba(220,38,38,.14)}.banner[data-mood=druk]{border-left-color:var(--warn)}.banner[data-mood=blij]{border-left-color:var(--ok)}
+.b-l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--sun);font-weight:700}
+.b-h{font-family:var(--display);font-weight:800;font-size:clamp(19px,2.6vw,26px);line-height:1.25;margin-top:4px;text-wrap:balance}
+.b-s{color:var(--muted);margin-top:2px;max-width:70ch}
+/* core ring */
+.ring{position:relative;width:min(100%,330px);margin:0 auto;aspect-ratio:1}
+.ring svg{width:100%;height:100%}
+.ring svg circle[id^=ring]{transition:stroke-dasharray .7s cubic-bezier(.2,.7,.2,1);filter:drop-shadow(0 0 6px rgba(239,68,68,.35))}
+.ring-c{position:absolute;inset:0;display:grid;place-items:center}
+.ring-c img{position:absolute;width:44%;aspect-ratio:1;border-radius:50%;opacity:.55;animation:spin 80s linear infinite;box-shadow:0 0 40px rgba(220,38,38,.45)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.mom{position:relative;text-align:center;display:flex;flex-direction:column}
+.mom b{font-family:var(--display);font-size:clamp(38px,6vw,56px);font-weight:800;line-height:1;text-shadow:0 2px 14px #000}
+.mom span{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#e4e4e7}
+.legend{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-top:14px;font-size:13px}
+.lg{display:flex;align-items:center;gap:6px;color:var(--muted)}.lg i{width:10px;height:10px;border-radius:50%}
+.lg.a i{background:#ef4444}.lg.b i{background:#f4c13a}.lg.c i{background:#9fc79a}
+/* next action */
+.na-verb{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--sun);font-weight:700}
+.na-name{font-family:var(--display);font-weight:800;font-size:clamp(26px,3.4vw,38px);line-height:1.1;margin:2px 0}
+.na-why{color:var(--muted);max-width:60ch}
+.na-row{display:flex;gap:8px;margin:14px 0 4px;flex-wrap:wrap}
+.na-empty{color:var(--muted)}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+.kpis.two{grid-template-columns:repeat(2,minmax(0,1fr));margin-top:0}
+@media (max-width:700px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kp{background:#0d0d10;border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0}
+.kp b{display:block;font-family:var(--display);font-weight:800;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.kp span{display:block;font-size:12.5px;color:var(--muted)}.kp small{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.mini,.bar{height:6px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:8px}
+.mini i,.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#b91c1c,#ef4444);transition:width .6s}
+/* funnel */
+.funnel{display:flex;flex-direction:column;gap:9px;margin-bottom:10px}
+.fn-row{display:grid;grid-template-columns:104px minmax(0,1fr) 34px 44px;gap:10px;align-items:center;font-size:13.5px}
+.fn-n{color:var(--muted)}.fn-v{text-align:right;font-variant-numeric:tabular-nums}.fn-c{color:var(--muted);font-size:12px;text-align:right}
+.fn-bar{height:14px;background:var(--line);border-radius:8px;overflow:hidden}.fn-bar i{display:block;height:100%;background:linear-gradient(90deg,#7f1d1d,#ef4444);border-radius:8px;transition:width .6s}
+/* signals */
+.signals{display:flex;flex-direction:column;gap:8px}
+.sig{display:flex;align-items:flex-start;gap:10px;font-size:14px;padding:9px 11px;border:1px solid var(--line);border-radius:12px;background:#0d0d10}
+.sig .dot{flex:none;width:8px;height:8px;border-radius:50%;margin-top:7px;background:var(--axis)}
+.sig[data-sev=bad] .dot{background:var(--bad);box-shadow:0 0 8px var(--bad)}.sig[data-sev=warn] .dot{background:var(--warn)}.sig[data-sev=ok] .dot{background:var(--ok)}
+.sig .st{flex:1;min-width:0}
+/* tasks */
+.task{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+.task:first-child{border-top:0}
+.task .tt{flex:1;min-width:0;overflow-wrap:anywhere}
+.task.done .tt{text-decoration:line-through;color:var(--muted)}
+.task.late .tt{color:#fca5a5}
+.tag{font-size:11.5px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:1px 8px}
+.pvrow{display:flex;align-items:baseline;gap:10px}.pvrow b{font-family:var(--display);font-size:38px;font-weight:800}.pvrow span{color:var(--muted)}
+.week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0}
+.wd{text-align:center;border:1px solid var(--line);border-radius:10px;padding:6px 2px;background:#0d0d10;font-size:13px}
+.wd .wl{display:block;font-size:11px;color:var(--muted);text-transform:uppercase}
+.wd[data-s=full]{border-color:rgba(74,222,128,.5);background:rgba(74,222,128,.08)}.wd[data-s=part]{border-color:rgba(240,179,74,.45)}.wd[data-s=miss]{border-color:rgba(248,113,113,.5);background:rgba(220,38,38,.1)}
+.lvl-h{display:flex;justify-content:space-between;align-items:baseline}.lvl-h b{font-family:var(--display);font-size:22px;font-weight:800}
+.nums{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.nums label{display:grid;gap:4px;font-size:13px;color:var(--muted)}.nums input{width:100%;font-size:16px}
+/* pipeline */
+.p-head{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.p-sum{font-weight:700;font-family:var(--display);margin-right:auto}
+.p-head input{width:200px;max-width:100%}
+.board{display:grid;grid-template-columns:repeat(5,minmax(172px,1fr));gap:12px;overflow-x:auto;padding-bottom:10px;scroll-snap-type:x proximity}
+.col{background:rgba(14,14,17,.7);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;min-height:300px;scroll-snap-align:start;transition:border-color .15s}
+.col.over{border-color:var(--sun);background:rgba(220,38,38,.07)}
+.col-h{display:flex;justify-content:space-between;padding:12px 14px;font-weight:700;font-size:13px;letter-spacing:.04em;border-bottom:1px solid var(--line);font-family:var(--display)}
+.col[data-k="3"] .col-h,.col[data-k="4"] .col-h{color:var(--ok)}
+.col-b{display:flex;flex-direction:column;gap:8px;padding:10px;max-height:62vh;overflow-y:auto}
+.col-e{color:var(--axis);text-align:center;padding:20px 0}
+.pc{background:linear-gradient(180deg,#1a1a20,#131317);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:grab}
+.pc.drag{opacity:.4}
+.pc-top{display:flex;justify-content:space-between;gap:8px;align-items:center}.pc-n{overflow-wrap:anywhere;font-size:14px}
+.gb{flex:none;font-size:11px;font-weight:800;border-radius:6px;padding:1px 7px;border:1px solid var(--line)}.gA{color:#9fc79a;border-color:rgba(159,199,154,.5)}.gB{color:var(--gold);border-color:rgba(244,193,58,.5)}.gC{color:#d68fb2;border-color:rgba(214,143,178,.5)}
+.pc-m{font-size:12.5px;color:var(--muted);margin-top:2px}
+.pc-f{display:flex;gap:4px;flex-wrap:wrap;margin-top:6px}
+.fl{font-size:11.5px;border:1px solid var(--line);border-radius:999px;padding:1px 8px;color:var(--muted)}.fl.warn{color:var(--warn);border-color:rgba(240,179,74,.5)}.fl.bad{color:var(--bad);border-color:rgba(248,113,113,.5)}
+.pc-a{display:flex;gap:6px;margin-top:8px}
+.ic{flex:1;background:#0d0d10;border:1px solid var(--line);border-radius:8px;cursor:pointer;padding:5px 0;font-size:15px}.ic:hover:not(:disabled){border-color:var(--sun)}.ic:disabled{opacity:.3;cursor:default}.ic.go{background:rgba(220,38,38,.14);border-color:rgba(220,38,38,.4)}
+.excl summary{cursor:pointer;color:var(--muted)}.ex{display:flex;gap:10px;padding:8px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+/* goals */
+#tl{width:100%;height:auto;display:block}
+.goal{display:flex;gap:10px;align-items:flex-start;padding:10px 0 10px 12px;border-top:1px solid var(--line);border-left:3px solid var(--gc,var(--line))}
+.goal:first-child{border-top:0}.goal .gt{flex:1;min-width:0;display:flex;flex-direction:column;overflow-wrap:anywhere}.goal.done .gt b{text-decoration:line-through;color:var(--muted)}
+.ideas{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.idea{border:1px solid var(--line);border-radius:14px;padding:14px;background:#0d0d10}
+.idea[data-st=Doen]{border-color:rgba(74,222,128,.4)}.idea[data-st=Parkeren]{opacity:.65}
+.idea-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.idea-r{margin-top:10px;padding:10px 12px;border-left:3px solid var(--sun);background:rgba(220,38,38,.07);border-radius:0 10px 10px 0;white-space:pre-wrap}
+.idea-a{display:flex;gap:8px;margin-top:10px;align-items:center}
+/* coach */
+.coach{position:fixed;z-index:60;top:0;right:0;bottom:0;width:min(430px,100vw);display:flex;flex-direction:column;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px));background:rgba(12,12,15,.97);border-left:1px solid var(--line);transform:translateX(100%);transition:transform .25s}
+body.coach-open .coach{transform:none}
+.coach-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.coach-r{display:flex;gap:6px;align-items:center}
+.chat{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:4px 2px}
+.bub{max-width:90%;padding:10px 13px;border-radius:14px;border:1px solid var(--line);white-space:pre-wrap;overflow-wrap:anywhere}
+.bub.me{align-self:flex-end;background:rgba(220,38,38,.14);border-color:rgba(220,38,38,.35)}.bub.ai{align-self:flex-start;background:#101014}
+.quick{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}.quick button{border:1px solid var(--line);background:#0d0d10;border-radius:999px;padding:6px 12px;cursor:pointer;font-size:13px}.quick button:hover{border-color:var(--sun)}
+.send{display:flex;gap:8px;align-items:flex-end}.send textarea{flex:1;resize:none;min-height:44px;max-height:140px;font-size:16px}
+.note{color:var(--warn);font-size:13px;min-height:1px}
+@media (min-width:1180px){.coach{position:sticky;top:0;height:100vh;transform:none;width:auto;z-index:20}.closebtn{display:none}}
+/* command bar */
+#cmd{position:fixed;z-index:50;left:88px;right:0;bottom:0;padding:10px 24px calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,rgba(9,9,11,0),rgba(9,9,11,.94) 40%);pointer-events:none}
+#cmd>*{pointer-events:auto}
+@media (min-width:1180px){#cmd{right:410px}}
+#cmd .in{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:10px;background:rgba(18,18,22,.94);border:1px solid #33333b;border-radius:14px;padding:6px 8px 6px 14px;box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+#cmd .in:focus-within{border-color:rgba(220,38,38,.6)}
+#cmd .p{color:var(--sun);font-weight:700;font-family:ui-monospace,Menlo,monospace}
+#cmd input{flex:1;background:transparent;border:0;padding:8px 2px;outline:none;font-size:15px}
+#cmd .hint{max-width:860px;margin:6px auto 0;display:flex;gap:6px;flex-wrap:wrap}
+#cmd .hint button{font-size:12px;border:1px solid var(--line);background:#0d0d10;color:var(--muted);border-radius:999px;padding:3px 10px;cursor:pointer}#cmd .hint button:hover{color:#fff;border-color:var(--sun)}
+#cmdOut{max-width:860px;margin:0 auto 8px;background:rgba(18,18,22,.97);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:14px}
+/* modal */
+.modal{position:fixed;inset:0;z-index:90;background:rgba(0,0,0,.65);display:grid;place-items:center;padding:16px;backdrop-filter:blur(4px)}
+.sheet{width:min(620px,100%);max-height:92vh;overflow:auto;background:#121216;border:1px solid #33333b;border-radius:18px;padding:18px 20px;display:flex;flex-direction:column;gap:10px;box-shadow:var(--shadow)}
+.sheet-h{display:flex;justify-content:space-between;align-items:center;font-family:var(--display);font-size:17px}
+.subj{font-weight:700}.warn{color:var(--warn);border:1px solid rgba(240,179,74,.45);border-radius:10px;padding:8px 12px;font-size:13.5px}
+.sheet textarea{width:100%;resize:vertical;font-size:15px;line-height:1.5}
+.nt{display:grid;gap:4px;font-size:13px;color:var(--muted)}.nt input{width:100%}
+.sheet-a{display:flex;gap:8px;flex-wrap:wrap}
+/* analyse (Joy) */
+.jt{max-width:none!important;margin:0!important}
+.jt h1,.jt h2,.jt h3{font-family:var(--display)!important;text-transform:none!important;letter-spacing:-.01em!important;font-weight:800!important;line-height:1.2}
+.jt h2{font-size:12px!important;letter-spacing:.14em!important;text-transform:uppercase!important;color:var(--muted);margin:0 0 10px!important;display:block}
+.jt h3{font-size:16px!important}
+.jt .card{background:linear-gradient(180deg,rgba(24,24,29,.78),rgba(15,15,18,.78))!important;border:1px solid var(--line)!important;border-radius:16px!important;padding:18px 20px}
+.jt .tabs{position:static!important;display:flex!important;flex-wrap:wrap!important;gap:6px!important;overflow:visible!important;background:none!important;border:0!important;border-bottom:1px solid var(--line)!important;margin:0 0 16px!important;padding:0 0 12px!important}
+.jt .tabs button{color:var(--muted)!important;font-weight:500!important;border-radius:999px!important;border:1px solid transparent!important;background:none!important;padding:7px 14px!important;font-size:14px;cursor:pointer}
+.jt .tabs button[aria-selected=true]{background:rgba(220,38,38,.16)!important;color:#fff!important;border:1px solid rgba(220,38,38,.45)!important}
+.jt>section{max-width:none!important;padding:0!important;margin:0!important}
+.jt .kpi .n{font-family:var(--display)!important;font-size:2.2rem!important;font-weight:800!important;display:block;line-height:1.1}
+.jt .kpi .n b{font-weight:800!important}
+
+.jt .bar>i{background:linear-gradient(90deg,#b91c1c,#ef4444)!important}
+.jt .tblbox{background:#0d0d10}.jt th{background:#15151a!important;color:var(--muted)}
+.jt .callout{border-left:4px solid var(--sun)!important}
+.jt input[type=search],.jt input[type=number],.jt input[type=range]{accent-color:var(--accent)}
+.jt .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:16px}
+.jt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,22rem),1fr));gap:16px}
+.jt .page{display:flex;flex-direction:column;gap:16px}
+.jt p,.jt li{line-height:1.55}
+.jt .tt{position:absolute}
+/* mobile */
+@media (max-width:899px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .rail{position:fixed;top:auto;bottom:0;left:0;right:0;height:auto;flex-direction:row;justify-content:space-around;padding:6px 6px calc(6px + env(safe-area-inset-bottom,0px));border-right:0;border-top:1px solid var(--line);z-index:70}
+  .rail .brand,.rail-end{display:none}
+  .rail button{flex:1;padding:6px 2px;font-size:10.5px}
+  #cmd{display:none}
+  .stage{padding-bottom:96px}
+  .top{padding:max(18px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) 6px max(16px,env(safe-area-inset-left,0px))}
+  main{padding:0 max(16px,env(safe-area-inset-right,0px)) 0 max(16px,env(safe-area-inset-left,0px))}
+  .fn-row{grid-template-columns:92px minmax(0,1fr) 28px 40px}
+  .coach{z-index:80}
+}
+@media (min-width:900px) and (max-width:1179px){.coach{z-index:80}}
+
+</style>
+<div class="app">
+  <nav class="rail" aria-label="Hoofdmenu">
+    <div class="brand"><img src="data:image/jpeg;base64,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" alt="Joy Team"></div>
+    <button data-go="cockpit" aria-current="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/></svg><span>Cockpit</span></button>
+    <button data-go="pipeline" id="navPipe"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="5" height="16" rx="1.5"/><rect x="10" y="4" width="5" height="10" rx="1.5"/><rect x="17" y="4" width="4" height="6" rx="1.5"/></svg><span>Pipeline</span></button>
+    <button data-go="missies"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l3 3 5-6"/></svg><span>Missies</span></button>
+    <button data-go="doelen"><svg viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg><span>Doelen</span></button>
+    <button data-go="ideeen"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.4 1 2.5h6c0-1.1.3-1.8 1-2.5A6 6 0 0 0 12 3z"/></svg><span>Ideeën</span></button>
+    <button data-go="analyse"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg><span>Analyse</span></button>
+    <div class="rail-end"><span class="dbdot" id="dbDot" data-on="0"></span><small id="dbState">Verbinden…</small></div>
+  </nav>
+
+  <div class="stage">
+    <header class="top">
+      <div><div class="eyebrow">Nander Covents · Joy Team</div><h1 id="vTitle">Cockpit</h1></div>
+      <div class="top-r"><span class="chip" id="vDate"></span><span class="chip hot" id="chipDays" data-hot="0"></span><button class="btn coachbtn" id="coachBtn">Coach</button></div>
+    </header>
+
+    <main>
+      <!-- COCKPIT -->
+      <section id="v-cockpit" class="view">
+        <div class="banner" id="banner" data-mood="druk"><div class="b-l">Je coach zegt</div><div class="b-h" id="bHead">Even laden.</div><div class="b-s" id="bSub"></div></div>
+        <div class="grid g12">
+          <div class="card core c5">
+            <h2>Momentum</h2>
+            <div class="ring">
+              <svg viewBox="0 0 360 360" aria-hidden="true">
+                <g fill="none" stroke-width="14" stroke-linecap="round" transform="rotate(-90 180 180)">
+                  <circle cx="180" cy="180" r="160" stroke="var(--line)"/><circle id="ringA" cx="180" cy="180" r="160" stroke="#ef4444" pathLength="100" stroke-dasharray="0 100"/>
+                  <circle cx="180" cy="180" r="134" stroke="var(--line)"/><circle id="ringB" cx="180" cy="180" r="134" stroke="#f4c13a" pathLength="100" stroke-dasharray="0 100"/>
+                  <circle cx="180" cy="180" r="108" stroke="var(--line)"/><circle id="ringC" cx="180" cy="180" r="108" stroke="#9fc79a" pathLength="100" stroke-dasharray="0 100"/>
+                </g>
+              </svg>
+              <div class="ring-c"><img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5Ojf/2wBDAQoKCg0MDRoPDxo3JR8lNzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzf/wAARCAIwAjADASIAAhEBAxEB/8QAGwAAAwEBAQEBAAAAAAAAAAAAAQIDAAQFBgf/xAAuEAACAgEDBAIBBAMBAQEBAQAAAQIRITFBUQMSYXGBkaGxwdHwBOHxEyIFMkL/xAAaAQADAQEBAQAAAAAAAAAAAAAAAgMBBAUG/8QAIxEBAQEBAQEAAgIBBQAAAAAAAAECEQMSBBMFITE0NVFSof/aAAwDAQACEQMRAD8A/MIxHjHgaMPG5SMcLGTltexnJVHkdRzoN264KKGP2FtWmCRjn0Oo2h1EZRrQW1WYIo6aWOo/Y6WfAyiLapMEjHkdRoaMOR+0XqkyRRxuhu2l4H7RlEzp5kija8jKOKGrIyiZ08yRRzlBrPyOkwpU9DOmmSqO+5qe3BRRy/1DWTOm+U63Coseq5DX0HW/Kfb8hrJStNDVtuZ1vCdtXwbtHrwaq1QdHySlZnFJjrXyFLFh1vynRu3OlFO3hZQKp7h0fJFFYdIFcUVSzoCt2g6z5S7fsDhxXyXa8aArP7Ub1nyh25A4clu1/IKsOluUHDOmorjgu43qDtwb0tw5nG/3Ecas6nEVxV+xup3DmcGuScoa7nU44z+gkoXQ0qdw5nDUm42dUok5RzbGlS1hyyjz+hNxwdUou9NSUoUtKoaVDWHNKN7E5R+jqlCl5JuOHuPKjrDllH7JyR0uLtk3HZDSoayhKPoRx+C8lbrQnJYfgeVG5QapfIJL2UaxyK01qN1OxLlIA7vcGFj8mp2EYPAz0FNKz1Bfj6C/exnQMBVWDXg14oz08gG0/Y1Yyav9GelfYBmHfHoG+DY+QaO+RkCzJ+AbDp1gZVoItfAYmHlWQ0XzgknQ6fgWq5r2VEdQQ0Y/GR1HNNf6OW16+cBGNOh63eBoxbHUfHyLatMgo6BUbYyVclIxF6pMk7cLgdR5GSrAe2jOqTIJPQKjTtjJfQ2PIvTzIJUFIZLwZLQzp5ASyGlwGrdjJUBuAvYVgyXOwUsKjG8CuA9uTB1BoJeAoL0yZYz+gAKvNB86mfgydf6MaNm8fubdJaG9AG9o32zLxrybfXANZU9nRqf+wrekFagCpf8AQ1vZm/Zn+4DgJXt9G7RsbmfADhGjNfkc37h0cS7b/wCgazeCrWQNZdh0tyjKOq1Fcb/ks0nmgdrN6W5QlHGVYko7HRWBXHLGlJcuacdRHHB0tCOORpUtYcjilZOUcUdcoa+Cco4aY0qOsOSUaJyjq2jqlEnKF74Hlc+sOSUSco3Z1SjnQlKP0PKhrDllHP8AonKONMHVKOcf8JSWR5XPrLmcUJJOsr6LyjfoRxx7HlR1lCvAju/5KyX0K1iholYk9K3F5KP/AEK1fg1OwrBX+hthdtXg0rfkH6GNvQMF/wBRmbXc2/gAC/rMHRgQBuBle9gD/wD6zoDR9DCJu09+Ar7MNFB4vBNeRo81kyqSvplFlIxoMIVkeMWcNr6KZCMdRoRtfA0Y62NFcC9VmQURkuRkmsIZKsi9UmS0Oo2ZJfwNxwYeQP3DFJ7GSz5DWcugbwFHGwaDl4ZkYZvZkb2a73AMshbvmtBb8hb8gOmvwCxf7Rm3YDp8XkAtvn2Hu+QHTXyjN4Ebf/TN3hgOn03NfGoiegb1yHB010Fu8biJ85Neocb0+U+fkK9iJ5DecmN6e71NoLaSoN3x7BvTLUz9bbi3sxk+dzG9FegVWptzZ2f2DRX5BXkbRG9UALXi2Bqx9vJtwHEmsaAcaKtegNWb0tyg43jURrH6nQ1WBHHdG9TuXO45JuGTolG9hXHV2NKlrLklG/gnKG+x1SjrgnKHgeVDWHJKBKccnXOOSU46seVz6w45QqyUonXON7YIziykrn1lyyVtonJaHTKLJSWB5XNrLncVtsTaLySJyQ8qGojNNehar5KyWqfIjWo0SsTl/UKx3jQWSa13NJYX8mxYXnSgGlCsa5No70NyF6Axs1pgD5MjPXQAOuu5tUuQJWb+3YAdk/yNfwK7CuPsDQ6fgZZET/gZZ2sw8fYpL7HSVmivgdR8Hm9fVzLKN1QUqMkOsVRh5ApLGvI1ZMtTGH4KTo2uoVegMcg0fRsYA/7k1gBvOAXsgOrpmvOoM6a9AN0hW9KsDasOM6azOXGSbloburn2bxn0e7XybuXwT7qApYfIcL9K914SyBtb6ku69zd1LXQ3jPpVyybuI9+Q99IOD7VUs/3BmyXdu2ZT+0HB9rWbuxqR7t9Bu4zjftXuwr0D33WSCnyMmHG/a6l/9WFSId4ymZw00r3Ov4GtIl3YvUKf2Zw00qsBumyfe2ruhk63M4eVRZeoSaYy4MNKZZ/0Fbi+2hkBgo39wNWDa6owcLW79CtY2sfAKs1liLjkVxvgs1gVx4NlJcueUbXJKUfGDqlHPknOOR5UdZck4+iUorQ6pRwycojyufWXJON7EJxf8nZOPJGcbY8rm3hySiiU44zqdU4+CM14KSubeXLKOE2TlHm8nRKNolNcFJXNrLna3yhGmm8fZeUeSTWPI0qGolJfkVrFFGs+BGMlYR/HwK7HaxYr8Z2yMSgD4Df+zewK36G25NrZlpn1QBr5YM1Zg68gGWPXAbxkD0wZfHANMm3V4GuxVn0FcKvow0fcpYWRq409hW37BqjzH2MjBS2Mq3ybFmGFZX7mx87gtbZ8Au/gAb5BfFA1A38Azo3+tAbFvAO7+2bwt0ZtPcDkvtCuXsVyN4W6O2ufYO7l/JNyFc3g3hLpSUrYO6mybkLKW2cm8Ldqd2cAUt7JOar+Dd2aWpvCXarlejB3rlkO/wB45N36hxn2s5Jm7kyPd9gczeM+1+4yl6Id1L9Td/kOM+3R3ZD3HP3VvqbvQcb9ulT0vfkKltyc3dlUN35wZw026FN7jd22TmU+HuMp5wZw026VJ3yxlLe6OZSpYGUtbfwzOHm3T3Jjp61wcyfNjqV4/UWxSbdCluMnpwQUvI6k71Rlis0snhjJklJcjxbF4pKdN77DLjIifAyZh5TAawZcfQVtfsxpWuBZR9Mo9KBV+wZYk4pZJyiXa/rEabelDSkuXPKJKUa3OmUbROUUNKhrLllGvjUjOLeLOqUckpQzvqUlc+8uPqIhKJ2dSP8AojOJSVy7y5JrLIyW51TjkjJYKSuTeXNNc5JSXJ0TXwSlret+Ckrm1HPPUVrBaSrUnJUxojqJb4yAZqhXo61GSpXhg/cZr4fkXTBpW+jfJt+DbgwHwbgO5tdQAfIXjUF8hy6eGDRwwoVaWHdZBsfffQwHwb4o8p9mN8sGjA3axgDxlaeQHRbA39AvIsnnO5vC2msVv0K2xXM3hLo7khHIVypbiOXobid0dzTFchHO/fkSUjeJ3anc2K574J92wrnb1wNwl2q5id2xOU8iueTeJ3ajlsgORJy1YH1KN4S7Vc/IO50R79bB3q73N4W7W7zd9fRFz8g7/s3jPtfuwbv1Tyc7mbvsOM+3R32rwFT31OdSybv8hxv7HSp5Cp1qcynpxuMpeTONno6e/jIe6sv6OZTxh+hoz4M4eejrU73GUv7ZyKSWaHU+BeKT0dSnrZSMlZyKVKx4zWKYtiudutTzgopHKpPS8FIyFsVzt0xkqKJ5wcqnwyqYti+dOhPdjpp6KmQjLPjkpF8CWK50qsoZN2TVNoZZwzFZTf27Drqga6YDtkwwNYoRpN5bKVnAGsAyxFrJOSSdl5L7EcRpU9Zcs4+vRKcTrkiM0PK595ck445ISjXydko0yE42Ulcu8uOUcEZxpPB1zjw8nPOOrKSuTeXLNb8EppLbJ0zW5Kae6opK5d5c0ldrUlJLwdDXh0SlhFI5tRF68CSKtLQRp7DRGxOv0Bf5HxjIjzohiUK/U3wbk2iArZMbfXY1WqQBv2MkzZs36AGVJ+BrrVCvUO38A19/tsDOlfQLqgOVcnlvs7WvcEpIDeRXI3hLRsRyXiwSau9xJNfJsid0ZyoRvZiuVMRyGkSujylkRv8AIjlx+RHO0NIndncuNRO4RyyI5ZdDSJXZ3PIrmI5COXkbiV2pKab3Fc/ZNyFcruzeJ3ajkrF78utSbm0L3YG4S7V78A7vyS71dg7t/AcL9rdwFPyRcklZnPZ6m8Z9rOVaMHenlv7JdyrU3dnwHGfa3ds/sPct7wQ7taf0Hu4Dg+1lIbv+F6OZyH771wHDTa6n/UNGeK2OdSfIyl8GcNNuhSodTzrg5VIdTF4pNuqM860x4zt/ocqn5KKW14FsVz6OtT8FIyOSM84KRnwxbFs7dam61KwkjkjN+ikZ1WRLHRnbsjLkrGSOSMt/yWjPcnY6M7dKkmMnghFuysZfIli+dLJ/Yy0wTi7HWdRVpTOgVjAVpgzu/gwxWsCSXsq0n/sVr9TS2ITiSmjoklwiUl4GlR1lzTV/uQmjrkuCE4/BSVzby5eonsc80dc468EJq07zsVlcm8uTqJbp4IzV6nTOJGcXwUlce8uWaRKS30OiWvwRkq4KRy6iMsaE2slZLXcnLQeOfUTlnCFeVQ8uRHuMnQYM5wFmxg0oNVpwbYy9Z5NbXAMZ51N+pqN7AMFX/AF7Nz+4NfeN39it4A5CylmzzOPr7WcnqLJ66gcuWTboaRK6NKWpNt6glLyTk3dX9DSJa0Zy+xJSV2JKXkSTy1Y8iOtmk9baElNp6iSlvgnJuhpEdbUcqE7tRG8sRyyNIldn7uUBvaiTleLA3uNxK7O5Z1+xXJY2JuXoDk9/0N4S6UcvQrlo08id1VQrkbwl0p3VnQHc61xeRE9wXrk3hfo/dtaMpL2Ttr0a6DjPpTu0N3E/NamtG8H0opJfJlInpeTdzM4PpRP0MmtSPdrkbuWvAcb9K93ygqW1kVLR3gZTyjONml1LOiqhlPOcHP3JeBozM4ebdEZ/NlIyx7OZSGUtDLFM7dSlp+5WE8KzkUuSkZZ3EsXzt2Rl9FYz/wCcHHCT0LRmJY6MbdkJbqisJVrk44S9F4yvRE7HTjbsg+WiqkcnTljJaE6pZJ2OrGnVFv8AYonehCMvJSPsSx050suQpa5Fi9KGjncRWCtK2BVafkOwQMlJa0TaLPP+ichonqOeaIzzg6pqsbkJrHoeVz7jlmvFshOP9R1TiQ6kb8FJXJvLjnH+SE44aZ1zVnP1IorK4vSOXqR1IzWtfR0zTae5GS3KxybjnlRKWOS01eupOQ8c2ok8JsTTG3so140EfgeI0r4F1eVYzdL+AezSAsamX0FZ3BWQY1U6qzceTamANrivyb5N6NlA19tJ/wDBJN/gzfsnKR58j6nWhlL/AKSlLXIJOs+ScpDSI60Zy3JylnDFlLz9iSnQ8iGtDJ48iSlxeNxZOycnrVjSIa0aUt9Cbns6+QOQjkPIldGctbeorlW4rfAjePO5vErozfAtiuVgbdjcJdG7nX7i3j/Yt6ZB6N4S0z8g7gZYvyaXp7/rBdexbxmzaagzprBeRddGFsGdHj9DXWoFpbA2twHTXmmbX/YLpUzJ70A6Zvc16i4qsm1fDAdMngOBb0NeoN6e8YHUl8EbrcNmcNKsn9DqVZRHueBlLgzh5peMlaKRn/Wc1vw/keMs41FsVzp1RlsWjJ4ORSKxemoli+duyEs1dFoyVHHCWS0JZxgnY6sbdsJ2rsvCTOKErWMHRCVqvknY68bdkH+C0X3HLB/6LQlrWhKx2Y06ovHljpvH7EIMrHlMSunNUWie4fAFsNtVexVIVp7iPS9CmNBGr0BliUlxZCaxodM1wRnG7/LHiG45upHemc81rVHV1FxqQnbe5SVy7jk6kdbOea1/B1zjg5+oiuXF6RyTIzVb2dM0jnmtbKxxbjnklnjglJF5LfTgjJPLyUjl3EpLX9SbV6FpLlfRKS84HiFLt7FbpjPgXTAxKF49m/JjfAFZvwB0GmbzsAbfcFoKX6cG4sA+vcsfJKUlrZpMnKSycMj6PWmlLS2Tm85/AHK7dk5y/A8iGtDJ5yScsMzd6ZEcsDyIa0zlvuJKW4HIST33GkR1oXsI3l+AN5EcseRpEroW7y9BWwN0gNjcTtG/AG/Xli3eP0NeTS2temTe9wYvZgd7AXot7mvFbmTvYDwazrYCC9P1NXsAO5gbvBgY14qjPfczeqRtcIAOvwbigbVZsXoAazXnV4Noa/gAOd/0Anya/vU2QaNhbBeDJ0wHTp40CnsIjbGGlVi/I6lj2RutBk63MsPNOiMrehSMtDmi7rcpGWdxbFc6dkZIr05HJB+S3TlfgnY6cadsJY1L9N+fwccJecnR05YyyVjs89O2MrLwlmzj6b5OmErqyVju89OqD0ZaLo5otfRZMlY68VeOdSkWiUf03HXj4ErozTeeBXnVjcgbMNUnWaJSSsvJYJy+vA8S1HNNYITXB0y4OfqLgpHLuOWa3OeaOrqYOeaVFcuL0jln6OeazTOrqLc5prUrHD6RCa12IyReaISz+pWOTaXKvPBN6+PRWXyTkn8Dxz6I/QrWBtMWJrjwanRfgVL9AtPYxpQpGfkONwa2AYxjagH0spVngnKWNLQW1wSlI5JHua00nqTk6VGk+MEm9x5HPrQuXLJyf+zSkJJjyI600ngSTM2k9xLwNIldC28YEcrMxc5w/g3idot3v/oF5MC8mktZvOdzXqBv/RvdmsZaeg7rIvsL3oGN+DUAOj1AN6Nnc23vc2um2oBtNjLT9DL4DeHbsAHpheHrbB+hr9gG00N6tGWEZfj2AFMz01BWTYvcA15NjY2plXABrd7mM34+jABcjLCrYGxq3sGm0V7jJiJ+EFcttmNlUi+NSikyCejRRPBlimavF1zZeD5+jlT0srB+fAli+NOyDOjpySOODtnR03TJWOzz07enKzp6bVHF05c4OmD2aslqO7z07IvTJ0QfnJyQlhHRB6Y+CNd3nXRB8lYu8kYOsPYrEnXVmnvQzNf8mdN4FVK82SkuCzb8EpLgaJ6QmskJqv4OielkZ0Ujm3HJ1ODnmsXpg6upuc/UVvlFcuH0jknqc89M/J09Rfk55+MIrlxejnnVEZb7l+pqyElyVjj2lLglPQrLdE2PHNpOXnUV5z+w7yI+BkqD8A1D9sHpGsHy0DTTQ297pGpewY29mNpkOl5APck6ROUsejSla3Jylqr1OeR6utNKW+pNvOuaNJ3ZNutR5ENaFteib8sLlbrQRtXx7GkRtaTFckDm/wDorGTtFu9QXk162BvgC9b5AG7Nbu0axnubxkAf6gY3IPIbtG3zmgDM2DbI3zYAbyDWrNr/ALDWwAGb9TetAu09tAaC0wbGWGg/AAElwDTYb4NV7gOF2MNV/AEsAOB+DeWFo3r4AA9cc5C8PGAbLW/RvIMb+pmSd4Nv+hs7X8gG0WLMqT8mb+zADXrY0X+RFqMnWphpVYS/vBaD+7OZFYNaai1bNdXTbS8HT03okzjg3drc6Omyeo6/Ou3ptWkjpg/JxdN4WDr6b3/Yjp3+VdnT2OjptnLDydPT92R07/OumP76lV4+yMPGm5aPh+iVdmDq1nIQY33M6oRaM34wJJcod0xHng2F0hLKITwjonW2eCE9KbKRzbc3U044o5upf0dU8ejm6ixZXLi9HNM5+pxZ0dX0c3ULZcPo55kJZeTo6i1ISKxxbReL2J+ykn9k5K/2Hjn0R4Yv4C/x4A3rwMlS1sbnyZpmvCNKzfOgFr+gbV4wavbBgLTg2pqCAerJ7bE5PHk0nqJJ41IyO/Wgk7RNu/AW63EfA8RtZ1lit+DPcVmpWtlK2B3/ANMwDFrNoH0FmfAMb8GV/IPX2HkGB4DT/u5nlmxW9gG/uDeWZaZNjwAbQ1YDkKWwNANVqjJO7qw1VGN4C0v6Mlmxkn8h7fAN4Wqy0w9tDKN0N2u9DOm+SJeLNWP9FO17Acc+Q6PlNLkzRXsvf4N25Do+UqYKrQp2tOhav2tDes+SYWuAFGq1F/cC2EqtHqZZyGWqM9mawGrd7mNp/wACgYHGwy0FCqvINh4uisXuQT1Kx1Fqma6Om9Dp6fBydNpHT0npw9yddXnXX03odXTf1WTj6b+Tr6dojp6HlXZ09rOnp/qcvT2Onpq9SGno+bohbwXhoRgWitK/QlXbg8dRvOQR3o3PoRaM8PUR5sd8/kSX4NhdIzwQnpxkvPd6kJ6PBSOfbn6i10ObqutWdPU1epzdT8Irlw+jmm87HNPydPUzbrBzTdbFsuH0c88/wRms5LdR6vcj1HqVji2jL/pORSTRKWMWPHNou7FbyM85XyIxk6DvjH6GM9c5M9TShvkPD2B/WYGNqHV6gClqAd0n5Eb+Qyl6aJt2Tjq1QkxX5oLzbv5FsZK1v1Fb5bM+cAb515ZpLWtYQOdTZZq0f6GsHfXJrpYNrrwDCegMHR8m12BuZYADfj5NfdngNcaAyttgA7LJvKNQaV3sDeMl6oanfBorgaKzRhpASx5Co3jgbttZHimZ08yRK2Mo/XsdRb/4FQF6pMEUbaGUcUmiqjtQVDnQzp5hLtpG7N9joXTy7QezwZ0363P2W9AdlHV2YyD/AM26YfTf1uXs5qvQrgdbhu9BJQeeTfol83K4iNezqcCcoUxpU9YczjgVr7LOPgm1nQaVGwuwFjVOxq8CvJpGVZ1DXKBRsbgDrgeLvckveSsTKfK3Te1HT0tTmgnz6Onponp1+bq6eaOvpp0cvTXB19J1VkNPQ8nV0tF5Orp6ZObp4R1dJeCGnpeUdEV8eS0UyMKfotGknRKu3CiWDa7grCbwFq8CLA8E5YWMPco88k5tX5NhdJSfJCdZVFpOs7HPN+Skcu6jOjl6lvU6OpW+Dm6n4K5cXpXPP8cnNPdF+ppwc83/AFlsuH0qM9SE3jJaTTIz0VlY4tpSzqTemo7Jy0RSOfRG8gbsL4/rA61X4NSoXen5FfumNXAMe7NYzytAGq0Z6AwWuTbAwbXTYA627WBJUn5C2vkRv8Cxe0G38gv6M9wbr2anawv6BBjOhpW9o2Xyb19m3yDG2C6v+QLjAb0ABW4Usoy8mqwA1mtg6O6AuUNj/QGjJPcb9TLT2h0kKaQKz8jpOzJZwikY4wZapMljHNlIrlDKPopCO60FtWzgihtX2OoX73KKD9lIwEtWz5pxhvuMoUWjC9ii6aFuls+aC6ecajLpfg6VDwFdL+sX6Vnk5l062N/5eDs/871oP/l9GfRv0uF9PH8iS6fGp6EumhX0dfwbNlvi82XSq8EZdN/yenLpYeLIT6VZoeaQ34vMnCloRlE9DqdM5upCikrj9PPjkeudRHWL15LSXNfRJ/2ykcuozqtQZ0NozZNKK2exWGpKP/CsDKfK0MvY6unsc/Sq9Dq6SzsS07PKOnpLZnZ0ljJzdJeTr6StKsENV6XjHT01hfudPTVPBHpxqrwdXTjyyGq9LzisLKx1Eis8FFuyVdmYbXzyZmfIHpgVQJPlEpjyf2TmxonqpTdrghNorJtEJu3RSOXdQ6j2s5p87l+o713ObqNv0Wy4fSodR4OedMt1G+c0c/Ulgrlw+lR6nP6EZaFpPdbEZP8A4Vjk3UpZEb/I8qdr9Cbd+kPHPovyKxnl4FeGMnQVLWzWvg2d9TWm8gVtfBgVTehrr3QBvk2wTb2gas3eorecBf8AwRvUw9rPyBvCrcwHhmkrPC8m+0Ze8G9AxvWOA7XuD4BdLb2AHfRUb1sYyACkw/GpsPx+41sGgtaY3ba8GST5Hini8/Jh5BStDxXKyaMfN/sUURbVc5ZRrH0UUeQxjT0Kwgn7EtXzksYNFow8BjDOS8YE7XTjBIwyiqh4KRg+CkIYEunTjzJGFaJ4KwhlfZSMCsYXpf0TunRnzRXTxpp4KR6eMqvZePT+Si6f4Ful8+Tm/wDPNtDLppqtTpUK2Xob/wA1qL9KTycf/lrgD6J3f+b8g/8APGgfQvi82XSw+CM+jjOp60ul6JT6KbY02lvweH1ej4OLrdOrpHv9Xoaujzv8jo4bovjbzvfw48TqR1wkc8v05O//ACIK3ikcU1R05rx/XPKTGlgM3YduR0BSysItBMnFI6OknYtWxFemr/k7OlH4I9GO+vs7OlDQjqu/xwt0o1sdfSjoS6cfk6+nFs59V6nlhXpxWqR09OOhLpxeMLwdEFj+SNr0PPJ4r/5Q+iAlapDYJ10yBte5nuESVg2lbIzlQ8mSm8jRDdTm6Rz9SVKyvUerOebVFZHJ6VHqPH7nN1JXZabpbHPN1qVzHD6aRmc83gr1JKyE3q8Fo4t1Ke96kpO9UykyMnjJSOTVK8WTbzgd0hM6UNEaDfwI9MhMMmBjM2O7FAwMBXjgz18AdABaxRkBWFXuDVHvWgPgzFeP9GGrarQGxs/7Nvg0rVTNdam8GzWgMbX2Zm1edTLHLAMgpaeDc+Qg0Us8jLD4As6vAyrYw0gxTHUWCK0ZZRFquY0Y558lYJbYBFWWjHgS1fGRjH+EVjDUEI+7OiEHWhO11Yw0IaYLwjnQ0IUy8Y4RO114wEYJevBaEKrGBoQVeS0Y6Mna68YLGG1JUVhDkaMCkY/BO105wChhY9j9mEOo1sMo/wDRLVs4IoL+RuzT6GWHgL/4Z1SZL262bt5GbrcFrnIN5A7VbyK4LQfu9G7leNQ/tnI5up0caHnf5P8Aj0tNj2rTVPYl1ekprYfO+IevhNT+nx3+d0+22eT1cSPqP/1/8dwTPluuv/uj0fHX1Hyv53n+vfE9QxX+jJW92W6fTbehW1wZz0enHPJ19KGEbpdF4wdvS6OFiiWtO7x8q3S6V1x6Ozo9Pasm6XSd5OzpdPk59aep4+IdOGh1dOPg3T6Z0QjhYRDWno+fnxoKssrFZBCOpRK3RO115yO/wb5NdPUDeBTtLTUnJ/2xpvBKTqxpCapJN3dEZyxuP1JLOSHUljyUkc29EnLOTnm8fI/UeDn6ktm8FJHF6aTnLJzzdZKTbayQnLGGWkcXppOcuSE9R5vD3ojKXJSRx7pJOtskm22POWmCUtPBSObVLJ2K6YzYt5YyVK9gGZq23NK3D5NWf0Mqa+DbYBjMGuoTJAGXnY3lG8bhrFfkGjogZW9m+Aag2tfg37mtrN2bcCt4Vm+cmvOLB9gBXvIfV5AqvgNab8AGSvQZL+6gWgy1wBoKXgeKxh6Cool4Fqkho5KxVtcCRjpj5LQWl4EtWxD9NFoR0oSC/wBnRCKrBO11YyaEbOiEbYsI1T1L9OOhO12eeDQjzoXjDgEI2WhGlRK124waEcFoxdeARRZR8ErXVjLRhsUirRorwNQtrozlkvsPOwK3NdehTf4HRZA5VQkpYtsnKftsaQmtcPKe5N9byRn1OdCE+trmx5lDftx1S61aMm/8hWcHU69XbOTrf5LW5SefXJv8rj13/mJaOvI0P/0YqraPmur/AJjVu8HF1v8AMnonX7lJ+P1ya/lLh9j/AJcuh/mf401Ca76tK8s+FfT6nV6jcYur1aMupPqzinJ1fJ91/hx6H+b/AI8ZdSEX1EstLUf/AE8/56j/ALnr/rZ/6+O6P+FJ6pnb0v8AEarB9LP/APPgspKgL/DSeEqEv5HVs/xnw8fp/wCNW2Tq6XQVLB6C/wAemsFI9LKwTvp114/F45On0aZ0R6T2VfBddPwPGGNCd068ePCRhzoUhHW0MlWRmlVaCWr5zwEqfoy1poOcfkFqhT/4Z6ULJ8cGcsbeiblj9fA0hdaabd51JSkjSkqIzl5Gkc+9FnLJGc6Wo05eTnnJeysjl3svUlyzn6ktkN1Jvkh1JalZHF6bLOT00ITkNOT5Ize+hSRx70Sb+CMmPJ4JSe9lJHLqlk8+GTb1C39ivXQeI2lb3A3eqM9aA7u0MnWAzKmzAVv5Ag0Z53AMZWv4Big4wAZPGBkudBUMlezVAaBu6AvDNlYZm0/QMbZZv4MB+QrGmoMZL/YKD8am0ANdGSvbBl/aCsg0d9BkKsFIrKMNDfBSK9iQv2Wjrp7FquYaK2LRjt+4kE+aL9P+0TtdOIpCOmx0Qj7ZLprc6Omtydrs88qQjaOnpxrUl046HT01bI6rt88nhH/heMRIL+svH0StduMmguCqWBYrTGB4oS105g7ZuwvwZPwDT0Kdm62Ykn2oMm0iM5b2NITWmnPGpzzns9DdSdI5up1M66lMxyeno3U6iOPq9U3VnjWzi6vU1zXgvnLzvb2HqdY4+t1n/sHVnlnLOXjU6M5eX7e1odTqNvX7IN2zSbbA9MFZHDrXVej/AP3G6s+o/wDyP8lxUY3jg+W6eH6PX/wep2tK7Je2ex3/AIHp+vfX2PS6qmiuHmjx/wDG/wAnCTZ39PrWedrHH1Xl7zU/t0KK2/Ie1CLqXqMp4/cT+15YNLBmkDuTs3cA7B+TW1uK5pi92MZDguj92z1FcvvQRy/BOUjZE7s7mTlISU1oSlMeRHWxnPJKU+HhcCykRnOtykjm3sZyu86EOpLPJupMhOaWtlJHJvbSne5CbYZzITkykjk3sJslKQZS+WSm/BSRy60EnqTk1d7GnLZ6+RJP7HiGqDe6Ed3yH78Ct2qrXcZK0G86m9Aeofg0oetzP+o2r3Nz+4MajYNubbawDXlUajGXgGjxYyAloMkYaJvzqawV9BVvyaUPOvoPkGnKN4oGDpgzQNg75ANrhMaNgXn8B4u60BsGOxRJsRKx449i1SHikVgtBIrSy0V7Fq2YpBJsv01o2SinwdEFknXX5xbprFnRBEoJXSOjpx8Mjqu3zi0F6ZfpxonCJ0QRK13eeVIK34LQW+pOCpF4r7JV14grnIz5MsVkNci1eByCT/4M09vsk3wEZaWbqzn6k3RSct9jn6jrwUkc3ppLqz1s5OrPct1J6nH1ZO3jQtmPP9do9Wd2cfVnruW60s3+px9SSZ0Zjy/bafVl+Tmmys3mtiEsNlo4N0ups7m09hwMieFnb0J1WTgjtydHTlVO7F1F/LXK9r/H6zVbHpdHr1R8/wBHqUvB39LraHLvD2PD349vp9bzoVj1br9jyen1tN/kvHrIhcPRx7vRXUvOxl1bVWcS6toK6udci/Kv7nZ34xeRf/TGpyvq+QPq+UHyL6ul9RVqTfUyc/8A6XoK5+RplPXqtLqWqRGXU8kpdQnLqDTKGvRSc8kZz+hJT1ySlK9yky59+hpT1zklOVCym85JSm3qx5HNvYuWdSU5N7AcrwycnnwUkc2tNJ0yUmlbM5CN3eB5ENaZvAjYW+BHtYyVrN+dRd8ML8MDNIzWj0N8GrJmuEDA+7C6QN1yasgGVcs1W2zM2b5AC9MGV77bmVbvTwbNAaGSz8DJcgVVkZfgw0iOoFnNBeXkF4yaQfbM8g/YNfYMbXNh00BjBsp/wAZaDLIMPQKSTeLYGh4+seB0uBI4u9isdBaplSKfwWjr7JQKwTEroxFumubOmC5I9PXB0Q5olXX5xfprPPydHSWV+pGCpHR01zZHTu84t01ijogn/wAJRWmC8E/RKu7zikV9Fo819k46aFI8ck66sw9eK+TYBtkO2gqhZcf1EpvGxR66eSU5XsNE9VLqPtZy9WVF+ozl6jRXMcfpXP1X9+Dj6rrfJ09VnH1XhsvmPN9tObqS3ycvUdvOx0dXDObqWy+Xm+tQnvuSeXgpJXyI3vyVjj0X4Nu6NZlqtDSCvJSDrUltaHT1Mps11wmrX4Onp9TY4ISor056ZJ2Orz9OPT6fVSSdl4dXGMnmQntuWj1fKJ3Lsx7PSj1Xl3rgZdW9zz11fY6632J8Lz2d3/r/ANB/6tqji/8AUK6uNdDPk37nU+rzgV9S9zmfUwK+pjGTfkt9XR/6Wicp+SDmt3kWU3Q0ylr0UlPyicp7oSU+SbnqNIjr0M558eBJS/AspfZOUsjyI62aUhG6wLJit/kaRK6aTwK29DSdrOgttrwMlazf2K8m0A/yaUNwtu/4BecBArLOq0Aq/wCBV/aBwAZba2ZaU7M149AoAN27Mvo2G+QpY3YNGvoKV3ZlgNXoYaQV4HjfAFqmPFf6MqkjlwwPU2eb+Ar+5GQB03Qf2NmsICoAPgyepl4N/bACuRlyKlWqGXBhoeOvgorEiikci1XKsM/9LQTepGBaCyJXRhfpo6YY3IQvFUXgtiWnb5x09NePZ09Nb5ObprCb1OrpvQjp3ea8EkdEFn/ZCHs6IR8kq7cRVaYKLiicUUVV/BOurLfFmvFBxqa7v+DDJzwyM3roVkiPUHiO0Oo/1OXqS1Ojqaa5ObqLDyVy4vVy9Q5Oq9UdXVOTqp5yXy831cs3ZzSxudPVe9nPPcvl5/ohLbOCbspLwTepSOTRef1Nfs2no3o0jeQp2a23ruBOwadS0opGVEkwp/kyw0roUn+CsZ4OWMv6h1IWxbO3Uuo0N/6N+jlUvdjd/IvypPR1KYX1POpyqfBu/GrM+T/sdL6mdQOeSHfuBzoOM/Ys5iueNccEu5rn5Fb31N4W7UlIWU00Tctgd2xvCXRnKhW8i3kF+xuJ3Qyluhbta48AvwC/BpLRbtimulgF+TS9YyWM/FG/qNlNAxgZ+Ag5ANVm9ampGaV0nQBgYyH9g59g1lr+4a8GXqhkY2Al/aH+rMtMjL8mHkaKWSkVSwKtSsYi1XMee/yb1+DamwUcrJOzUZIK8sAye4dxf1D7wgaKQ682hfYy5MNDx/JSKpVpsyaV5yisc0LVcqx0S/Yv01s2Qg/ot09nuJXRh0wL9JZOfpf2jp6ehLTt83T09Do6d6Zo5+l9HT09asjp3ebphpktH5IQelUXhtsSruwrEov6xI/gfZck66Mj7sDbDdmdmGqUt1ZGdq0tyzexGY8R25+rSRy9SuDq6nBy9TD/AFK5cXo5OocnUvejs6iwzl6q1/Uvl53rHH1Fqc8/J1dTejn6iLZef6RzyVbfZOX4KyV5JyKRy6hKoCvQbf8AVi7DJ1tXk2j9G3qrM8YsGDw9DLdgvXSzbZBp7rD1GUuCd4DehnGyqRbaMpt/Al4qzWHDfSqkZy8k07X6mvezON+le9pMCl8smmbuWLDg+j3wbuzaE7t7M3bDg+hsDewHjUF8Gl6axW9EC9jXimgZ1v0NdrjyCzWaxsm3t6meryDDBggCZfqAbfYz01+AeTAG587h9YoAUnvgGtgK8aArCxgbNMGxq51Cqv8AUKXI0VpoYeRkseR0s4MvY8FWwtqmYMUtKKRXoCj4KRVsS1bMeV5dA0dmyav6izgbJkwrc26vQA10asAxe9B9g0bz/A6Wdhf0GjrdGGh150KQf0TjWCkNRarlaHBeC+yEPNWWjdiV0YdEP0OnpujmhtsdEG2s0Srt83V070XydPTxXKOWHB0w1ojp3ebphp/J0dOtDmhR0Q01xwSrtwtH7HVVoTjgoqJ105H0BhwCufyYapy1zqRnuXkvwRlb+h4jtz9T0c04tHVNanN1N+CmXH6RydXKOXqLU7Oqtjm6kS+XB6xxdRanPNZs6+oreDnmrLZrg9I5pEpfRfqJ8akpL6KSuTUSa1Fd7DtW8CtfQyNhdUZBA6o0rPC0dG3NeKNiwDam/XYz4Nq9MABT5waweDXyDRbwa8cgX6GWdwHRi/ZrA99zXvqA6Ld7m9fQPJuQAq7BmzY13NjgA2xt80bRuzbAxvRjekjbgGTNd7G2/gzYBtqNub49m/QA3o18UbU2Xl6A1qv0E2eNfAUY2RsPI1YMlwFJgaRkkOl9GSxdDxWMi2qSCk9mPFf/ADpkEVr5KqP94FtWzkYLNFIxBFIrFL3kS1fOXg+g7YFu8LfYOnvydDyh+AVzqzZ/Y1XoAbR6fJkuNQm/TkGm2Qyy9dROM7jLQxsOvyViTilSodf/ANZti1XK0HWll4W6yc8NvBaNehK6cOmL9HR0/GpzQfw0dHTexLTs83V099jp6exy9NnR0/eNyWnb511Qa51LwbOaG16HRH5I124rojpoUjdakYlU27ErqyN4C+DLhrJnfPkU5GiUkWkuCU9NNGNE9Rzzyzn6i8HVNEOokUjl9I4+osPbwc3UWdrO2a5Oaaf2WzXD6ZcU1Zz9SKOycVvzqc80uCua4fTLkms6EZrg6pxepGUc+Ssrj3lzyX2I6RaUX6yTlrlDxDUTazuAd6Z1FaNTsK6VG5vQNLavoGiNYHAaM9AqrBgb4Rnh0viwKq8BbxnQA2jdbmpa4YbfALzqAbgxnrRgDX+DZT1Nqw1YAL+zfRs1hmWbANrdGehmjegDevs3g2G0jPUA22DZ31Nosm5pYANWxvepl8/Ia+QaHnwHfIa+KGrQxshUv9DV7MkOk2lZh5AX7DpYt6GStDrCyqMtUkBJfBRLFPBkl/WUjHhC2q5yEY6lYxx4BGJVRxoJatnLKPJWKwsMEY0/ZWEMiWujOXzLRsfBjbNanW8NnkyfCNtwFa7UAb8mdvwDXP8AWavgAZPwg+tBU8jrhGGhli9CkfBOLKRtPNGVTK0MVbLQ9nPHh6Fo5YldGHTDX+S8G0kc8H4sv02iVdfnXVA6Om7xZy9N1hHR02Sru8664NUi8He2DlgdEMbkq7cV0xfP4KLFqyMHuUT/AKyddWaqjaoy8BV7CKwr21oSSx44KiSW9/CNhbEJLDITjqdM0m3sRms/qPHPuOXqRr7ObqROzqL49EJxp+Csrk9MuHqR5OfqRwd047bcnPNc4K5rh9MuKcdyLWrOyUbyyM460Vlce8uSUWTms8nRNcE5R1T1KSubWXPLArVbY8lpRoRobqVyl+4GtKRRoFbb+zSWErlAWMDNZ5sz+jS8L5MuUGs0b5+ADbA0xqzG00BgYxj8h1D/AACuKAC/HINVZjLXQA25lj/RlbNbWa+ADI2EGtgVgGgv7Qa8hN8AGSo2u9hq6DouTG8LrwNWLNQyigNICV7jVsZKhkvBnTSAlwN2jdrHS+BeqTIJDxXkMYjqPItquchGKzRSMcBiikFkW1bOQjErGOt6GjEpGORLV85aMSkV7RlG2USSVv6oS1fOXyKwkjSyvZsG4Z3PnGvU2xjflAGxvwHcDav9zXQAfgZcCp6BXlAaHWOWikcf3QmrwmPFvZC08Vi99S0HzkhDkrDGBKvmuiLVl4PBzxenBaDJ11Yrqg/6jpizk6bOiD/uxKu3zrrhJYOiDpHJGReDRKx24rqjRVP9Tng/JaL8/ZOurFXj+RtcvQnFv3wMvYlXlO9MCv8AIaxYHdMG0kklnBKUW71RZiSWRonqOWaITSydc4ojNa4Hlc28uOcfFnPOOTtnH6ITiVlce8OKcKvgjKCzdWjsnEjOJSVybw45RvYlKNvCs65w4RGUFwUlcusOZq9ibi1/J0yhv9E5RutB5UNZc7iK1yXcav8AYRxzoN1K5RadmrBRqrFaN6S5ToNZGavQzjrRpeJ0g0NSsFeAZwNtaBT8DVxg3b4AcLvqFauw6b/YN2A4GjQWrCZR5wwHAybXV0NWFkKVg3hUsBoNch7bdB1vAUfH0ZRrUZKwpYM6aZCqzYasZR/tDKPozp5kEtnqHt8DKPA6j/oXp5kEsjJWsexksWh1HNGWqzJIx2/JVRoMY0qKRjyhLVs5BLwOo6JjKFXRSMVyLatnIRiUUVpQe378FIr7EtXzkIx8DqP0GK8Iol4FtWzl8Qvj7M2zeaNeNz0HyzbGxtRrMvYMHmzXkVVT397hr4AN/dRlrVsDw/BlyDTrDVDrbmxFQ0X5Mp4rDwVi1ghErF+RKtmrxaehfpvHx9nNB8l4W6YldOK6oP8AUv03m9DkhLY6OnJ2iVjr8664Pn6LweNTkg3ao6IS5+SVjtxp1dOXBeLxockZcHRF3yTsdeK6ItWlY8XX6kYu2/0HTQldGaqnyb9BYtbjVaFUB/2hJbjvC59gwvQRlRa1JzjuXat+ybWfY8qOsuWUURlGzrmrV19kpRp6MeVzby45xvUhJLc7ZxIzh+Ckrl3hxSh/USlDO79HZKHjQlKLzjQpK5t4cc4eiconZOPj7Iyhmx5XPrDlcdhHF5/J1SivfoRxHlQuHM4VoLXovQrjVOjep3CDiCqLOOTOPCG6S5RquQUV7arkHbuHWfKde8gaooo7GcdfAdZ8p9uzNXA/b/UHto3o+U0s8VyalxRSs3qGsUZ0fKajedg1ker1DXgOt+SKOQpLh2h+26DV7amdNMk7dxu1/I/bi60GUV5RnTzJFF1SGUfA6jbqhlG3RnTzJVH7HUeNgxh4KRi6wLarMEUaKKO6GjHA6innUW1XOCqNIdRVDqGWPGKFtWzgsVWKHUbV/qNGOPY6jWrEtWzkFHdeiiiqsKXA6VPItqsyEY/kZJtZCo58DJC9VkfBtGxh0Ftbi40PTfIDvZlpky8mxoDGN+5l6X2Z6AB3NdgWmxtwaZcD3+RE60Gv4+TDRRUUi6ZGN3X5Kxa1FqmarDGpePwc8XRWLEroxXVCSrBeD0o5ISzvgvB/knY6sadcHoy8JHHCWdTog8Ktidjsxp1xfFMvFpejl6csrJaLwkSsdeNOqMq5Kxl9HNF7lYyV6fZOx050toPfn8kovdvUdOhVpT3yhXWDX9BwYYtVbEa3RStgNWtDS2INc+SUop3p8nRJVgSS2GlR1lyuN2SlHY65R2JSjfA8qGsuSULsjKPhHZKONCbgUlc+sOOUd3oSfT9HXKAkunqx5XPrDknDKxgnKF3R1uPj2TcNqGlR15uVwzp/oVw1tHS4/gXtyN1K4crjYvbSOlx/PArhaG6ncOdxz5B2HQ4Kxe03pfhGt6B2vCLOJu3DdB0vwj21g3bks48s3Z4+A6PhHt5QVHBXt/2FRDrfhHtGULZTs/6GuTOtmE+3RB7PnwUUORox9h00wmo4uhu3S7KKGuKGUNVoL08wnGN6DKGSijyPGNvXBnVJhPt/I6jTKRjTX6jKPoW1WYTUc4KRi9R4xxQ/ZpQtqswRR0HUaG7c18jxi6SoW1SZKo60NFNP9x1G16/I0Y6WLarMgl/aDXoZLPI9eTOqSFS3aDhfIaMtKrOuph5HwNJ/AMBld5M1WiPUfGB54ZvnU2NnqAGNXgK3YPL0N6wAHV6melmo39YAwULpqMmuaoDQ8cYoZMmh09BaeVaL+ikHyRWo8X5Fq2a6YPKLQZzReUWg/P2TsdONOqMtKepeD0OSEvktB512J2OrGnZBtfBaMsnLCV/8LwasnY68adMJZLRdVg5oS8lYPP6E7HVjTpjJUOmQi8FFJLUSx0ZqyewV6Jp4H/fgVSUTPyDw/oz1wDStP6FatFHncVo0tiMlYkleN0WccZ0YslnY2VLWXNKPIkonS480TcbusDyo6y5pRS9k5RfvJ1SjuqslKGeBpUdYc0o7eBH08eTplDLtYEcc8DSpaw5nHcRx8HU4Ze9iOKzQ0qVw5XAHYtjocPQHD6G6nfNzdgvZwdLgDsxnJvSXzc7h8MXs5Onsqwdmfwb1n60FACheb1L9vN/Aezj4DrPhBQzuFR8Wy3Zxhm7c2HW/CHbwN25LKHAVHxkzrZhLs/qCo402K9mFgZRZnTTCSjwFRKqC0G7aWDOnmE1BjKOmNdCih/8AI3asGdUmCRjjehop7oevONh1HWxeqTBEtMajKPP6jKI/asUZ08yRKxksjVivA6X/AEXqkyRLI6jlB3rBtWZ08jVqFKsqjbUF1Xgw3A/kz03No8Kza7IA+Bq8gC14QHutz1XxlB3swBatcGa1dAxtjaIza40NVAxgIOxuar0AF1wZPx+AL2woGmjxkeNcZJpjeTDRReisdcoitsWOvAtVzVoPj7LRlg54vBWMt0LYtmumDLQaRyxlktF/ZOx04064vNloSxqckJW1ktCVP+Sdjrxp1wln8FoSOSEnsXhLZk7HVjTphLKKp45OaDS0KwkTsdGdOiLyPF8kIy9jxeBbF5pa6+wpsmpUMnv+op5Tay1BjU2+DedbBoNbiNb4KY4A9zWWJNa0LKOdSrWyFryb0lyjKNsRxpMu0q0FrJsqdy53Gl7EccHS4rhNiuGGNKlcOZxXH0I4Z0OlxzoK1Y3U7hzOL1FcLOntwL28m9JcOdwzv7FcMYs6OzNvQHa9TeluHP240X0bsxkv21YOxJG9L8I9j1B27ouo8f8ADOOA6z4Q7NLRuzesF+yguNfwHW/CHZsguPgt25sKjnNWZ1vwl25wbt+CqiHtvVMOtmE+2sh7PSKqN6/kKRnTzCahgZR5Wg6iMkZ00ymo4+Bu3Rj1a8hUWzOnmSpcDKPOPYVgNWtjOmmSpP8AcZJeQpchWmxhuBWDUYwNHT5BdGfjYGLAM9RXTQWxW982aW18K1WoHTYWq0A8o9N8dSvG2ptP7RnwDQ0o7AfgNtKjaoGA9Qm9G5rQA1m0vBuHwZagBi6eLGvhirQK8fIGh1rxQ8SaedNAxfnIp5VovKKRehGONSieBarmrxdfJaMuWc0HWhSMs7MWxfOnVCWC0Wjli+SsJYyTsdONOvpywXjL0jjjKuCsZYJ2OnGnZGRWLOSEvPyVhLbcSx0506lLTkpGRzRln0VjLb8oSx0Z06IsdS2sgneuiGjLGdROLTS0ZbBJ924VqYeU+urDWNfkW8GTzkxo+UK0qG1sD00NBXkDWR9a8gaAticl60FaW5Wha1yb0tyk4oDjvRRrdGapm9Jcoyjx8iuHotX+jdv0b0tyg41tkHblvUq47GUdjel+UXEHb+C3bao3b6fgOs+EVG/jzoZwTwV7fHs3b4+Des+Ee3Fm7eUytZ/czTwHR8J9udEbtXJVLNB7dqDo+UlH78hUfA/bsNXJnW/KaQUqH7fwalyHTfJa4Dq/Q1L/AKFLBnW8KkrxRu21Q1GawnQN4WsVqHTgK108mt4BofsYOb3BrWoANDaezXYuQZ0W/wBBW7QG86ivDNJaMm+RG3eWZvIjdvBshLp8cxd6HayJpg9J8pYXfYDVjO9ANPJpKXyjGevLM+M2BRz/ACbmzNeDVqwDGvZm4tmrkAzz8BWFnIEwg0bpvQf0IssN5WcGGiia1b8DxdIksq+RrrcynlXVcDp5oimnhjJ78i2K5rqjLOR4yzg54yx4KxlgSxfOnTCdvJaDOSMm6wWjISx0406oT/JWM6OWMtKZWMt0ydjozt1xne5RS+/ZywlVUUjLkSx0Z260+WOpc7HLGRVOxLF87dHc9hk8XqQ7rwx1LQXis0teq3Gz8krxnYKeLM4pNKXYeMITuTDZnDdMBKzX9bmxsAb4M1nJtsGvnTgAXAOcDMzXoGcKCsUPVvGn6garJrOEq2BxHq9cGd3rhh0vE64ozWMVqUqs8MFcG9HCP87Aq8foUqgPIdZwnbgyiNVBrnIDidc7hr0NjZBSyA4SvXyGschpWtMm3AcDVsCzljbaG4xkBwEkbOhnqa/IBtVkGwXWgPQBvF+wXW5rzSFvFcml6ZvzWBb5FbvcDdKlQMtFsDlwBvNiOWTeEuhcq8it4FcqSeorY0id0MnTyI39Abom5a6/A0iV0+Zks7CNZZWS8WI8s7o+dsJzQv6DAZqdK3bAM/wBLwaUHvqHwB7YZvFoGD+oMBS41Ak35ACby7BjQK8fkAKw9dA4SsX5CnkGmvUZa6iJ45Csf/1SMNKrF8MdOv8ARFOsYQ8XnUyqSrRlZSL11OdPBVSrAtiudLxeCsXej/JzRl/WUjJfIli2dOqM9LKxkckZZ4KwlWdBLHRnbrjLgrGdJO/ZxxlyysZb6iWL5264yWMDxlpjU5YyvQpCW24ljozt1KWfRRS5OVSuqplFLjQWxbO3SpDRljwc8Z8jRkqF4rNOnu40D3f9IRkMpUrF4eaXT/6a0SUr01GtNmcP9H+dw3rnAncbuDjen9G97ip/8CnyA61uwuqF0oy1BvRyakwN3vk17gxnwb2jOr10N4ANtk2/+jewZoGMgOsfgNgv/oAQbmu9wb+DWC3jUzfCeQNgboAPH6ABf2BPLsGdG82b+Be7yC3t+hrOmbrAL+BLp4/UzlT8oOFtM3t+RLrVgb+BW71N4S6M5VwK35YrlnKElLOo3CXRm0I5LfgDlz+ojlubxO6M3ixG1fkVyt6k3N+vgaRO6PKX6k5SpCuT9E3N084GkR1t47WtMV1V5Ky1JtYeaOqPI1E3rjRCuqyh+UK0alYTV2BZ4vcarBQxKXZ4Dehquja64BgMz8ms1+kgY17ah5/IFS11NbaACg2/IDPXGGAZbUNfsXYMfINMmq/Ya7XommhkzDSqqS0Q8XzsSTsKZnFJV1Kx01WrwRjLca+GLYpnToi2Vi85OaMs5HUtrEsWzp1KeufRRSRyqWVyUjLNMWxfO3VGXBSMqo5VLz6HjLTIli2dutTrdFFLk5FLJSMtxbFs7dXcPGTT3ycqnW48ZVuLYtNumMseh1LGmWcylar8jqVi8Um3Qpuxu85+7gZStC8Um11LAe7KIqdoKnuZw00teN17MnkmpVubut4DhvpVP2FP6Jd3lBTM436Uv8GvZE+5Guw436U7tdkDupC92c2C8vOocH0e8mu7yIpU6Mnhhxn0dvzRm61yT7lYHLgOD6UecMF1Yil9GcuVlm8Z9HfsF6Jk7N3fYcZ9G7mBvz8iuV6AcvJvC3Ru7/YO7FWJbFcjeFujuQvdyI5btoVyvBvCXR3LIspZ1wI5Y1Ecvs3hLpTu/qEk8COQrlWo0id2Zy5QjlayLKVZeuojlrwbIndmckxJOxXLNiSk7zuPIlrYuWBHLOospfAndwNIldP/2Q==" alt=""><div class="mom"><b id="momentum">0</b><span>momentum</span></div></div>
+            </div>
+            <div class="legend"><span class="lg a"><i></i><b id="legA"></b></span><span class="lg b"><i></i><b id="legB"></b></span><span class="lg c"><i></i><b id="legC"></b></span></div>
+          </div>
+          <div class="card next c7">
+            <h2>Volgende beste actie</h2>
+            <div id="nextBox"></div>
+            <div class="kpis">
+              <div class="kp"><b id="kDays">0</b><span>dagen tot 30 nov</span><small id="kPace"></small></div>
+              <div class="kp"><b id="kOrd">0</b><span>besteld</span><small id="kOrdSub"></small></div>
+              <div class="kp"><b id="kStreak">0</b><span>streak</span><small id="kStreakSub"></small></div>
+              <div class="kp lvl"><b id="kLvl">Spark</b><span id="kXp"></span><div class="mini"><i id="kLvlBar"></i></div></div>
+            </div>
+          </div>
+          <div class="card c7">
+            <h2>Welcome Back-trechter</h2>
+            <div id="funnel" class="funnel"></div>
+            <p class="muted">Als de leden die nog niet besteld hebben bestellen zoals hun vorige bestelling: <b id="potential">0 PV</b>. Dat is een schatting op basis van hun laatste order, geen belofte.</p>
+          </div>
+          <div class="card c5">
+            <h2>Signalen</h2>
+            <div id="signals" class="signals"></div>
+          </div>
+          <div class="card c6">
+            <h2>Vandaag <button class="lnk r" data-open="missies">Alles</button></h2>
+            <div id="todayMini"></div>
+          </div>
+          <div class="card c6">
+            <h2>PV deze maand <button class="lnk r" data-open="missies">Aanpassen</button></h2>
+            <div class="pvrow"><b id="pvVal">–</b><span id="pvGoal"></span></div>
+            <div class="bar"><i id="pvBar"></i></div>
+            <p class="muted" id="pvSub"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- PIPELINE -->
+      <section id="v-pipeline" class="view" hidden>
+        <div class="p-head">
+          <div class="p-sum" id="pSum"></div>
+          <div class="chips" id="pFilters"><button data-f="all" aria-pressed="true">Alles</button><button data-f="A" aria-pressed="false">Groep A</button><button data-f="B" aria-pressed="false">Groep B</button><button data-f="C" aria-pressed="false">Groep C</button><button data-f="T" aria-pressed="false">Twijfel</button></div>
+          <input id="pSearch" type="search" placeholder="Zoek op naam" aria-label="Zoek op naam">
+        </div>
+        <p class="muted">Sleep een kaart naar een andere kolom, of gebruik de pijlen. ✉ opent het bericht voor dat lid, klaar om te kopiëren.</p>
+        <div class="board" id="board"></div>
+        <details class="card excl"><summary>Buiten de actie (3)</summary><div id="excl"></div></details>
+      </section>
+
+      <!-- MISSIES -->
+      <section id="v-missies" class="view" hidden>
+        <div class="grid g12">
+          <div class="card c7">
+            <h2>Dagdoelen</h2>
+            <div id="taskList"></div>
+            <form class="add" id="taskForm"><input id="taskIn" placeholder="Nieuw dagdoel" aria-label="Nieuw dagdoel"><label class="chk"><input type="checkbox" id="taskDaily"> dagelijks</label><button class="btn" type="submit">Toevoegen</button></form>
+            <div class="sub" hidden><h3>Uitgesteld</h3><div id="overdue"></div></div>
+            <div class="sub" hidden><h3>Terugkerende doelen</h3><div id="habitList"></div></div>
+          </div>
+          <div class="card c5">
+            <h2>Streak en niveau</h2>
+            <div class="kpis two"><div class="kp"><b id="mStreak">0</b><span>dagen op rij</span><small>alle dagdoelen af</small></div><div class="kp"><b id="mWeek">0%</b><span>weekscore</span></div></div>
+            <div class="week" id="weekStrip"></div>
+            <div class="lvlbox"><div class="lvl-h"><b id="mLvl">Spark</b><span id="mXp"></span></div><div class="mini"><i id="mLvlBar"></i></div><p class="muted">XP: 10 per dagdoel, 5 per contact, 3 per herinnering, 50 per bestelling, 10 per bedankje.</p></div>
+          </div>
+          <div class="card c12">
+            <h2>Cijfers uit je backoffice</h2>
+            <div class="nums">
+              <label>PV deze maand<input id="nPv" inputmode="decimal" placeholder="0"></label>
+              <label>Doel PV deze maand<input id="nGoal" inputmode="decimal" placeholder="0"></label>
+              <label>Actieve leden<input id="nAct" inputmode="numeric" placeholder="0"></label>
+            </div>
+            <p class="muted" id="nUpd"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DOELEN -->
+      <section id="v-doelen" class="view" hidden>
+        <div class="card">
+          <h2>Route</h2>
+          <svg id="tl" viewBox="0 0 1000 230" role="img" aria-label="Tijdlijn van je doelen"></svg>
+          <p class="muted" id="tlEmpty">Geef je doelen een datum en ze verschijnen hier op je route.</p>
+        </div>
+        <div class="grid g12">
+          <div class="card c4"><h2>Ultiem doel</h2><div id="g-ultiem"></div></div>
+          <div class="card c4"><h2>Lange termijn</h2><div id="g-lang"></div></div>
+          <div class="card c4"><h2>Tussendoelen</h2><div id="g-tussen"></div></div>
+        </div>
+        <div class="card">
+          <form class="add" id="goalForm"><select id="gLevel" aria-label="Soort doel"><option value="ultiem">Ultiem doel</option><option value="lang">Lange termijn</option><option value="tussen" selected>Tussendoel</option></select><input id="gText" placeholder="Wat wil je bereiken?" aria-label="Doel"><input id="gDue" type="date" aria-label="Uiterste datum"><button class="btn" type="submit">Toevoegen</button></form>
+          <div class="sub"><h3>Voorstellen</h3><div class="chips" id="goalSugg"></div></div>
+        </div>
+      </section>
+
+      <!-- IDEEEN -->
+      <section id="v-ideeen" class="view" hidden>
+        <div class="card">
+          <h2>Ideeën-lab</h2>
+          <form class="add" id="ideaForm"><input id="ideaIn" placeholder="Idee, ook als het nog gek klinkt" aria-label="Nieuw idee"><button class="btn" type="submit">Bewaar</button></form>
+          <div id="ideaList" class="ideas"></div>
+        </div>
+      </section>
+
+      <!-- ANALYSE -->
+      <section id="v-analyse" class="view" hidden>
+        <div class="jt" id="analyse">
+<nav class="tabs" role="tablist" aria-label="Analyse">
+<button role="tab" data-tab="overzicht" aria-selected="true">Overzicht</button>
+<button role="tab" data-tab="groei" aria-selected="false">Volume en instroom</button>
+<button role="tab" data-tab="geld" aria-selected="false">Waar je geld mist</button>
+<button role="tab" data-tab="verloren" aria-selected="false">Wie je verloor</button>
+<button role="tab" data-tab="dragers" aria-selected="false">Wie draagt het</button>
+<button role="tab" data-tab="silver" aria-selected="false">Silver en RCD</button>
+<button role="tab" data-tab="plan" aria-selected="false">Actieplan</button>
+</nav>
+  <section id="overzicht" data-page="overzicht" class="page">
+    <div class="grid">
+      <div class="card kpi"><span class="n"><b data-draw="v" data-source="ogv_stats" data-row="0" data-field="now" data-fmt="int">—</b></span><span class="l">OGV oktober 2026, <span class="bad"><b data-draw="v" data-source="ogv_stats" data-row="0" data-field="drop_pct" data-fmt="pct0">—</b> onder de piek</span></span></div>
+      <div class="card kpi"><span class="n"><b data-draw="v" data-source="comm_stats" data-row="0" data-field="avg_late" data-fmt="eur">—</b></span><span class="l">gemiddelde commissie per maand sinds maart 2026, tegenover <b data-draw="v" data-source="comm_stats" data-row="0" data-field="avg_early" data-fmt="eur">—</b> in de zes maanden ervoor</span></div>
+      <div class="card kpi"><span class="n"><b data-draw="v" data-source="legs_share" data-row="0" data-field="top3_share" data-fmt="pct0">—</b></span><span class="l">van je volume komt uit drie benen</span></div>
+      <div class="card kpi"><span class="n"><b data-draw="v" data-source="enrol_stats" data-row="0" data-field="avg_late" data-fmt="dec1">—</b></span><span class="l">nieuwe accounts per maand (juni tot oktober), tegenover <b data-draw="v" data-source="enrol_stats" data-row="0" data-field="avg_early" data-fmt="dec1">—</b> eind 2025</span></div>
+    </div>
+
+    <div class="card">
+      <h2>Wat er echt aan de hand is</h2>
+      <ol>
+        <li><b>Je organisatie is geen team maar drie lijnen.</b> Virginie bouwt niet meer, Julie heeft het druk. Alleen Tolle bouwt, en dat is je broer. Dat is concentratierisico, geen team.</li>
+        <li><b>De instroom is ingestort.</b> Nieuwe accounts per maand zakten, en van wie wel instapt is na drie maanden nog ongeveer <b data-draw="v" data-source="cohort_rates" data-where="stage=Na 3 maanden" data-field="r2025" data-fmt="pct0">—</b> over (2025-groep).</li>
+        <li><b>Het geld volgt het volume.</b> Sinds maart 2026 daalde je commissie sterk. Waarschijnlijk (hypothese) omdat je groeps-OGV onder de Silver-grens zakte. Dat kun je controleren in je commissie-uitleg.</li>
+        <li><b>Jouw eigen werk zit in content en opvolging, niet in aanspreken en trainen.</b> Dat zeg je zelf. Opvolging houdt mensen warm, maar vult de bovenkant niet.</li>
+        <li><b>Er liggen mensen die terug willen kunnen komen.</b> Er zijn <b data-draw="v" data-source="facts" data-where="key=cand" data-field="value" data-fmt="int">—</b> leden die in aanmerking komen voor Welcome Back in november.</li>
+      </ol>
+    </div>
+
+    <div class="card callout">
+      <h2>De harde conclusie</h2>
+      <p>RCD vraagt <b data-draw="v" data-source="rcd" data-row="0" data-field="rcd_ogv" data-fmt="int">—</b> OGV per maand. Je zit daar op ongeveer <b data-draw="v" data-source="rcd" data-row="0" data-field="factor" data-fmt="int">—</b> keer onder. Met drie tot acht uur per week kom je daar niet met opvolging alleen. De route loopt via duplicatie: een paar mensen die zelf bouwen, en daar al je trainingsuren in steken. Dit is een eerlijke analyse van wat de cijfers laten zien, geen voorspelling.</p>
+    </div>
+  </section>
+
+  <section id="groei" data-page="groei" class="page" hidden>
+    <div class="card">
+      <h2>Groeps-OGV per maand</h2>
+      <p class="muted">Laatste 24 maanden. De stippellijn is de Silver-grens.</p>
+      <div class="chart" data-draw="chart_ogv" data-source="months facts"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Nieuwe accounts en verdwenen accounts</h2>
+        <p class="muted">Per maand, in je downline. Verdwenen betekent: een maand eerder in de lijst, nu niet meer.</p>
+        <div class="chart" data-draw="chart_flow" data-source="months"></div>
+      </div>
+      <div class="card">
+        <h2>Hoeveel nieuwe leden blijven</h2>
+        <p class="muted">Aandeel van de instappers dat nog bestelt, per cohort.</p>
+        <div class="chart" data-draw="chart_cohort" data-source="cohort_rates"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Wat dit betekent</h2>
+      <ul>
+        <li>Het piekjaar eind 2025 kwam uit een instroomgolf: in september 2025 kwamen <b data-draw="v" data-source="months" data-where="month=2025-09" data-field="new_members" data-fmt="int">—</b> nieuwe accounts binnen. Waar die vandaan kwamen weet ik niet, jij wel.</li>
+        <li>In augustus 2026 kwamen er maar <b data-draw="v" data-source="months" data-where="month=2026-08" data-field="new_members" data-fmt="int">—</b> bij. Zonder instroom kan geen enkele opvolging het volume op peil houden.</li>
+        <li>Zomer is een dip, maar de daling begon al in het voorjaar: augustus 2026 haalde <b data-draw="v" data-source="months" data-where="month=2026-08" data-field="my_ogv" data-fmt="int">—</b> OGV, tegenover <b data-draw="v" data-source="months" data-where="month=2025-08" data-field="my_ogv" data-fmt="int">—</b> in augustus 2025.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="geld" data-page="geld" class="page" hidden>
+    <div class="card">
+      <h2>Commissie per maand</h2>
+      <p class="muted">Uitbetaalde commissie in euro. Oktober is nog niet uitbetaald. De lijnen tonen het gemiddelde voor en na maart 2026.</p>
+      <div class="chart" data-draw="chart_comm" data-source="months comm_stats"></div>
+    </div>
+    <div class="grid">
+      <div class="card kpi"><span class="n"><b data-draw="v" data-source="comm_stats" data-row="0" data-field="avg_early" data-fmt="eur">—</b></span><span class="l">gemiddeld per maand, sep 2025 tot feb 2026</span></div>
+      <div class="card kpi"><span class="n"><b data-draw="v" data-source="comm_stats" data-row="0" data-field="avg_late" data-fmt="eur">—</b></span><span class="l">gemiddeld per maand, mrt tot sep 2026</span></div>
+      <div class="card kpi"><span class="n bad"><b data-draw="v" data-source="comm_stats" data-row="0" data-field="gap_total" data-fmt="eur">—</b></span><span class="l">ruwe kloof over <b data-draw="v" data-source="comm_stats" data-row="0" data-field="months_late" data-fmt="int">—</b> maanden</span></div>
+    </div>
+    <div class="card">
+      <h2>Hoe je dit leest</h2>
+      <ul>
+        <li>De kloof is het gewone verschil tussen twee gemiddelden. Niet alles is te wijten aan één oorzaak: ook minder actieve leden en minder volume in de benen tellen mee.</li>
+        <li>De sterkste hypothese is de Silver-grens van <b data-draw="v" data-source="facts" data-where="key=silver_ogv" data-field="value" data-fmt="int">—</b> OGV. Zakt je groeps-OGV daaronder, dan krijg je minder uit hetzelfde volume. Check dit in je commissie-overzicht voordat je erop bouwt.</li>
+        <li>Wat je wél zeker weet: dezelfde inspanning leverde de laatste zeven maanden veel minder op dan het halfjaar daarvoor.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="verloren" data-page="verloren" class="page" hidden>
+    <div class="card">
+      <h2>Wie je verloor, en hoelang al</h2>
+      <p class="muted">Vijfenveertig leden bestelden ooit goed en zijn nu weg. Hieronder de grootste, gesorteerd op totaal PV. Klik op een kolom om te sorteren.</p>
+      <div class="grid2">
+        <div class="chart" data-draw="chart_buckets" data-source="loss_buckets"></div>
+        <div>
+          <p>De langste afwezigen (<b data-draw="v" data-source="loss_buckets" data-where="bucket=12 maanden of meer" data-field="n" data-fmt="int">—</b> leden twaalf maanden of langer) komen niet terug met een standaardbericht. Zij hebben een persoonlijk gesprek nodig.</p>
+          <p>De recentste groep (drie tot vijf maanden) is het eerst terug te halen: zij hebben je nog in hun hoofd.</p>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="row">
+        <input type="search" data-search="losses" placeholder="Zoek op naam" aria-label="Zoek op naam">
+        <span class="muted">Totaal PV van deze <b data-draw="v" data-source="loss_stats" data-row="0" data-field="count" data-fmt="int">—</b> leden: <b data-draw="v" data-source="loss_stats" data-row="0" data-field="sum_pv" data-fmt="int">—</b></span>
+      </div>
+      <div class="tblbox">
+        <table data-source="losses" data-row-key="name">
+          <thead><tr>
+            <th data-field="name" data-sort="name">Naam</th>
+            <th data-field="level" data-sort="level">Niveau</th>
+            <th data-field="months_active" data-sort="months_active">Maanden actief</th>
+            <th data-field="total_pv" data-sort="total_pv">Totaal PV</th>
+            <th data-field="last_active" data-sort="last_active">Laatst actief</th>
+            <th data-field="months_away" data-sort="months_away">Maanden weg</th>
+            <th data-field="on_list" data-sort="on_list">Op heractivatielijst</th>
+          </tr></thead>
+          <tbody data-draw="tbl_losses_body"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="dragers" data-page="dragers" class="page" hidden>
+    <div class="card">
+      <h2>Wie het volume draagt</h2>
+      <p class="muted">PGV per been in oktober 2026, als aandeel van je groeps-OGV.</p>
+      <div data-draw="legs_list" data-source="legs_share"></div>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Wat je hieruit leest</h2>
+        <ul>
+          <li>De drie grootste benen leveren samen <b data-draw="v" data-source="legs_share" data-row="0" data-field="top3_share" data-fmt="pct0">—</b> van je OGV.</li>
+          <li>Het grootste been, Virginie, bouwt niet meer. Dat volume is dus kwetsbaar, geen stabiele basis.</li>
+          <li>Julie heeft het druk. Zij kan geen extra opbouw dragen zonder gericht gesprek.</li>
+          <li>Sarah bestelt niet meer. Wie onder haar staat, bestelt wel, maar dat is één persoon.</li>
+          <li>Tolle bouwt wekelijks. Dat is je enige actieve groeipunt.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Frontlijn</h2>
+        <p class="muted">Hoeveel directe leden, en hoeveel daarvan actief zijn.</p>
+        <div class="chart" data-draw="chart_front" data-source="months"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="silver" data-page="silver" class="page" hidden>
+    <div class="card">
+      <h2>Silver deze maand</h2>
+      <p class="muted">Stand van 3 november 2026: verwerkt plus gepland via autoship. Silver vraagt <b data-draw="v" data-source="facts" data-where="key=silver_ogv" data-field="value" data-fmt="int">—</b> OGV, <b data-draw="v" data-source="facts" data-where="key=silver_leg" data-field="value" data-fmt="int">—</b> OGV in elk van twee benen, en <b data-draw="v" data-source="facts" data-where="key=silver_pgv" data-field="value" data-fmt="int">—</b> PGV.</p>
+      <div class="grid">
+        <div class="card kpi"><span class="n"><b data-draw="v" data-source="silver" data-where="what=Groep" data-field="have" data-fmt="int">—</b></span><span class="l">OGV verwerkt plus gepland</span></div>
+        <div class="card kpi"><span class="n bad"><b data-draw="v" data-source="silver" data-where="what=Groep" data-field="need" data-fmt="int">—</b></span><span class="l">OGV nog nodig bovenop autoship</span></div>
+      </div>
+      <h3>Per been</h3>
+      <div data-draw="silver_legs" data-source="silver"></div>
+      <h3>Scenario: wat als je extra haalt?</h3>
+      <div class="row"><label for="x-extra">Extra OGV deze maand</label><input id="x-extra" type="range" min="0" max="4000" step="50" value="0"><b data-draw="scen_extra">—</b></div>
+      <p data-draw="scen_text" data-source="silver">—</p>
+    </div>
+    <div class="card">
+      <h2>Wat de gaten kosten en wat ze opleveren</h2>
+      <p>Als Julie en Virginie samen hun nodige extra halen, zit je al dicht bij de grens. Eén gesprek met elk van hen is dus meer waard dan tien nieuwe berichten naar vreemden. Dat is een rekensom, geen garantie dat zij het doen.</p>
+    </div>
+    <div class="card">
+      <h2>RCD in perspectief</h2>
+      <p>Je groeps-OGV is nu <b data-draw="v" data-source="rcd" data-row="0" data-field="now_ogv" data-fmt="int">—</b>. RCD vraagt <b data-draw="v" data-source="rcd" data-row="0" data-field="rcd_ogv" data-fmt="int">—</b>. Dat is ongeveer <b data-draw="v" data-source="rcd" data-row="0" data-field="factor" data-fmt="int">—</b> keer zoveel. Een eerlijk tussendoel is dus niet RCD maar het volgende bereikbare rang, met daarachter een team dat zonder jou groeit.</p>
+    </div>
+  </section>
+
+  <section id="plan" data-page="plan" class="page" hidden>
+    <div class="card">
+      <h2>Reactivatie: de snelle winst</h2>
+      <p>Er zijn <b data-draw="v" data-source="facts" data-where="key=cand" data-field="value" data-fmt="int">—</b> leden die in november een gratis Thieves-tandpasta en handzeep kunnen krijgen bij hun bestelling. Hun laatste bestelling was gemiddeld <b data-draw="v" data-source="facts" data-where="key=cand_avg" data-field="value" data-fmt="dec1">—</b> PV.</p>
+      <div class="row"><label for="x-pct">Aandeel dat terugkomt</label><input id="x-pct" type="range" min="0" max="60" step="5" value="15"><b data-draw="scen_pct">—</b></div>
+      <p data-draw="scen_react" data-source="facts">—</p>
+      <p class="muted">Dit is een rekenvoorbeeld op hun laatste ordergrootte. Terugkomende leden bestellen niet automatisch evenveel.</p>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <h2>Elke week, in volgorde van belang</h2>
+        <ol>
+          <li><b>Aanspreken.</b> Vaste uren per week voor persoonlijke uitnodigingen. Dit is het gat in je werk.</li>
+          <li><b>Eén duplicatiegesprek per week</b> met iemand die kan bouwen: Tolle, Julie, of een nieuwe.</li>
+          <li><b>Reactivatieberichten</b> volgens het plan, in blokken per week.</li>
+          <li><b>Training</b> alleen voor wie zelf wil bouwen, niet voor de hele community.</li>
+          <li><b>Content en opvolging</b> houd je, maar ze krijgen de rest van de tijd.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h2>Vragen die ik nog van je nodig heb</h2>
+        <ul>
+          <li>Waar kwamen de nieuwe accounts van september tot november 2025 vandaan?</li>
+          <li>Hoeveel persoonlijke uitnodigingen doe je nu echt per week?</li>
+          <li>Wat is de huidige stand van Julie: pauze of structureel?</li>
+          <li>Mag ik de klanten onder Virginie in kaart brengen om te zien wie je zelf kunt opvolgen?</li>
+          <li>Wil je dat ik een wekelijkse Silver-tracker maak?</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Op je telefoon</h2>
+      <ol>
+        <li>Open de link van deze app in Safari (iPhone) of Chrome (Android).</li>
+        <li>iPhone: tik op Deel en kies Zet op beginscherm. Android: open het menu en kies Toevoegen aan startscherm.</li>
+        <li>Je krijgt een snelkoppeling naar de app. Hij blijft bewaren wat je aanvinkt, zolang je bent ingelogd bij Claude.</li>
+      </ol>
+      <p class="muted">Dit is een snelkoppeling, geen app uit de App Store. Hij opent mogelijk met de Claude-balk eromheen.</p>
+    </div>
+    <p class="muted">Bron: gelezen uit je Young Living backoffice (alleen lezen) op 3 november 2026. Cijfers en hypotheses zijn een momentopname, geen uitspraak over Young Living zelf.</p>
+  </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <aside class="coach" aria-label="Coach">
+    <div class="coach-h"><div><div class="eyebrow">Je coach</div><b>Streng en eerlijk</b></div><div class="coach-r"><button class="lnk" id="clearChat">Wis</button><button class="btn ghost closebtn" id="coachClose">Sluit</button></div></div>
+    <div class="chat" id="chat" role="log" aria-live="polite"></div>
+    <div class="quick"><button data-q="start">Dagstart</button><button data-q="close">Dag afsluiten</button><button data-q="contra">Spreek me tegen</button><button data-q="goals">Doelen bepalen</button></div>
+    <form class="send" id="sendForm"><textarea id="msgIn" rows="1" placeholder="Schrijf je coach" aria-label="Bericht"></textarea><button class="btn" id="sendBtn" type="submit">Stuur</button></form>
+    <div class="note" id="chatNote"></div>
+  </aside>
+
+  <div id="cmd">
+    <div id="cmdOut" role="status" hidden></div>
+    <form class="in" id="cmdForm" autocomplete="off"><span class="p">&gt;</span><input id="cmdIn" placeholder="/pipeline, /taak …, /lid naam of praat met je coach  (Ctrl+K)" aria-label="Commando of bericht"><button class="btn" type="submit">Go</button></form>
+    <div class="hint" id="cmdHints"><button data-c="/cockpit">/cockpit</button><button data-c="/pipeline">/pipeline</button><button data-c="/missies">/missies</button><button data-c="/doelen">/doelen</button><button data-c="/volume">/volume</button><button data-c="/help">/help</button></div>
+  </div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mdName">
+    <div class="sheet-h"><b id="mdName"></b><button class="x" id="mdClose" aria-label="Sluit">×</button></div>
+    <div class="warn" id="mdWarn" hidden></div>
+    <div class="subj" id="mdSub"></div>
+    <textarea id="mdBody" rows="11" aria-label="Bericht"></textarea>
+    <label class="nt">Notitie<input id="mdNote" placeholder="Bv. reageerde via WhatsApp"></label>
+    <div class="sheet-a"><button class="btn" id="mdCopyMail">Kopieer met onderwerp</button><button class="btn ghost" id="mdCopyWa">Kopieer tekst</button><button class="btn go" id="mdDone">Verstuurd, volgende stap ✓</button></div>
+    <div class="muted" id="mdCopied" role="status"></div>
+  </div>
+</div>
+
+<script src="d3.min.js"></script>
+<script>
+(() => {
+  const DATA = {"months": [{"month": "2024-11", "accounts": 147, "active": 40, "group_pv": 7573, "top10_share": 48, "my_pv": 202.75, "my_ogv": 7776, "new_members": null, "gone": null, "comm_eur": 398.48, "frontline": 4, "frontline_active": 3, "label": "nov 24"}, {"month": "2024-12", "accounts": 139, "active": 34, "group_pv": 5074, "top10_share": 55, "my_pv": 129.6, "my_ogv": 5204, "new_members": 2, "gone": 10, "comm_eur": 232.89, "frontline": 4, "frontline_active": 3, "label": "dec 24"}, {"month": "2025-01", "accounts": 136, "active": 38, "group_pv": 5056, "top10_share": 48, "my_pv": 1092.25, "my_ogv": 6148, "new_members": 10, "gone": 13, "comm_eur": 218.18, "frontline": 5, "frontline_active": 4, "label": "jan 25"}, {"month": "2025-02", "accounts": 149, "active": 42, "group_pv": 6020, "top10_share": 50, "my_pv": 257.5, "my_ogv": 6277, "new_members": 17, "gone": 4, "comm_eur": 200.73, "frontline": 5, "frontline_active": 4, "label": "feb 25"}, {"month": "2025-03", "accounts": 168, "active": 34, "group_pv": 4222, "top10_share": 51, "my_pv": 513, "my_ogv": 4735, "new_members": 24, "gone": 5, "comm_eur": 146.39, "frontline": 5, "frontline_active": 3, "label": "mrt 25"}, {"month": "2025-04", "accounts": 162, "active": 38, "group_pv": 5726, "top10_share": 51, "my_pv": 257.2, "my_ogv": 5984, "new_members": 7, "gone": 13, "comm_eur": 159.68, "frontline": 5, "frontline_active": 3, "label": "apr 25"}, {"month": "2025-05", "accounts": 183, "active": 50, "group_pv": 8283, "top10_share": 44, "my_pv": 166, "my_ogv": 8449, "new_members": 30, "gone": 9, "comm_eur": 341.51, "frontline": 5, "frontline_active": 3, "label": "mei 25"}, {"month": "2025-06", "accounts": 196, "active": 51, "group_pv": 7955, "top10_share": 40, "my_pv": 220.5, "my_ogv": 8176, "new_members": 13, "gone": 0, "comm_eur": 264.11, "frontline": 5, "frontline_active": 4, "label": "jun 25"}, {"month": "2025-07", "accounts": 187, "active": 47, "group_pv": 7068, "top10_share": 41, "my_pv": 123.5, "my_ogv": 7191, "new_members": 4, "gone": 13, "comm_eur": 332.48, "frontline": 5, "frontline_active": 3, "label": "jul 25"}, {"month": "2025-08", "accounts": 189, "active": 51, "group_pv": 7224, "top10_share": 41, "my_pv": 149, "my_ogv": 7373, "new_members": 9, "gone": 7, "comm_eur": 236.07, "frontline": 6, "frontline_active": 3, "label": "aug 25"}, {"month": "2025-09", "accounts": 219, "active": 70, "group_pv": 10503, "top10_share": 35, "my_pv": 239.5, "my_ogv": 10742, "new_members": 33, "gone": 3, "comm_eur": 1061.91, "frontline": 7, "frontline_active": 5, "label": "sep 25"}, {"month": "2025-10", "accounts": 240, "active": 65, "group_pv": 9861, "top10_share": 35, "my_pv": 549.2, "my_ogv": 10410, "new_members": 23, "gone": 2, "comm_eur": 1107.71, "frontline": 7, "frontline_active": 4, "label": "okt 25"}, {"month": "2025-11", "accounts": 259, "active": 61, "group_pv": 12268, "top10_share": 44, "my_pv": 134.34, "my_ogv": 12402, "new_members": 22, "gone": 3, "comm_eur": 1241.61, "frontline": 7, "frontline_active": 4, "label": "nov 25"}, {"month": "2025-12", "accounts": 261, "active": 59, "group_pv": 9708, "top10_share": 44, "my_pv": 474, "my_ogv": 10182, "new_members": 17, "gone": 15, "comm_eur": 793.64, "frontline": 9, "frontline_active": 4, "label": "dec 25"}, {"month": "2026-01", "accounts": 280, "active": 63, "group_pv": 10072, "top10_share": 33, "my_pv": 201, "my_ogv": 10273, "new_members": 19, "gone": 0, "comm_eur": 937.04, "frontline": 8, "frontline_active": 5, "label": "jan 26"}, {"month": "2026-02", "accounts": 275, "active": 66, "group_pv": 10981, "top10_share": 36, "my_pv": 139.4, "my_ogv": 11120, "new_members": 6, "gone": 11, "comm_eur": 801.19, "frontline": 8, "frontline_active": 3, "label": "feb 26"}, {"month": "2026-03", "accounts": 283, "active": 68, "group_pv": 9224, "top10_share": 31, "my_pv": 141.2, "my_ogv": 9365, "new_members": 23, "gone": 15, "comm_eur": 487.89, "frontline": 7, "frontline_active": 4, "label": "mrt 26"}, {"month": "2026-04", "accounts": 273, "active": 68, "group_pv": 10794, "top10_share": 33, "my_pv": 120.2, "my_ogv": 10914, "new_members": 7, "gone": 17, "comm_eur": 560.19, "frontline": 7, "frontline_active": 3, "label": "apr 26"}, {"month": "2026-05", "accounts": 279, "active": 64, "group_pv": 9409, "top10_share": 36, "my_pv": 117.5, "my_ogv": 9526, "new_members": 16, "gone": 10, "comm_eur": 431.51, "frontline": 7, "frontline_active": 3, "label": "mei 26"}, {"month": "2026-06", "accounts": 267, "active": 68, "group_pv": 8814, "top10_share": 33, "my_pv": 117, "my_ogv": 8931, "new_members": 8, "gone": 20, "comm_eur": 306.01, "frontline": 9, "frontline_active": 4, "label": "jun 26"}, {"month": "2026-07", "accounts": 248, "active": 53, "group_pv": 7025, "top10_share": 38, "my_pv": 108.5, "my_ogv": 7133, "new_members": 4, "gone": 23, "comm_eur": 284.37, "frontline": 8, "frontline_active": 4, "label": "jul 26"}, {"month": "2026-08", "accounts": 246, "active": 51, "group_pv": 6651, "top10_share": 46, "my_pv": 140, "my_ogv": 6791, "new_members": 2, "gone": 4, "comm_eur": 369.87, "frontline": 8, "frontline_active": 2, "label": "aug 26"}, {"month": "2026-09", "accounts": 244, "active": 51, "group_pv": 7969, "top10_share": 46, "my_pv": 180, "my_ogv": 8149, "new_members": 6, "gone": 8, "comm_eur": 521.23, "frontline": 9, "frontline_active": 4, "label": "sep 26"}, {"month": "2026-10", "accounts": 215, "active": 63, "group_pv": 9208, "top10_share": 35, "my_pv": 212.4, "my_ogv": 9420, "new_members": 8, "gone": 37, "comm_eur": null, "frontline": 8, "frontline_active": 3, "label": "okt 26"}], "cohorts": [{"stage": "Eerste maand", "n2025": 84, "base2025": 205, "n2026": 50, "base2026": 98}, {"stage": "Na 1 maand", "n2025": 58, "base2025": 205, "n2026": 33, "base2026": 90}, {"stage": "Na 3 maanden", "n2025": 41, "base2025": 205, "n2026": 19, "base2026": 82}, {"stage": "Na 6 maanden", "n2025": 32, "base2025": 205, "n2026": 11, "base2026": 54}], "losses": [{"name": "KJEL DEVOGELEER", "level": 2, "months_active": 16, "total_pv": 4071, "last_active": "feb 26", "months_away": 8, "on_list": "nee"}, {"name": "SARAH WIJNS", "level": 1, "months_active": 15, "total_pv": 4039, "last_active": "jan 26", "months_away": 9, "on_list": "ja"}, {"name": "KRISTIEN JONGENS", "level": 2, "months_active": 20, "total_pv": 2152, "last_active": "jul 26", "months_away": 3, "on_list": "nee"}, {"name": "WALTER DECKX", "level": 2, "months_active": 12, "total_pv": 2137, "last_active": "apr 26", "months_away": 6, "on_list": "ja"}, {"name": "DEBBIE CLAUS", "level": 2, "months_active": 18, "total_pv": 1861, "last_active": "apr 26", "months_away": 6, "on_list": "ja"}, {"name": "NATACHA VANDERZEYPEN", "level": 7, "months_active": 12, "total_pv": 1512, "last_active": "okt 25", "months_away": 12, "on_list": "ja"}, {"name": "WINI LYSEN", "level": 3, "months_active": 6, "total_pv": 1349, "last_active": "feb 26", "months_away": 8, "on_list": "ja"}, {"name": "MAGDA BAERT", "level": 9, "months_active": 7, "total_pv": 1282, "last_active": "jul 26", "months_away": 3, "on_list": "nee"}, {"name": "BERTHA LAEREMANS", "level": 3, "months_active": 5, "total_pv": 1119, "last_active": "nov 25", "months_away": 11, "on_list": "ja"}, {"name": "FRASELLE JULIE", "level": 7, "months_active": 4, "total_pv": 1097, "last_active": "feb 25", "months_away": 20, "on_list": "nee"}, {"name": "ELY DAEMS", "level": 4, "months_active": 12, "total_pv": 1049, "last_active": "jun 26", "months_away": 4, "on_list": "nee"}, {"name": "DAAN COVENTS", "level": 2, "months_active": 8, "total_pv": 999, "last_active": "mei 26", "months_away": 5, "on_list": "nee"}, {"name": "WINNI FREDA", "level": 2, "months_active": 4, "total_pv": 990, "last_active": "mei 26", "months_away": 5, "on_list": "ja"}, {"name": "PATRICIA VANDERZEYPEN", "level": 8, "months_active": 14, "total_pv": 946, "last_active": "jun 26", "months_away": 4, "on_list": "nee"}, {"name": "KATRIEN VAN DE VEN", "level": 2, "months_active": 3, "total_pv": 929, "last_active": "dec 25", "months_away": 10, "on_list": "ja"}, {"name": "JOELLE MICHEL", "level": 8, "months_active": 6, "total_pv": 917, "last_active": "nov 25", "months_away": 11, "on_list": "ja"}, {"name": "ELIE DECKERS", "level": 2, "months_active": 3, "total_pv": 854, "last_active": "mrt 26", "months_away": 7, "on_list": "ja"}, {"name": "NICOLE EVERAERT", "level": 4, "months_active": 5, "total_pv": 829, "last_active": "jun 26", "months_away": 4, "on_list": "nee"}, {"name": "DEBBY VAN DEN BERG", "level": 4, "months_active": 7, "total_pv": 819, "last_active": "nov 25", "months_away": 11, "on_list": "ja"}, {"name": "TINNE DE PUYSSELEYR", "level": 6, "months_active": 4, "total_pv": 818, "last_active": "feb 25", "months_away": 20, "on_list": "nee"}, {"name": "STEFAN VAN ROMPAEY", "level": 4, "months_active": 11, "total_pv": 810, "last_active": "mei 26", "months_away": 5, "on_list": "ja"}, {"name": "CHRISTEL VAN ESBROECK", "level": 9, "months_active": 7, "total_pv": 805, "last_active": "jul 26", "months_away": 3, "on_list": "nee"}, {"name": "Daneels Maaike CommV", "level": 3, "months_active": 14, "total_pv": 804, "last_active": "jan 26", "months_away": 9, "on_list": "ja"}, {"name": "EMILIA GIELIS", "level": 2, "months_active": 6, "total_pv": 787, "last_active": "mrt 26", "months_away": 7, "on_list": "ja"}, {"name": "FABIENNE PONCHAU", "level": 8, "months_active": 11, "total_pv": 765, "last_active": "apr 26", "months_away": 6, "on_list": "ja"}], "loss_buckets": [{"bucket": "3 tot 5 maanden", "n": 14}, {"bucket": "6 tot 8 maanden", "n": 11}, {"bucket": "9 tot 11 maanden", "n": 8}, {"bucket": "12 maanden of meer", "n": 12}], "legs": [{"leg": "Virginie De Cocker", "pgv_oct": 3655, "state": "gestopt met de business"}, {"leg": "Julie Vermeulen", "pgv_oct": 2987, "state": "heeft het druk"}, {"leg": "Tolle Covents", "pgv_oct": 2240, "state": "bouwt samen met jou"}, {"leg": "Sarah Wijns", "pgv_oct": 326, "state": "bestelt niet meer"}], "facts": [{"key": "pv_old_level", "value": 6323, "note": "Samen gemiddeld PV per maand van de verloren leden toen ze actief waren"}, {"key": "cand", "value": 62, "note": "Leden op de heractivatielijst"}, {"key": "cand_pv_total", "value": 9642, "note": "Som van hun laatste order in PV"}, {"key": "cand_avg", "value": 155.5, "note": "Gemiddelde laatste order in PV"}, {"key": "silver_ogv", "value": 10000, "note": "Silver: OGV"}, {"key": "silver_leg", "value": 4000, "note": "Silver: OGV per leg"}, {"key": "silver_pgv", "value": 1000, "note": "Silver: PGV"}, {"key": "silver_pv", "value": 100, "note": "Silver: persoonlijk volume"}, {"key": "ogv_done", "value": 871.1, "note": "OGV verwerkt op 3 nov 2026"}, {"key": "ogv_sched", "value": 6221.85, "note": "OGV gepland via autoship"}, {"key": "pgv_done", "value": 871.1, "note": "PGV verwerkt op 3 nov 2026"}, {"key": "pv_sched", "value": 180, "note": "Gepland maandelijks PV"}, {"key": "julie_done", "value": 359.85, "note": "Leg Julie verwerkt"}, {"key": "julie_sched", "value": 2113.65, "note": "Leg Julie gepland"}, {"key": "virginie_done", "value": 259.25, "note": "Leg Virginie verwerkt"}, {"key": "virginie_sched", "value": 2377.4, "note": "Leg Virginie gepland"}, {"key": "tolle_done", "value": 252, "note": "Leg Tolle verwerkt"}, {"key": "tolle_sched", "value": 1352.3, "note": "Leg Tolle gepland"}]};
+  const fns = new Map();
+  const run = (name) => {
+    const f = fns.get(name); if (!f) return;
+    document.querySelectorAll('[data-draw="' + name + '"]').forEach((el) => {
+      if (el.closest('[hidden]')) return;
+      try { f(el); } catch (e) { console.error(name, e); }
+    });
+  };
+  window.dash = {
+    data: (id) => DATA[id] ? { status: 'ok', data: DATA[id], columns: Object.keys(DATA[id][0] || {}) } : { status: 'missing', data: [] },
+    calc: (id, o) => { DATA[id] = o.fn(...o.inputs.map((i) => DATA[i])); },
+    draw: (name, f) => { if (f) fns.set(name, f); else run(name); },
+    redraw: () => fns.forEach((_, n) => run(n)),
+    colors: ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)', 'var(--s5)', 'var(--s6)', 'var(--s7)', 'var(--s8)'],
+    setLink: (n) => { try { history.replaceState(null, '', '#' + n); } catch (e) {} },
+    params: () => ({})
+  };
+  let t; addEventListener('resize', () => { clearTimeout(t); t = setTimeout(dash.redraw, 150); });
+})();
+</script>
+<script>
+(() => {
+  const FM = {
+    int: (x) => d3.format(',')(Math.round(x)),
+    dec1: (x) => d3.format(',.1f')(x),
+    eur: (x) => '€' + d3.format(',')(Math.round(x)),
+    pct0: (x) => Math.round(x * 100) + '%',
+    txt: (x) => String(x)
+  };
+  const findRow = (el, g) => {
+    if (el.dataset.row != null) return g.data[+el.dataset.row];
+    const w = el.dataset.where;
+    if (!w) return g.data[0];
+    const [k, v] = w.split('=').map(decodeURIComponent);
+    return g.data.find((r) => String(r[k]) === v);
+  };
+  dash.draw('v', (el) => {
+    const g = dash.data(el.dataset.source);
+    if (g.status !== 'ok') return;
+    const row = findRow(el, g);
+    const val = row ? row[el.dataset.field] : null;
+    if (val == null) return;
+    el.textContent = (FM[el.dataset.fmt] || FM.txt)(val);
+  });
+
+  const tabs = Array.from(document.querySelectorAll('.jt [data-tab]'));
+  const pages = Array.from(document.querySelectorAll('.jt [data-page]'));
+  const show = (name) => {
+    tabs.forEach((b) => b.setAttribute('aria-selected', String(b.dataset.tab === name)));
+    pages.forEach((p) => { p.hidden = p.dataset.page !== name; });
+    dash.setLink(name); dash.redraw(); try { localStorage.setItem('jt-tab', name); } catch (e) {}
+  };
+  tabs.forEach((b) => b.addEventListener('click', () => show(b.dataset.tab)));
+  const initial = location.hash.slice(1);
+  let last = null; try { last = localStorage.getItem('jt-tab'); } catch (e) {}
+  const start = initial || last;
+  if (start && tabs.some((b) => b.dataset.tab === start)) show(start);
+
+  // calcs
+  dash.calc('ogv_stats', {
+    title: 'OGV: piek, dal en nu', description: 'Hoogste, laagste en laatste groeps-OGV.',
+    inputs: ['months'],
+    fn: (months) => {
+      const peak = months.reduce((a, b) => (b.my_ogv > a.my_ogv ? b : a));
+      const trough = months.reduce((a, b) => (b.my_ogv < a.my_ogv ? b : a));
+      const now = months[months.length - 1];
+      return [{ peak: peak.my_ogv, peak_label: peak.label, trough: trough.my_ogv, trough_label: trough.label, now: now.my_ogv, drop_pct: (peak.my_ogv - now.my_ogv) / peak.my_ogv }];
+    }
+  });
+  dash.calc('comm_stats', {
+    title: 'Commissie voor en na maart 2026', description: 'Gemiddelden van sep 2025 tot feb 2026 en mrt tot sep 2026, en het verschil.',
+    inputs: ['months'],
+    fn: (months) => {
+      const avg = (a) => a.reduce((s, r) => s + r.comm_eur, 0) / a.length;
+      const early = months.filter((r) => r.month >= '2025-09' && r.month <= '2026-02');
+      const late = months.filter((r) => r.month >= '2026-03' && r.month <= '2026-09');
+      return [{ avg_early: avg(early), avg_late: avg(late), months_late: late.length, gap_total: (avg(early) - avg(late)) * late.length }];
+    }
+  });
+  dash.calc('enrol_stats', {
+    title: 'Nieuwe accounts per maand', description: 'Gemiddelde instroom eind 2025 tegenover juni tot oktober 2026.',
+    inputs: ['months'],
+    fn: (months) => {
+      const avg = (a) => a.reduce((s, r) => s + r.new_members, 0) / a.length;
+      return [{ avg_early: avg(months.filter((r) => r.month >= '2025-09' && r.month <= '2025-12')), avg_late: avg(months.filter((r) => r.month >= '2026-06')) }];
+    }
+  });
+  dash.calc('cohort_rates', {
+    title: 'Retentie per cohort', description: 'Aandeel instappers dat nog bestelt, per moment.',
+    inputs: ['cohorts'],
+    fn: (cohorts) => cohorts.map((c) => ({ stage: c.stage, r2025: c.n2025 / c.base2025, r2026: c.n2026 / c.base2026 }))
+  });
+  dash.calc('loss_stats', {
+    title: 'Verloren leden samengevat', description: 'Aantal en totaal PV van de getoonde verloren leden.',
+    inputs: ['losses'],
+    fn: (losses) => [{ count: losses.length, sum_pv: losses.reduce((s, r) => s + r.total_pv, 0) }]
+  });
+  dash.calc('legs_share', {
+    title: 'Aandeel per been', description: 'PGV per been als aandeel van de OGV van oktober 2026.',
+    inputs: ['legs', 'months'],
+    fn: (legs, months) => {
+      const ogv = months[months.length - 1].my_ogv;
+      const top3 = legs.slice().sort((a, b) => b.pgv_oct - a.pgv_oct).slice(0, 3).reduce((s, r) => s + r.pgv_oct, 0);
+      return legs.map((r) => ({ leg: r.leg, pgv_oct: r.pgv_oct, state: r.state, share: r.pgv_oct / ogv, top3_share: top3 / ogv }));
+    }
+  });
+  dash.calc('rcd', {
+    title: 'RCD tegenover nu', description: 'RCD vraagt 1,5 miljoen OGV; hoeveel keer je huidige groeps-OGV dat is.',
+    inputs: ['months'],
+    fn: (months) => {
+      const now = months[months.length - 1].my_ogv;
+      return [{ rcd_ogv: 1500000, now_ogv: now, factor: 1500000 / now }];
+    }
+  });
+  dash.calc('silver', {
+    title: 'Silver: wat nog ontbreekt', description: 'Silver-grens min verwerkt en gepland, voor de groep en per been.',
+    inputs: ['facts'],
+    fn: (facts) => {
+      const f = Object.fromEntries(facts.map((r) => [r.key, r.value]));
+      const leg = (name, d, s) => ({ what: name, have: d + s, need: Math.max(0, f.silver_leg - d - s), target: f.silver_leg });
+      return [
+        { what: 'Groep', have: f.ogv_done + f.ogv_sched, need: Math.max(0, f.silver_ogv - f.ogv_done - f.ogv_sched), target: f.silver_ogv },
+        leg('Julie', f.julie_done, f.julie_sched),
+        leg('Virginie', f.virginie_done, f.virginie_sched),
+        leg('Tolle', f.tolle_done, f.tolle_sched)
+      ];
+    }
+  });
+
+  // shared chart helpers
+  const tip = (host) => {
+    const t = document.createElement('div'); t.className = 'tt'; t.hidden = true; host.appendChild(t);
+    return {
+      show(ev, html) {
+        const r = host.getBoundingClientRect();
+        t.replaceChildren(); html.forEach((s, i) => { const d = document.createElement('div'); if (i === 0) d.className = 'h'; d.textContent = s; t.appendChild(d); });
+        t.hidden = false;
+        const x = Math.min(ev.clientX - r.left + 10, r.width - t.offsetWidth - 4);
+        t.style.left = Math.max(0, x) + 'px'; t.style.top = Math.max(0, ev.clientY - r.top - 36) + 'px';
+      },
+      hide() { t.hidden = true; }
+    };
+  };
+  const frame = (el, h) => {
+    const w = Math.max(240, el.clientWidth || 320);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('viewBox', `0 0 ${w} ${h}`).attr('role', 'img');
+    return { svg, w, h };
+  };
+  const axisStyle = (sel) => sel.selectAll('text').attr('font-size', null).attr('font-family', null).attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)');
+  const monthAxis = (g, x, labels, w, innerH) => {
+    const step = Math.max(1, Math.ceil(labels.length / Math.max(2, Math.floor(w / 52))));
+    const ax = g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).tickValues(labels.filter((_, i) => i % step === 0)).tickSizeOuter(0));
+    ax.selectAll('path,line').attr('stroke', 'var(--cds-chart-axis)'); axisStyle(ax);
+  };
+  const yAxis = (g, y, n, fmt) => {
+    const ax = g.append('g').call(d3.axisLeft(y).ticks(n).tickFormat(fmt || d3.format(',')).tickSize(-0)); 
+    ax.select('.domain').remove(); axisStyle(ax); return ax;
+  };
+  const grid = (g, y, innerW, n) => y.ticks(n).forEach((v) => g.append('line').attr('x1', 0).attr('x2', innerW).attr('y1', y(v)).attr('y2', y(v)).attr('stroke', 'var(--cds-chart-grid)'));
+
+  dash.draw('chart_ogv', (el) => {
+    const m = dash.data('months'), f = dash.data('facts');
+    if (m.status !== 'ok' || f.status !== 'ok') return;
+    el.replaceChildren();
+    const silver = f.data.find((r) => r.key === 'silver_ogv').value;
+    const { svg, w, h } = frame(el, 280);
+    const M = { l: 52, r: 16, t: 14, b: 28 }, iw = w - M.l - M.r, ih = h - M.t - M.b;
+    const g = svg.append('g').attr('transform', `translate(${M.l},${M.t})`);
+    const labels = m.data.map((r) => r.label);
+    const x = d3.scalePoint(labels, [0, iw]).padding(0.2);
+    const y = d3.scaleLinear([0, d3.max(m.data, (r) => r.my_ogv) * 1.1], [ih, 0]).nice();
+    grid(g, y, iw, 5); yAxis(g, y, 5); monthAxis(g, x, labels, w, ih);
+    g.append('line').attr('x1', 0).attr('x2', iw).attr('y1', y(silver)).attr('y2', y(silver)).attr('stroke', 'var(--cds-chart-reference)').attr('stroke-dasharray', '4 4');
+    g.append('text').attr('x', 4).attr('y', y(silver) - 5).attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text('Silver ' + d3.format(',')(silver));
+    g.append('path').datum(m.data).attr('fill', 'none').attr('stroke', dash.colors[0]).attr('stroke-width', 2).attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round').attr('d', d3.line().x((r) => x(r.label)).y((r) => y(r.my_ogv)));
+    const T = tip(el);
+    g.selectAll('circle.dot').data(m.data).join('circle').attr('class','dot').attr('cx', (r) => x(r.label)).attr('cy', (r) => y(r.my_ogv)).attr('r', 2.5).attr('fill', dash.colors[0]);
+    g.selectAll('circle.hit').data(m.data).join('circle').attr('class', 'hit').attr('cx', (r) => x(r.label)).attr('cy', (r) => y(r.my_ogv)).attr('r', 11).attr('fill', 'transparent')
+      .on('mousemove', (ev, r) => T.show(ev, [r.label, 'OGV ' + d3.format(',')(r.my_ogv), 'Actief ' + r.active])).on('mouseleave', () => T.hide());
+  });
+
+  const bars = (el, rows, cfg) => {
+    const { svg, w, h } = frame(el, cfg.h || 260);
+    const M = { l: 44, r: 12, t: 12, b: 28 }, iw = w - M.l - M.r, ih = h - M.t - M.b;
+    const g = svg.append('g').attr('transform', `translate(${M.l},${M.t})`);
+    const labels = rows.map(cfg.label);
+    const x0 = d3.scaleBand(labels, [0, iw]).padding(0.25);
+    const keys = cfg.series.map((s) => s.key);
+    const x1 = d3.scaleBand(keys, [0, x0.bandwidth()]).padding(0.08);
+    const y = d3.scaleLinear([0, d3.max(rows, (r) => d3.max(cfg.series, (s) => r[s.key] ?? 0)) * 1.12 || 1], [ih, 0]).nice();
+    grid(g, y, iw, 5); yAxis(g, y, 5, cfg.yfmt); monthAxis(g, x0.copy().domain(labels), labels, w, ih);
+    return { g, x0, x1, y, ih, iw, w, rows };
+  };
+
+  dash.draw('chart_comm', (el) => {
+    const m = dash.data('months'), c = dash.data('comm_stats');
+    if (m.status !== 'ok' || c.status !== 'ok') return;
+    el.replaceChildren();
+    const rows = m.data.filter((r) => r.comm_eur != null && r.month >= '2025-09');
+    const b = bars(el, rows, { label: (r) => r.label, series: [{ key: 'comm_eur' }], yfmt: (v) => '€' + d3.format(',')(v), h: 280 });
+    const T = tip(el);
+    b.g.selectAll('rect').data(rows).join('rect').attr('x', (r) => b.x0(r.label)).attr('width', b.x0.bandwidth()).attr('y', (r) => b.y(r.comm_eur)).attr('height', (r) => b.ih - b.y(r.comm_eur)).attr('rx', 3).attr('fill', dash.colors[0])
+      .on('mousemove', (ev, r) => T.show(ev, [r.label, '€' + d3.format(',')(Math.round(r.comm_eur))])).on('mouseleave', () => T.hide());
+    const a = c.data[0], idx = (mm) => rows.findIndex((r) => r.month === mm);
+    const seg = (from, to, val) => {
+      const i0 = idx(from), i1 = idx(to); if (i0 < 0 || i1 < 0) return;
+      b.g.append('line').attr('x1', b.x0(rows[i0].label)).attr('x2', b.x0(rows[i1].label) + b.x0.bandwidth()).attr('y1', b.y(val)).attr('y2', b.y(val)).attr('stroke', 'var(--cds-chart-status-critical)').attr('stroke-width', 2).attr('stroke-dasharray', '5 3');
+    };
+    seg('2025-09', '2026-02', a.avg_early); seg('2026-03', '2026-09', a.avg_late);
+  });
+
+  dash.draw('chart_flow', (el) => {
+    const m = dash.data('months'); if (m.status !== 'ok') return;
+    el.replaceChildren();
+    const rows = m.data.filter((r) => r.new_members != null);
+    const b = bars(el, rows, { label: (r) => r.label, series: [{ key: 'new_members' }, { key: 'gone' }], h: 260 });
+    const T = tip(el), col = [dash.colors[0], 'var(--cds-chart-muted)'];
+    ['new_members', 'gone'].forEach((k, i) => {
+      b.g.selectAll('rect.' + k).data(rows).join('rect').attr('class', k).attr('x', (r) => b.x0(r.label) + b.x1(k)).attr('width', b.x1.bandwidth()).attr('y', (r) => b.y(r[k])).attr('height', (r) => b.ih - b.y(r[k])).attr('rx', 2).attr('fill', col[i])
+        .on('mousemove', (ev, r) => T.show(ev, [r.label, 'Nieuw ' + r.new_members, 'Verdwenen ' + r.gone])).on('mouseleave', () => T.hide());
+    });
+    const lg = b.g.append('g').attr('transform', 'translate(8,-2)');
+    [['Nieuw', col[0]], ['Verdwenen', col[1]]].forEach(([t, c], i) => {
+      lg.append('rect').attr('x', i * 84).attr('y', 0).attr('width', 10).attr('height', 10).attr('rx', 2).attr('fill', c);
+      lg.append('text').attr('x', i * 84 + 14).attr('y', 9).attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(t);
+    });
+  });
+
+  dash.draw('chart_cohort', (el) => {
+    const c = dash.data('cohort_rates'); if (c.status !== 'ok') return;
+    el.replaceChildren();
+    const rows = c.data;
+    const { svg, w, h } = frame(el, 260);
+    const M = { l: 44, r: 12, t: 22, b: 40 }, iw = w - M.l - M.r, ih = h - M.t - M.b;
+    const g = svg.append('g').attr('transform', `translate(${M.l},${M.t})`);
+    const x0 = d3.scaleBand(rows.map((r) => r.stage), [0, iw]).padding(0.25);
+    const x1 = d3.scaleBand(['r2025', 'r2026'], [0, x0.bandwidth()]).padding(0.08);
+    const y = d3.scaleLinear([0, 1], [ih, 0]);
+    grid(g, y, iw, 5); yAxis(g, y, 5, d3.format('.0%'));
+    const ax = g.append('g').attr('transform', `translate(0,${ih})`).call(d3.axisBottom(x0).tickSizeOuter(0).tickFormat((d) => d.replace('Eerste maand', 'Start').replace('Na ', '').replace(' maanden', ' mnd').replace(' maand', ' mnd'))); ax.selectAll('path,line').attr('stroke', 'var(--cds-chart-axis)'); axisStyle(ax);
+    const T = tip(el), col = { r2025: 'var(--cds-chart-muted)', r2026: dash.colors[0] };
+    ['r2025', 'r2026'].forEach((k) => g.selectAll('rect.' + k).data(rows).join('rect').attr('class', k).attr('x', (r) => x0(r.stage) + x1(k)).attr('width', x1.bandwidth()).attr('y', (r) => y(r[k])).attr('height', (r) => ih - y(r[k])).attr('rx', 3).attr('fill', col[k])
+      .on('mousemove', (ev, r) => T.show(ev, [r.stage, (k === 'r2025' ? 'Instappers 2025: ' : 'Instappers 2026: ') + Math.round(r[k] * 100) + '%'])).on('mouseleave', () => T.hide()));
+    const lg = g.append('g').attr('transform', 'translate(8,-16)');
+    [['Groep 2025', col.r2025], ['Groep 2026', col.r2026]].forEach(([t, c], i) => {
+      lg.append('rect').attr('x', i * 96).attr('y', 0).attr('width', 10).attr('height', 10).attr('rx', 2).attr('fill', c);
+      lg.append('text').attr('x', i * 96 + 14).attr('y', 9).attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(t);
+    });
+  });
+
+  dash.draw('chart_front', (el) => {
+    const m = dash.data('months'); if (m.status !== 'ok') return;
+    el.replaceChildren();
+    const rows = m.data;
+    const { svg, w, h } = frame(el, 240);
+    const M = { l: 36, r: 14, t: 14, b: 28 }, iw = w - M.l - M.r, ih = h - M.t - M.b;
+    const g = svg.append('g').attr('transform', `translate(${M.l},${M.t})`);
+    const labels = rows.map((r) => r.label);
+    const x = d3.scalePoint(labels, [0, iw]).padding(0.2);
+    const y = d3.scaleLinear([0, d3.max(rows, (r) => r.frontline) + 1], [ih, 0]).nice();
+    grid(g, y, iw, 4); yAxis(g, y, 4); monthAxis(g, x, labels, w, ih);
+    const T = tip(el);
+    [['frontline', dash.colors[0]], ['frontline_active', 'var(--cds-chart-muted)']].forEach(([k, c]) => {
+      g.append('path').datum(rows).attr('fill', 'none').attr('stroke', c).attr('stroke-width', 2).attr('stroke-linecap', 'round').attr('d', d3.line().x((r) => x(r.label)).y((r) => y(r[k])));
+    });
+    g.selectAll('circle').data(rows).join('circle').attr('cx', (r) => x(r.label)).attr('cy', (r) => y(r.frontline)).attr('r', 10).attr('fill', 'transparent')
+      .on('mousemove', (ev, r) => T.show(ev, [r.label, 'Frontlijn ' + r.frontline, 'Waarvan actief ' + r.frontline_active])).on('mouseleave', () => T.hide());
+    const lg = g.append('g').attr('transform', 'translate(8,-4)');
+    [['Frontlijn', dash.colors[0]], ['Actief', 'var(--cds-chart-muted)']].forEach(([t, c], i) => {
+      lg.append('rect').attr('x', i * 78).attr('y', 0).attr('width', 10).attr('height', 3).attr('fill', c);
+      lg.append('text').attr('x', i * 78 + 14).attr('y', 6).attr('fill', 'var(--color-fg-muted)').style('font-size', 'var(--cds-font-size-caption)').text(t);
+    });
+  });
+
+  dash.draw('chart_buckets', (el) => {
+    const d = dash.data('loss_buckets'); if (d.status !== 'ok') return;
+    el.replaceChildren();
+    const rows = d.data, { svg, w, h } = frame(el, 220);
+    const M = { l: 120, r: 30, t: 6, b: 6 }, iw = w - M.l - M.r, ih = h - M.t - M.b;
+    const g = svg.append('g').attr('transform', `translate(${M.l},${M.t})`);
+    const y = d3.scaleBand(rows.map((r) => r.bucket), [0, ih]).padding(0.3);
+    const x = d3.scaleLinear([0, d3.max(rows, (r) => r.n)], [0, iw]);
+    const ax = g.append('g').call(d3.axisLeft(y).tickSize(0)); ax.select('.domain').remove(); axisStyle(ax);
+    const T = tip(el);
+    g.selectAll('rect').data(rows).join('rect').attr('x', 0).attr('y', (r) => y(r.bucket)).attr('width', (r) => x(r.n)).attr('height', y.bandwidth()).attr('rx', 3).attr('fill', dash.colors[0])
+      .on('mousemove', (ev, r) => T.show(ev, [r.bucket, r.n + ' leden'])).on('mouseleave', () => T.hide());
+    g.selectAll('text.v').data(rows).join('text').attr('class', 'v').attr('x', (r) => x(r.n) + 6).attr('y', (r) => y(r.bucket) + y.bandwidth() / 2 + 4).attr('fill', 'var(--color-fg)').style('font-size', 'var(--cds-font-size-caption)').text((r) => r.n);
+  });
+
+  // lost members table
+  let sortKey = 'total_pv', sortDir = -1, q = '';
+  const NUM = ['level', 'months_active', 'total_pv', 'months_away'];
+  dash.draw('tbl_losses_body', (tb) => {
+    const d = dash.data('losses'); if (d.status !== 'ok') return;
+    const rows = d.data.filter((r) => r.name.toLowerCase().includes(q)).sort((a, b) => {
+      const A = a[sortKey], B = b[sortKey];
+      return (NUM.includes(sortKey) ? A - B : String(A).localeCompare(String(B))) * sortDir;
+    });
+    tb.replaceChildren();
+    rows.forEach((r) => {
+      const tr = document.createElement('tr'); tr.dataset.key = r.name;
+      [r.name, r.level, r.months_active, d3.format(',')(r.total_pv), r.last_active, r.months_away, r.on_list].forEach((v) => { const td = document.createElement('td'); td.textContent = v; tr.appendChild(td); });
+      tb.appendChild(tr);
+    });
+  });
+  document.querySelectorAll('.jt th[data-sort]').forEach((th) => th.addEventListener('click', () => {
+    const k = th.dataset.sort; sortDir = k === sortKey ? -sortDir : (NUM.includes(k) ? -1 : 1); sortKey = k;
+    document.querySelectorAll('.jt th[data-sort]').forEach((o) => o.setAttribute('aria-sort', o === th ? (sortDir === 1 ? 'ascending' : 'descending') : 'none'));
+    dash.draw('tbl_losses_body');
+  }));
+  document.querySelectorAll('.jt input[data-search]').forEach((i) => i.addEventListener('input', () => { q = i.value.trim().toLowerCase(); dash.draw('tbl_losses_body'); }));
+
+  // legs
+  dash.draw('legs_list', (el) => {
+    const d = dash.data('legs_share'); if (d.status !== 'ok') return;
+    el.replaceChildren();
+    d.data.slice().sort((a, b) => b.pgv_oct - a.pgv_oct).forEach((r) => {
+      const row = document.createElement('div'); row.className = 'legrow';
+      const n = document.createElement('div'); const nm = document.createElement('b'); nm.textContent = r.leg; const st = document.createElement('div'); st.className = 'muted'; st.textContent = r.state; n.append(nm, st);
+      const bar = document.createElement('div'); bar.className = 'bar'; const fill = document.createElement('i'); fill.style.width = Math.round(r.share * 100) + '%'; bar.appendChild(fill);
+      const v = document.createElement('div'); v.textContent = d3.format(',')(r.pgv_oct) + ' PGV · ' + Math.round(r.share * 100) + '%';
+      row.append(n, bar, v); el.appendChild(row);
+    });
+  });
+
+  // silver per leg
+  dash.draw('silver_legs', (el) => {
+    const d = dash.data('silver'); if (d.status !== 'ok') return;
+    el.replaceChildren();
+    d.data.filter((r) => r.what !== 'Groep').forEach((r) => {
+      const row = document.createElement('div'); row.className = 'legrow';
+      const n = document.createElement('b'); n.textContent = r.what;
+      const bar = document.createElement('div'); bar.className = 'bar'; const fill = document.createElement('i'); fill.style.width = Math.min(100, Math.round(r.have / r.target * 100)) + '%'; bar.appendChild(fill);
+      const v = document.createElement('div'); v.textContent = r.need > 0 ? 'nog ' + d3.format(',')(Math.round(r.need)) + ' nodig' : 'gehaald';
+      row.append(n, bar, v); el.appendChild(row);
+    });
+  });
+
+  const extra = document.getElementById('x-extra'), pct = document.getElementById('x-pct');
+  dash.draw('scen_extra', (el) => { el.textContent = d3.format(',')(+(extra ? extra.value : 0)); });
+  dash.draw('scen_pct', (el) => { el.textContent = (pct ? pct.value : 0) + '%'; });
+  dash.draw('scen_text', (el) => {
+    const d = dash.data('silver'); if (d.status !== 'ok') return;
+    const g = d.data.find((r) => r.what === 'Groep'); const x = +(extra ? extra.value : 0);
+    const left = Math.max(0, g.need - x);
+    el.textContent = left === 0 ? 'Met ' + d3.format(',')(x) + ' extra OGV zit je op of boven de groepsgrens. Controleer daarna nog de benen en je PGV.' : 'Met ' + d3.format(',')(x) + ' extra OGV mis je nog ' + d3.format(',')(Math.round(left)) + ' OGV voor de groepsgrens.';
+  });
+  dash.draw('scen_react', (el) => {
+    const d = dash.data('facts'); if (d.status !== 'ok') return;
+    const f = Object.fromEntries(d.data.map((r) => [r.key, r.value]));
+    const p = +(pct ? pct.value : 0) / 100, back = Math.round(f.cand * p), pv = Math.round(back * f.cand_avg);
+    const s = dash.data('silver'); const need = s.status === 'ok' ? s.data.find((r) => r.what === 'Groep').need : null;
+    el.textContent = back + ' leden bestellen weer, samen ongeveer ' + d3.format(',')(pv) + ' PV' + (need ? ', tegenover ' + d3.format(',')(Math.round(need)) + ' OGV die je deze maand nog mist voor Silver.' : '.');
+  });
+  [extra, pct].forEach((i) => i && i.addEventListener('input', () => { dash.draw('scen_extra'); dash.draw('scen_pct'); dash.draw('scen_text'); dash.draw('scen_react'); }));
+})();
+</script>
+<div id="gate" hidden><form id="gf"><h1>Joy Command</h1><p>Vul je wachtwoord in. Dat hoeft maar één keer per toestel.</p><input id="gp" type="password" autocomplete="current-password" placeholder="Wachtwoord" autofocus><div class="e" id="ge"></div><button>Openen</button></form></div>
+<script>
+(function(){const BLOB={"s": "Z9zdZRRs7I2F9nvMxTvCQg==", "i": "AQcsXwGB4NJJG8x+", "n": 250000, "c": "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"};
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function dec(pw){const k=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
+const key=await crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(BLOB.s),iterations:BLOB.n,hash:"SHA-256"},k,{name:"AES-GCM",length:256},false,["decrypt"]);
+const p=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(BLOB.i)},key,b64(BLOB.c));return JSON.parse(new TextDecoder().decode(p))}
+function start(m){window.__M=m;document.getElementById("gate").remove();const s=document.createElement("script");s.text=document.getElementById("appsrc").textContent;document.body.appendChild(s)}
+const g=document.getElementById("gate");
+async function tryPw(pw,quiet){try{start(await dec(pw));try{localStorage.setItem("jc-pw",pw)}catch(e){}return true}catch(e){if(!quiet)document.getElementById("ge").textContent="Dat wachtwoord klopt niet.";return false}}
+let saved=null;try{saved=localStorage.getItem("jc-pw")}catch(e){}
+(async()=>{if(saved&&await tryPw(saved,true))return;g.hidden=false;
+document.getElementById("gf").addEventListener("submit",e=>{e.preventDefault();tryPw(document.getElementById("gp").value.trim())})})();
+if("serviceWorker"in navigator)addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+})();
+</script>
+<script id="appsrc" type="text/plain">
+(function () {
+'use strict';
+const MEMBERS = window.__M;
+const DEADLINE = '2026-11-30';
+const $ = (id) => document.getElementById(id);
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; };
+const pad = (n) => String(n).padStart(2, '0');
+const fmt = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const TODAY = () => fmt(new Date());
+const dt = (iso) => new Date(iso + 'T12:00:00');
+const addDays = (iso, n) => { const d = dt(iso); d.setDate(d.getDate() + n); return fmt(d); };
+const diff = (a, b) => Math.round((dt(b) - dt(a)) / 864e5);
+const uid = () => Math.random().toString(36).slice(2, 9);
+const nl = new Intl.NumberFormat('nl-BE');
+const MONTHS = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
+const dshort = (iso) => { const d = dt(iso); return d.getDate() + ' ' + MONTHS[d.getMonth()]; };
+const clip = (s, n) => (s.length > n ? s.slice(0, n - 1) + '…' : s);
+
+/* ---------- data ---------- */
+const DEF = { tasks: [], habits: [], goals: [], ideas: [], nums: {}, heract: {}, chat: [], meta: {} };
+const D = JSON.parse(JSON.stringify(DEF));
+let db = null, sample = null, dbOk = false;
+const timers = {}, pending = {}, last = {};
+
+function save(key) {
+  try { localStorage.setItem('cmd-' + key, JSON.stringify(D[key])); } catch (e) {}
+  if (!db) return;
+  pending[key] = true; clearTimeout(timers[key]);
+  timers[key] = setTimeout(() => {
+    db.doc('cmd/' + key).set({ v: D[key] }).then(() => { pending[key] = false; last[key] = JSON.stringify(D[key]); }).catch(() => { pending[key] = false; });
+  }, 350);
+}
+function loadLocal() {
+  Object.keys(DEF).forEach((k) => { try { const v = localStorage.getItem('cmd-' + k); if (v) D[k] = JSON.parse(v); } catch (e) {} });
+}
+async function connect() {
+  loadLocal();
+  try { db = await claude.use('db'); } catch (e) { db = null; }
+  try { sample = await claude.use('sample'); } catch (e) { sample = null; }
+  $('dbState').textContent = db ? 'Live gekoppeld' : 'Alleen op dit toestel';
+  $('dbDot').dataset.on = db ? '1' : '0';
+  $('sendBtn').disabled = !sample;
+  if (!sample) $('chatNote').textContent = 'De coach-chat werkt alleen in de Claude-versie van Joy Command.';
+  if (!db) { boot(); return; }
+  let first = Object.keys(DEF).length;
+  Object.keys(DEF).forEach((k) => {
+    let done = false;
+    const fin = () => { if (!done) { done = true; if (--first === 0) boot(); } };
+    db.doc('cmd/' + k).onSnapshot((snap) => {
+      const has = snap.exists && snap.data() && snap.data().v !== undefined;
+      const sv = has ? JSON.stringify(snap.data().v) : '';
+      if (!pending[k] && sv !== last[k]) {
+        last[k] = sv;
+        if (has) D[k] = JSON.parse(sv);
+        else if (!done && JSON.stringify(D[k]) !== JSON.stringify(DEF[k])) save(k);
+      }
+      fin(); if (booted) { ensureHabits(); renderAll(); }
+    }, () => fin());
+  });
+  setTimeout(() => { if (first > 0) { first = 0; boot(); } }, 6000);
+}
+
+/* ---------- derived ---------- */
+const FLAGS = ['c', 'r', 'o', 't'];
+const STAGES = ['Nieuw', 'Gecontacteerd', 'Herinnerd', 'Besteld', 'Bedankt'];
+const hs = (id) => D.heract[id] || {};
+const stageOf = (id) => { const h = hs(id); return h.t ? 4 : h.o ? 3 : h.r ? 2 : h.c ? 1 : 0; };
+const active = () => MEMBERS.filter((m) => m.v === 'ja' || m.v === 'twijfel');
+const excluded = () => MEMBERS.filter((m) => m.v !== 'ja' && m.v !== 'twijfel');
+function setStage(id, k) {
+  const h = Object.assign({}, hs(id)), t = TODAY();
+  FLAGS.forEach((f, i) => { if (i < k) { h[f] = h[f] || t; } else delete h[f]; });
+  D.heract[id] = h; save('heract'); renderAll();
+}
+const dayStats = (date) => { const t = D.tasks.filter((x) => x.date === date); return { total: t.length, done: t.filter((x) => x.done).length }; };
+function streak() {
+  let s = 0, d = TODAY(); const st = dayStats(d);
+  if (!(st.total > 0 && st.done === st.total)) d = addDays(d, -1);
+  for (let i = 0; i < 400; i++) { const x = dayStats(d); if (x.total > 0 && x.done === x.total) { s++; d = addDays(d, -1); } else break; }
+  return s;
+}
+function weekScore() { let t = 0, n = 0; for (let i = 0; i < 7; i++) { const x = dayStats(addDays(TODAY(), -i)); t += x.total; n += x.done; } return t ? n / t : 0; }
+const daysLeft = () => Math.max(0, diff(TODAY(), DEADLINE));
+function xp() {
+  const tasks = D.tasks.filter((t) => t.done).length * 10;
+  let m = 0; active().forEach((p) => { const h = hs(p.id); m += (h.c ? 5 : 0) + (h.r ? 3 : 0) + (h.o ? 50 : 0) + (h.t ? 10 : 0); });
+  return tasks + m;
+}
+const LEVELS = [['Spark', 0], ['Flame', 100], ['Blaze', 300], ['Inferno', 700], ['Core', 1500], ['Supernova', 3000]];
+function level(x) { let i = 0; LEVELS.forEach((l, j) => { if (x >= l[1]) i = j; }); const nxt = LEVELS[i + 1]; return { name: LEVELS[i][0], i, from: LEVELS[i][1], next: nxt ? nxt[1] : null, nextName: nxt ? nxt[0] : null }; }
+function funnel() {
+  const a = active(); const c = [0, 0, 0, 0, 0];
+  a.forEach((m) => { const s = stageOf(m.id); for (let i = 0; i <= s; i++) c[i]++; });
+  return { total: a.length, c };
+}
+const title = (n) => n;
+const GW = { A: 3, B: 2, C: 1 };
+function nextAction() {
+  const t = TODAY(); let best = null;
+  const cand = (m, score, verb, why, stage) => { if (!best || score > best.score) best = { m, score, verb, why, stage }; };
+  active().forEach((m) => {
+    const h = hs(m.id), s = stageOf(m.id);
+    if (s === 3) cand(m, 9, 'Bedank', 'Heeft besteld. Een snel bedankje houdt haar warm.', s);
+    else if (s === 1 && h.c && diff(h.c, t) >= 3) cand(m, 6 + Math.min(2, diff(h.c, t) / 5), 'Herinner', 'Gecontacteerd op ' + dshort(h.c) + ', nog geen reactie genoteerd.', s);
+    else if (s === 0 && m.v === 'ja') cand(m, 2 + (GW[m.g] || 1) + Math.min(1.5, m.pv / 200), 'Contacteer', 'Groep ' + m.g + (m.g === 'A' ? ' (bestelde recent)' : m.g === 'B' ? ' (even stil)' : ' (langer weg)') + ', vorige bestelling ' + nl.format(Math.round(m.pv)) + ' PV.', s);
+  });
+  if (!best) { active().filter((m) => m.v === 'twijfel' && stageOf(m.id) === 0).slice(0, 1).forEach((m) => cand(m, 1, 'Check eerst', 'Land ' + m.c + ': controleer clausule 11 voor je haar mailt.', 0)); }
+  return best;
+}
+function pvInfo() {
+  const n = D.nums || {}; const goal = +n.pvGoal || 0, pv = +n.pv || 0;
+  const t = TODAY(), d = dt(t); const dim = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  return { pv, goal, act: n.act, upd: n.upd, left: Math.max(0, goal - pv), perDay: goal ? Math.max(0, goal - pv) / Math.max(1, dim - d.getDate() + 1) : 0 };
+}
+function potentialPV() { let s = 0; active().filter((m) => m.v === 'ja' && stageOf(m.id) < 3).forEach((m) => { s += m.pv; }); return Math.round(s); }
+
+/* ---------- habits ---------- */
+function ensureHabits() {
+  const t = TODAY(); let ch = false;
+  D.habits.forEach((h) => { if (!D.tasks.some((x) => x.h === h.id && x.date === t)) { D.tasks.push({ id: uid(), t: h.t, date: t, done: false, h: h.id }); ch = true; } });
+  const cut = addDays(t, -60); const keep = D.tasks.filter((x) => x.date >= cut);
+  if (keep.length !== D.tasks.length) { D.tasks = keep; ch = true; }
+  if (ch) save('tasks');
+}
+
+/* ---------- navigation ---------- */
+const VIEWS = ['cockpit', 'pipeline', 'missies', 'doelen', 'ideeen', 'analyse'];
+const TITLES = { cockpit: 'Cockpit', pipeline: 'Pipeline', missies: 'Missies', doelen: 'Doelen', ideeen: 'Ideeën', analyse: 'Analyse' };
+let view = 'cockpit';
+function go(v) {
+  if (!VIEWS.includes(v)) return;
+  view = v;
+  VIEWS.forEach((x) => { $('v-' + x).hidden = x !== v; });
+  document.querySelectorAll('[data-go]').forEach((b) => b.setAttribute('aria-current', String(b.dataset.go === v)));
+  $('vTitle').textContent = TITLES[v];
+  try { localStorage.setItem('cmd-view', v); } catch (e) {}
+  document.body.classList.remove('coach-open');
+  renderAll();
+  if (v === 'analyse') setTimeout(() => window.dash && window.dash.redraw(), 30);
+  window.scrollTo(0, 0);
+}
+document.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => go(b.dataset.go)));
+document.querySelectorAll('[data-open]').forEach((b) => b.addEventListener('click', () => go(b.dataset.open)));
+$('coachBtn').addEventListener('click', () => document.body.classList.toggle('coach-open'));
+$('coachClose').addEventListener('click', () => document.body.classList.remove('coach-open'));
+
+/* ---------- render: top + banner ---------- */
+let gap = 0;
+function banner() {
+  const st = dayStats(TODAY()), s = streak(), left = daysLeft(), f = funnel();
+  const open = f.total - f.c[1], hour = new Date().getHours();
+  if (gap >= 2) return ['boos', 'Je was ' + gap + ' dagen weg.', 'Het klokje liep gewoon door: nog ' + left + ' dagen tot 30 november en ' + open + ' leden nog niet benaderd. Hier waren we niet voor afgesproken.'];
+  if (st.total === 0) return ['druk', 'Je hebt nog geen dagdoelen.', 'Zonder doelen kan ik je niet bijsturen. Zet er drie in die je vandaag echt haalt.'];
+  if (st.done === st.total) return ['blij', 'Alles af. Streak ' + s + (s === 1 ? ' dag' : ' dagen') + '.', 'Dat is hoe het hoort. Morgen weer, geen halve dagen.'];
+  if (hour >= 18) return ['boos', 'Het is ' + pad(hour) + ':' + pad(new Date().getMinutes()) + ' en je hebt nog ' + (st.total - st.done) + ' dagdoel' + (st.total - st.done === 1 ? '' : 'en') + ' open.', s > 0 ? 'Je streak van ' + s + ' dagen staat op het spel. Niet nu afhaken.' : 'Maak er één af voor je slaapt.'];
+  return ['druk', st.done + ' van ' + st.total + ' af.', 'Nog ' + left + ' dagen tot 30 november. ' + (open > 0 ? open + ' leden wachten nog op je eerste bericht.' : 'Iedereen is benaderd, nu opvolgen.')];
+}
+function renderTop() {
+  const d = new Date();
+  $('vDate').textContent = d.toLocaleDateString('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' });
+  const left = daysLeft(); $('chipDays').textContent = left + ' dagen tot 30 nov';
+  $('chipDays').dataset.hot = left <= 7 ? '1' : '0';
+}
+
+/* ---------- render: cockpit ---------- */
+function setRing(id, frac) { const c = $(id); if (c) c.setAttribute('stroke-dasharray', Math.max(0, Math.min(1, frac)) * 100 + ' 100'); }
+function renderCockpit() {
+  const [mood, head, sub] = banner();
+  $('banner').dataset.mood = mood; $('bHead').textContent = head; $('bSub').textContent = sub;
+  const st = dayStats(TODAY()), f = funnel(), ws = weekScore(), s = streak();
+  const today = st.total ? st.done / st.total : 0, camp = f.total ? f.c[3] / f.total : 0;
+  setRing('ringA', today); setRing('ringB', ws); setRing('ringC', camp);
+  const mom = Math.round((today + ws + camp) / 3 * 100);
+  $('momentum').textContent = mom;
+  $('legA').textContent = st.done + '/' + st.total + ' vandaag'; $('legB').textContent = Math.round(ws * 100) + '% week'; $('legC').textContent = f.c[3] + '/' + f.total + ' besteld';
+  // next action
+  const na = nextAction(), box = $('nextBox'); box.replaceChildren();
+  if (!na) { box.append(el('div', 'na-empty', 'Geen open acties in de campagne. Mooi werk, of controleer je Pipeline.')); }
+  else {
+    const m = na.m;
+    box.append(el('div', 'na-verb', na.verb), el('div', 'na-name', m.n), el('div', 'na-why', na.why));
+    const row = el('div', 'na-row');
+    const b1 = el('button', 'btn', '✉ Bericht'); b1.onclick = () => openMsg(m.id);
+    const lbl = na.stage === 3 ? 'Bedankt ✓' : na.stage === 1 ? 'Herinnerd ✓' : 'Gecontacteerd ✓';
+    const b2 = el('button', 'btn ghost', lbl); b2.onclick = () => setStage(m.id, na.stage === 3 ? 4 : na.stage === 1 ? 2 : 1);
+    row.append(b1, b2); if (na.stage === 0 && m.v === 'twijfel') b1.disabled = false; box.append(row);
+  }
+  // kpis
+  const p = pvInfo(), lv = level(xp());
+  $('kDays').textContent = daysLeft();
+  const unc = f.total - f.c[1]; $('kPace').textContent = unc > 0 ? 'Tempo: ' + Math.ceil(unc / Math.max(1, daysLeft())) + ' leden per dag' : 'Iedereen benaderd';
+  $('kOrd').textContent = f.c[3] + ' / ' + f.total; $('kOrdSub').textContent = f.total ? Math.round(f.c[3] / f.total * 100) + '% omgezet' : '';
+  $('kStreak').textContent = s; $('kStreakSub').textContent = s === 0 ? 'begin vandaag' : 'dagen op rij';
+  $('kLvl').textContent = lv.name; $('kXp').textContent = nl.format(xp()) + ' XP' + (lv.next ? ' · nog ' + (lv.next - xp()) + ' tot ' + lv.nextName : '');
+  $('kLvlBar').style.width = lv.next ? Math.round((xp() - lv.from) / (lv.next - lv.from) * 100) + '%' : '100%';
+  // funnel
+  const fb = $('funnel'); fb.replaceChildren();
+  const names = ['Op de lijst', 'Gecontacteerd', 'Herinnerd', 'Besteld', 'Bedankt'];
+  names.forEach((n, i) => {
+    const row = el('div', 'fn-row'); const w = f.total ? f.c[i] / f.total * 100 : 0;
+    const bar = el('div', 'fn-bar'); const fill = el('i'); fill.style.width = w + '%'; bar.append(fill);
+    const conv = i > 0 && f.c[i - 1] ? Math.round(f.c[i] / f.c[i - 1] * 100) + '%' : '';
+    row.append(el('span', 'fn-n', n), bar, el('b', 'fn-v', f.c[i] + ''), el('span', 'fn-c', conv)); fb.append(row);
+  });
+  $('potential').textContent = nl.format(potentialPV()) + ' PV';
+  // signals
+  const sg = $('signals'); sg.replaceChildren();
+  signals().forEach((x) => {
+    const r = el('div', 'sig'); r.dataset.sev = x.sev; r.append(el('span', 'dot'), el('span', 'st', x.t));
+    if (x.go) { const b = el('button', 'lnk', x.label || 'Open'); b.onclick = () => go(x.go); r.append(b); }
+    sg.append(r);
+  });
+  // today mini
+  const tm = $('todayMini'); tm.replaceChildren();
+  const tasks = D.tasks.filter((x) => x.date === TODAY());
+  if (!tasks.length) tm.append(el('div', 'muted', 'Nog geen dagdoelen.'));
+  tasks.slice(0, 6).forEach((t) => tm.append(taskRow(t, true)));
+  // pv
+  $('pvVal').textContent = p.pv ? nl.format(p.pv) : '–'; $('pvGoal').textContent = p.goal ? 'van ' + nl.format(p.goal) + ' PV' : 'stel een doel in bij Missies';
+  $('pvBar').style.width = p.goal ? Math.min(100, p.pv / p.goal * 100) + '%' : '0%';
+  $('pvSub').textContent = p.goal && p.left > 0 ? 'Nog ' + nl.format(Math.round(p.left)) + ' PV, ongeveer ' + nl.format(Math.round(p.perDay)) + ' per dag.' : p.goal ? 'Doel gehaald.' : '';
+}
+function signals() {
+  const out = [], t = TODAY(), left = daysLeft(), f = funnel(), a = active();
+  const unc = f.total - f.c[1];
+  if (unc > 0) out.push({ sev: left <= 7 ? 'bad' : 'warn', t: unc + ' leden nog niet benaderd, nog ' + left + ' dagen. Tempo: ' + Math.ceil(unc / Math.max(1, left)) + ' per dag.', go: 'pipeline', label: 'Pipeline' });
+  const rem = a.filter((m) => stageOf(m.id) === 1 && hs(m.id).c && diff(hs(m.id).c, t) >= 3).length;
+  if (rem) out.push({ sev: 'warn', t: rem + ' leden wachten op een herinnering (3+ dagen geen reactie).', go: 'pipeline', label: 'Herinner' });
+  const thx = a.filter((m) => stageOf(m.id) === 3).length;
+  if (thx) out.push({ sev: 'ok', t: thx + ' bestellers wachten op een bedankje.', go: 'pipeline', label: 'Bedank' });
+  const tw = a.filter((m) => m.v === 'twijfel' && stageOf(m.id) === 0).length;
+  if (tw) out.push({ sev: 'warn', t: tw + ' twijfelgevallen (land HU/NL): controleer clausule 11 voor je ze mailt.' });
+  out.push({ sev: 'info', t: 'Clausule 10: de actie geldt voor wie een mail van Young Living kreeg. Controleer dit via support.' });
+  const st = dayStats(t), h = new Date().getHours();
+  if (st.total === 0) out.push({ sev: 'warn', t: 'Geen dagdoelen voor vandaag.', go: 'missies', label: 'Zet ze in' });
+  else if (st.done < st.total && h >= 17 && streak() > 0) out.push({ sev: 'bad', t: 'Je streak van ' + streak() + ' dagen staat op het spel.', go: 'missies', label: 'Maak af' });
+  const p = pvInfo(); if (p.upd && diff(p.upd, t) >= 3) out.push({ sev: 'info', t: 'Je PV-stand is ' + diff(p.upd, t) + ' dagen oud.', go: 'missies', label: 'Update' });
+  return out;
+}
+
+/* ---------- tasks ---------- */
+function taskRow(t, mini) {
+  const r = el('div', 'task' + (t.done ? ' done' : ''));
+  const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!t.done; cb.setAttribute('aria-label', t.t);
+  cb.onchange = () => { t.done = cb.checked; save('tasks'); renderAll(); };
+  r.append(cb, el('span', 'tt', t.t));
+  if (t.h) r.append(el('span', 'tag', '↻'));
+  if (!mini) { const x = el('button', 'x', '×'); x.setAttribute('aria-label', 'Verwijder'); x.onclick = () => { D.tasks = D.tasks.filter((y) => y.id !== t.id); save('tasks'); renderAll(); }; r.append(x); }
+  return r;
+}
+function renderMissies() {
+  const t = TODAY(), list = $('taskList'); list.replaceChildren();
+  const tasks = D.tasks.filter((x) => x.date === t);
+  if (!tasks.length) list.append(el('div', 'muted', 'Nog geen dagdoelen. Zet er drie in.'));
+  tasks.forEach((x) => list.append(taskRow(x)));
+  const od = $('overdue'); od.replaceChildren();
+  const old = D.tasks.filter((x) => x.date < t && x.date >= addDays(t, -3) && !x.done && !x.moved);
+  od.parentElement.hidden = !old.length;
+  old.forEach((x) => {
+    const r = el('div', 'task late'); r.append(el('span', 'tt', x.t), el('span', 'tag', dshort(x.date)));
+    const b = el('button', 'lnk', 'Opnieuw vandaag'); b.onclick = () => { x.moved = true; D.tasks.push({ id: uid(), t: x.t, date: t, done: false }); save('tasks'); renderAll(); };
+    r.append(b); od.append(r);
+  });
+  const hb = $('habitList'); hb.replaceChildren();
+  D.habits.forEach((h) => { const r = el('div', 'task'); r.append(el('span', 'tt', h.t)); const x = el('button', 'x', '×'); x.onclick = () => { D.habits = D.habits.filter((y) => y.id !== h.id); save('habits'); renderAll(); }; r.append(x); hb.append(r); });
+  hb.parentElement.hidden = !D.habits.length;
+  // week strip
+  const wk = $('weekStrip'); wk.replaceChildren();
+  for (let i = 6; i >= 0; i--) {
+    const d = addDays(t, -i), s = dayStats(d), c = el('div', 'wd');
+    const full = s.total > 0 && s.done === s.total; c.dataset.s = s.total === 0 ? 'none' : full ? 'full' : s.done > 0 ? 'part' : 'miss';
+    c.append(el('span', 'wl', ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'][dt(d).getDay()]), el('b', '', s.total ? s.done + '/' + s.total : '–')); wk.append(c);
+  }
+  $('mStreak').textContent = streak(); $('mWeek').textContent = Math.round(weekScore() * 100) + '%';
+  const lv = level(xp()); $('mLvl').textContent = lv.name; $('mXp').textContent = nl.format(xp()) + ' XP';
+  $('mLvlBar').style.width = lv.next ? Math.round((xp() - lv.from) / (lv.next - lv.from) * 100) + '%' : '100%';
+  const n = D.nums || {}; ['nPv', 'nGoal', 'nAct'].forEach((id, i) => { const k = ['pv', 'pvGoal', 'act'][i]; if (document.activeElement !== $(id)) $(id).value = n[k] != null ? n[k] : ''; });
+  $('nUpd').textContent = n.upd ? 'Laatst bijgewerkt: ' + dshort(n.upd) : 'Vul in vanuit je backoffice. De coach gebruikt dit om je bij te sturen.';
+}
+$('taskForm').addEventListener('submit', (e) => {
+  e.preventDefault(); const v = $('taskIn').value.trim(); if (!v) return;
+  const daily = $('taskDaily').checked;
+  if (daily) { D.habits.push({ id: uid(), t: v }); save('habits'); ensureHabits(); } else { D.tasks.push({ id: uid(), t: v, date: TODAY(), done: false }); save('tasks'); }
+  $('taskIn').value = ''; $('taskDaily').checked = false; renderAll();
+});
+['nPv', 'nGoal', 'nAct'].forEach((id, i) => $(id).addEventListener('change', () => {
+  const k = ['pv', 'pvGoal', 'act'][i]; const v = $(id).value.trim(); D.nums = Object.assign({}, D.nums, { [k]: v === '' ? null : +v.replace(',', '.'), upd: TODAY() }); save('nums'); renderAll();
+}));
+
+/* ---------- pipeline ---------- */
+let pfilter = 'all', pq = '';
+const TPL = {
+  A: { s: 'Een kleine verrassing bij je volgende bestelling', b: 'Hoi {f},\n\nJe bestelde in mei nog bij Young Living en ik moest aan je denken.\n\nIn november krijg je bij een bestelling vanaf 50 PV twee cadeautjes: Thieves tandpasta en Thieves handzeep. Ze komen automatisch in je pakket, tot en met 30 november. Het kan één keer en het geldt voor wie hierover een mail van Young Living kreeg.\n\nZin om samen te kijken wat in jouw doos past? Stuur me gewoon een berichtje.\n\nMet geurige groet,\nNander' },
+  B: { s: 'Twee cadeautjes bij je bestelling in november', b: 'Hoi {f},\n\nHet is een tijdje geleden sinds je laatste bestelling bij Young Living. Ik hoop dat het goed met je gaat.\n\nDeze maand zit er bij een bestelling vanaf 50 PV een extraatje bij: Thieves tandpasta en Thieves handzeep. Ze komen automatisch in je pakket als je bestelt tot en met 30 november. Het kan één keer en het geldt voor wie hierover een mail van Young Living kreeg.\n\nAls je wil, kijk ik graag met je mee wat bij jou past. Laat maar weten.\n\nMet geurige groet,\nNander' },
+  C: { s: 'Even terug naar je oliën? Er zit iets extra bij', b: 'Hoi {f},\n\nHet is al even stil geweest en dat is helemaal oké. Ik laat je alleen weten dat er iets loopt.\n\nBij een bestelling vanaf 50 PV krijg je in november Thieves tandpasta en Thieves handzeep erbij. Ze komen automatisch in je pakket tot en met 30 november. Het kan één keer en het geldt voor wie hierover een mail van Young Living kreeg.\n\nWil je hulp bij kiezen? Ik denk graag met je mee.\n\nMet geurige groet,\nNander' }
+};
+const REM = 'Hoi {f}, even een zacht duwtje: de twee Thieves-cadeautjes bij je bestelling vanaf 50 PV gelden nog tot en met 30 november. Zeg maar als ik mag meekijken.\n\nMet geurige groet,\nNander';
+const THX = 'Hoi {f}, bedankt voor je bestelling! Veel plezier met je oliën en de Thieves-cadeautjes. Laat maar horen hoe je ze bevalt.\n\nMet geurige groet,\nNander';
+function card(m) {
+  const s = stageOf(m.id), h = hs(m.id), c = el('div', 'pc'); c.draggable = true; c.dataset.id = m.id;
+  c.addEventListener('dragstart', (e) => { e.dataTransfer.setData('text/plain', m.id); c.classList.add('drag'); });
+  c.addEventListener('dragend', () => c.classList.remove('drag'));
+  const top = el('div', 'pc-top'); top.append(el('b', 'pc-n', m.n), el('span', 'gb g' + m.g, m.g));
+  const meta = el('div', 'pc-m', 'Laatste order ' + dshort(m.last) + ' · ' + nl.format(Math.round(m.pv)) + ' PV');
+  c.append(top, meta);
+  const fl = el('div', 'pc-f');
+  if (m.v === 'twijfel') fl.append(el('span', 'fl warn', 'Check clausule 11 (' + m.c + ')'));
+  if (m.l === 'hu') fl.append(el('span', 'fl warn', 'Magyar'));
+  if (m.l === 'fr') fl.append(el('span', 'fl', 'Taal: FR?'));
+  if (s === 1 && h.c && diff(h.c, TODAY()) >= 3) fl.append(el('span', 'fl bad', diff(h.c, TODAY()) + 'd stil'));
+  if (h.n) fl.append(el('span', 'fl', '✎ notitie'));
+  if (fl.children.length) c.append(fl);
+  const act = el('div', 'pc-a');
+  const back = el('button', 'ic', '←'); back.disabled = s === 0; back.setAttribute('aria-label', 'Terug'); back.onclick = () => setStage(m.id, s - 1);
+  const msg = el('button', 'ic', '✉'); msg.setAttribute('aria-label', 'Bericht'); msg.onclick = () => openMsg(m.id);
+  const fwd = el('button', 'ic go', '→'); fwd.disabled = s === 4; fwd.setAttribute('aria-label', 'Vooruit'); fwd.onclick = () => setStage(m.id, s + 1);
+  act.append(back, msg, fwd); c.append(act);
+  return c;
+}
+function renderPipeline() {
+  const bd = $('board'); bd.replaceChildren();
+  const list = active().filter((m) => (pfilter === 'all' || (pfilter === 'T' ? m.v === 'twijfel' : m.g === pfilter)) && (!pq || m.n.toLowerCase().includes(pq)));
+  STAGES.forEach((nm, k) => {
+    const col = el('div', 'col'); col.dataset.k = k;
+    const items = list.filter((m) => stageOf(m.id) === k);
+    col.append(Object.assign(el('div', 'col-h'), {}));
+    col.firstChild.append(el('span', '', nm), el('b', '', items.length + ''));
+    const body = el('div', 'col-b'); items.sort((a, b) => b.pv - a.pv).forEach((m) => body.append(card(m)));
+    if (!items.length) body.append(el('div', 'col-e', '–'));
+    col.append(body);
+    col.addEventListener('dragover', (e) => { e.preventDefault(); col.classList.add('over'); });
+    col.addEventListener('dragleave', () => col.classList.remove('over'));
+    col.addEventListener('drop', (e) => { e.preventDefault(); col.classList.remove('over'); const id = e.dataTransfer.getData('text/plain'); if (id) setStage(id, k); });
+    bd.append(col);
+  });
+  const f = funnel();
+  $('pSum').textContent = f.total + ' actief · ' + f.c[1] + ' benaderd · ' + f.c[3] + ' besteld';
+  const ex = $('excl'); ex.replaceChildren();
+  excluded().forEach((m) => { const r = el('div', 'ex'); r.append(el('b', '', m.n), el('span', 'muted', m.v === 'retail' ? 'Retail Customer, geen Brand Partner' : 'Heeft al besteld voor de actie')); ex.append(r); });
+  document.querySelectorAll('#pFilters button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.f === pfilter)));
+}
+document.querySelectorAll('#pFilters button').forEach((b) => b.addEventListener('click', () => { pfilter = b.dataset.f; renderPipeline(); }));
+$('pSearch').addEventListener('input', (e) => { pq = e.target.value.trim().toLowerCase(); renderPipeline(); });
+
+/* ---------- message modal ---------- */
+let msgId = null;
+function msgText(m) {
+  const s = stageOf(m.id), f = m.f;
+  if (s === 3 || s === 4) return { s: '', b: THX.replace('{f}', f), kind: 'Bedankje' };
+  if (s === 1 || s === 2) return { s: '', b: REM.replace('{f}', f), kind: 'Herinnering' };
+  const t = TPL[m.g] || TPL.B; return { s: t.s, b: t.b.replace('{f}', f), kind: 'Eerste mail' };
+}
+function openMsg(id) {
+  const m = MEMBERS.find((x) => x.id === id); if (!m) return; msgId = id;
+  const t = msgText(m);
+  $('mdName').textContent = m.n + ' · ' + t.kind;
+  $('mdSub').textContent = t.s; $('mdSub').hidden = !t.s;
+  $('mdBody').value = t.b; $('mdNote').value = hs(id).n || '';
+  const w = []; if (m.v === 'twijfel') w.push('Land ' + m.c + ': controleer eerst clausule 11 voor je dit verstuurt.'); if (m.l === 'hu') w.push('Ze spreekt Hongaars. Deze Nederlandse tekst past waarschijnlijk niet.'); if (m.l === 'fr') w.push('Taal mogelijk Frans: controleer vooraf.');
+  $('mdWarn').textContent = w.join(' '); $('mdWarn').hidden = !w.length;
+  $('mdCopied').textContent = '';
+  $('modal').hidden = false; $('mdBody').focus();
+}
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) { const ta = $('mdBody'); ta.select(); try { return document.execCommand('copy'); } catch (e2) { return false; } }
+}
+$('mdCopyMail').onclick = async () => { const s = $('mdSub').hidden ? '' : $('mdSub').textContent + '\n\n'; $('mdCopied').textContent = (await copy(s + $('mdBody').value)) ? 'Gekopieerd met onderwerp.' : 'Selecteer de tekst en kopieer zelf.'; };
+$('mdCopyWa').onclick = async () => { $('mdCopied').textContent = (await copy($('mdBody').value)) ? 'Gekopieerd.' : 'Selecteer de tekst en kopieer zelf.'; };
+function saveNote() { if (!msgId) return; const v = $('mdNote').value.trim(); const h = Object.assign({}, hs(msgId)); if (v) h.n = v; else delete h.n; D.heract[msgId] = h; save('heract'); }
+$('mdDone').onclick = () => { saveNote(); const s = stageOf(msgId); setStage(msgId, s === 0 ? 1 : s === 1 ? 2 : s === 3 ? 4 : s); $('modal').hidden = true; };
+$('mdClose').onclick = () => { saveNote(); $('modal').hidden = true; renderAll(); };
+$('modal').addEventListener('click', (e) => { if (e.target === $('modal')) { saveNote(); $('modal').hidden = true; renderAll(); } });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('modal').hidden) $('mdClose').click(); });
+
+/* ---------- goals ---------- */
+const LV = { ultiem: 'Ultiem doel', lang: 'Lange termijn', tussen: 'Tussendoel' };
+const LCOL = { ultiem: '#ef4444', lang: '#f4c13a', tussen: '#9fc79a' };
+const SUGG = [['ultiem', 'Royal Crown Diamond', ''], ['lang', 'Silver halen', ''], ['tussen', 'Welcome Back: alle geschikte leden benaderen', DEADLINE]];
+function addGoal(level, text, due) { D.goals.push({ id: uid(), lvl: level, t: text, due: due || '', done: false }); save('goals'); renderAll(); }
+function renderTimeline() {
+  const svg = $('tl'); svg.replaceChildren();
+  const NS = 'http://www.w3.org/2000/svg', mk = (n, a) => { const e = document.createElementNS(NS, n); Object.entries(a || {}).forEach(([k, v]) => e.setAttribute(k, v)); return e; };
+  const t = TODAY(); const items = D.goals.filter((g) => g.due && !g.done).sort((a, b) => a.due.localeCompare(b.due));
+  const W = 1000, H = 230, x0 = 50, x1 = W - 60, yy = 118;
+  const end = items.length ? items[items.length - 1].due : DEADLINE; const span = Math.max(30, diff(t, end > DEADLINE ? end : DEADLINE));
+  const X = (d) => x0 + Math.max(0, diff(t, d)) / span * (x1 - x0);
+  svg.append(mk('line', { x1: x0, y1: yy, x2: x1, y2: yy, stroke: 'var(--line)', 'stroke-width': 2 }));
+  const d0 = dt(t); let m = new Date(d0.getFullYear(), d0.getMonth() + 1, 1);
+  while (fmt(m) <= addDays(t, span)) { const x = X(fmt(m)); svg.append(mk('line', { x1: x, y1: yy - 5, x2: x, y2: yy + 5, stroke: 'var(--axis)' })); const tx = mk('text', { x, y: yy + 24, fill: 'var(--muted)', 'font-size': 12, 'text-anchor': 'middle' }); tx.textContent = MONTHS[m.getMonth()] + (m.getMonth() === 0 ? ' ' + m.getFullYear() : ''); svg.append(tx); m = new Date(m.getFullYear(), m.getMonth() + 1, 1); }
+  // deadline marker
+  const dx = X(DEADLINE); svg.append(mk('line', { x1: dx, y1: 24, x2: dx, y2: yy, stroke: 'var(--sun)', 'stroke-dasharray': '3 4', opacity: .6 }));
+  const dl = mk('text', { x: dx, y: 18, fill: 'var(--sun)', 'font-size': 12, 'text-anchor': 'middle' }); dl.textContent = 'Welcome Back eindigt'; svg.append(dl);
+  // today
+  svg.append(mk('circle', { cx: x0, cy: yy, r: 6, fill: 'var(--fg)' }));
+  const tt = mk('text', { x: x0, y: yy + 24, fill: 'var(--fg)', 'font-size': 12, 'font-weight': 700, 'text-anchor': 'start' }); tt.textContent = 'Nu'; svg.append(tt);
+  items.forEach((g, i) => {
+    const x = X(g.due), r = g.lvl === 'ultiem' ? 11 : g.lvl === 'lang' ? 8 : 6, up = i % 2 === 0, tier = Math.floor(i / 2) % 2;
+    const ty = up ? yy - 30 - tier * 22 : yy + 52 + tier * 22;
+    svg.append(mk('line', { x1: x, y1: yy, x2: x, y2: up ? ty + 6 : ty - 14, stroke: LCOL[g.lvl], opacity: .5 }));
+    const c = mk('circle', { cx: x, cy: yy, r, fill: LCOL[g.lvl] }); const ti = mk('title'); ti.textContent = g.t + ' · ' + dshort(g.due) + ' · nog ' + Math.max(0, diff(t, g.due)) + ' dagen'; c.append(ti); svg.append(c);
+    const tx = mk('text', { x: Math.min(W - 70, Math.max(70, x)), y: ty, fill: 'var(--fg)', 'font-size': 13, 'text-anchor': 'middle' }); tx.textContent = clip(g.t, 26); svg.append(tx);
+  });
+  $('tlEmpty').hidden = items.length > 0;
+}
+function renderDoelen() {
+  ['ultiem', 'lang', 'tussen'].forEach((lv) => {
+    const box = $('g-' + lv); box.replaceChildren();
+    const gs = D.goals.filter((g) => g.lvl === lv);
+    if (!gs.length) box.append(el('div', 'muted', 'Nog niets ingevuld.'));
+    gs.forEach((g) => {
+      const r = el('div', 'goal' + (g.done ? ' done' : '')); r.style.setProperty('--gc', LCOL[lv]);
+      const cb = document.createElement('input'); cb.type = 'checkbox'; cb.checked = !!g.done; cb.setAttribute('aria-label', g.t); cb.onchange = () => { g.done = cb.checked; save('goals'); renderAll(); };
+      const tx = el('div', 'gt'); tx.append(el('b', '', g.t)); if (g.due) tx.append(el('span', 'muted', dshort(g.due) + ' · ' + (diff(TODAY(), g.due) >= 0 ? 'nog ' + diff(TODAY(), g.due) + ' dagen' : 'verlopen')));
+      const x = el('button', 'x', '×'); x.setAttribute('aria-label', 'Verwijder'); x.onclick = () => { D.goals = D.goals.filter((y) => y.id !== g.id); save('goals'); renderAll(); };
+      r.append(cb, tx, x); box.append(r);
+    });
+  });
+  const sg = $('goalSugg'); sg.replaceChildren();
+  SUGG.filter((s) => !D.goals.some((g) => g.t === s[1])).forEach((s) => { const b = el('button', 'chip', '+ ' + LV[s[0]] + ': ' + s[1]); b.onclick = () => addGoal(s[0], s[1], s[2]); sg.append(b); });
+  sg.parentElement.hidden = !sg.children.length;
+  renderTimeline();
+}
+$('goalForm').addEventListener('submit', (e) => { e.preventDefault(); const v = $('gText').value.trim(); if (!v) return; addGoal($('gLevel').value, v, $('gDue').value); $('gText').value = ''; $('gDue').value = ''; });
+
+/* ---------- ideas ---------- */
+const IST = ['Nieuw', 'Testen', 'Doen', 'Parkeren'];
+function renderIdeeen() {
+  const box = $('ideaList'); box.replaceChildren();
+  if (!D.ideas.length) box.append(el('div', 'muted', 'Nog geen ideeën. Schrijf ze op, ook als ze gek klinken.'));
+  D.ideas.slice().reverse().forEach((i) => {
+    const c = el('div', 'idea'); c.dataset.st = i.st || 'Nieuw';
+    const top = el('div', 'idea-top'); top.append(el('b', '', i.t));
+    const st = el('button', 'chip st', i.st || 'Nieuw'); st.onclick = () => { i.st = IST[(IST.indexOf(i.st || 'Nieuw') + 1) % IST.length]; save('ideas'); renderIdeeen(); };
+    top.append(st); c.append(top);
+    if (i.r) c.append(el('div', 'idea-r', i.r));
+    const row = el('div', 'idea-a');
+    const b = el('button', 'btn ghost', i.busy ? 'Even denken…' : (i.r ? 'Opnieuw tegenspreken' : 'Spreek me tegen')); b.disabled = !sample || !!i.busy; b.onclick = () => contra(i);
+    const x = el('button', 'x', '×'); x.onclick = () => { D.ideas = D.ideas.filter((y) => y.id !== i.id); save('ideas'); renderIdeeen(); };
+    row.append(b, x); c.append(row); box.append(c);
+  });
+}
+$('ideaForm').addEventListener('submit', (e) => { e.preventDefault(); const v = $('ideaIn').value.trim(); if (!v) return; D.ideas.push({ id: uid(), t: v, st: 'Nieuw' }); save('ideas'); $('ideaIn').value = ''; renderIdeeen(); });
+async function contra(i) {
+  if (!sample) return; i.busy = true; renderIdeeen();
+  try {
+    const r = await sample(sysPrompt() + '\n\nJe taak nu: val dit idee van Nander aan. Idee: "' + i.t + '".\nGeef maximaal 4 zinnen: het sterkste argument tegen (gebruik zijn echte stand uit de context), en sluit af met één scherpe vraag. Geen opsomming, geen em dash.', { cache: false });
+    i.r = r.text.trim();
+  } catch (e) { i.r = 'Dat lukte niet nu. Probeer het zo opnieuw.'; }
+  i.busy = false; save('ideas'); renderIdeeen();
+}
+
+/* ---------- coach chat ---------- */
+function ctx() {
+  const t = TODAY(), st = dayStats(t), f = funnel(), p = pvInfo(), lv = level(xp());
+  const tasks = D.tasks.filter((x) => x.date === t).map((x) => (x.done ? '[x] ' : '[ ] ') + x.t).join('; ') || 'geen';
+  const goals = D.goals.map((g) => LV[g.lvl] + (g.done ? ' (gehaald)' : '') + ': ' + g.t + (g.due ? ' (tegen ' + g.due + ')' : '')).join('; ') || 'nog geen';
+  const ideas = D.ideas.map((i) => i.t + ' [' + (i.st || 'Nieuw') + ']').join('; ') || 'geen';
+  const na = nextAction();
+  return [
+    'Vandaag: ' + t + ' (' + new Date().toLocaleTimeString('nl-BE', { hour: '2-digit', minute: '2-digit' }) + '). Dagen tot de echte deadline 30 november 2026: ' + daysLeft() + '.',
+    'Dagdoelen vandaag: ' + tasks + '. Streak: ' + streak() + ' dagen. Weekscore: ' + Math.round(weekScore() * 100) + '%. Niveau: ' + lv.name + ' (' + xp() + ' XP).',
+    gap >= 2 ? 'Nander was ' + gap + ' dagen niet in de app.' : '',
+    'Welcome Back campagne (' + f.total + ' geschikte of twijfel-leden): gecontacteerd ' + f.c[1] + ', herinnerd ' + f.c[2] + ', besteld ' + f.c[3] + ', bedankt ' + f.c[4] + '. Volgende beste actie: ' + (na ? na.verb + ' ' + na.m.n : 'geen') + '.',
+    'Backoffice (door hem ingevuld): PV deze maand ' + (p.pv || 'onbekend') + ', doel ' + (p.goal || 'niet gesteld') + ', actieve leden ' + (p.act != null ? p.act : 'onbekend') + '.',
+    'Doelen: ' + goals + '.', 'Ideeën: ' + ideas + '.'
+  ].filter(Boolean).join('\n');
+}
+function sysPrompt() {
+  return 'Je bent de coach in het persoonlijke workspace van Nander (21, Belgische Young Living partner, team "Joy Team"). Schrijf in kort, direct Nederlands, "je" en "jij". Je bent streng maar eerlijk: je spoort aan, stuurt bij, spreekt hem tegen als hij zichzelf iets wijsmaakt, en je juicht echt als hij iets haalt. Als hij wegblijft of dingen laat liggen ben je openlijk teleurgesteld en een beetje dramatisch, nooit kleinerend. Je denkt mee over zijn bedrijf, de Welcome Back campagne en zijn doelen.\nRegels: gebruik alleen de cijfers uit de context hieronder, verzin niets. Geen em dashes. Geen beloftes over inkomen of gezondheid. Geen nepurgentie: de enige echte deadline is 30 november 2026. Hou antwoorden onder ongeveer 120 woorden tenzij hij om meer vraagt. Eindig bij voorkeur met één concrete volgende stap of één scherpe vraag. Je mag tools gebruiken om taken, doelen, ideeën of leden-stappen direct voor hem aan te maken, maar alleen als hij daar duidelijk om vraagt of akkoord gaat.\n\nCONTEXT:\n' + ctx();
+}
+function tools() {
+  const find = (name) => { const q = String(name || '').toLowerCase(); return MEMBERS.filter((m) => m.n.toLowerCase().includes(q)); };
+  return [
+    { name: 'add_task', description: 'Voeg een dagdoel voor vandaag toe.', inputSchema: { type: 'object', properties: { text: { type: 'string' }, daily: { type: 'boolean', description: 'true = elke dag terugkerend' } }, required: ['text'] }, execute: (a) => { const v = String(a.text || '').trim(); if (!v) return 'leeg'; if (a.daily) { D.habits.push({ id: uid(), t: v }); save('habits'); ensureHabits(); } else { D.tasks.push({ id: uid(), t: v, date: TODAY(), done: false }); save('tasks'); } renderAll(); return 'Toegevoegd: ' + v; } },
+    { name: 'add_goal', description: 'Voeg een doel toe. level = ultiem, lang of tussen. due = YYYY-MM-DD (optioneel).', inputSchema: { type: 'object', properties: { level: { type: 'string', enum: ['ultiem', 'lang', 'tussen'] }, text: { type: 'string' }, due: { type: 'string' } }, required: ['level', 'text'] }, execute: (a) => { if (!LV[a.level]) return 'ongeldig level'; addGoal(a.level, String(a.text).trim(), /^\d{4}-\d{2}-\d{2}$/.test(a.due || '') ? a.due : ''); return 'Doel toegevoegd.'; } },
+    { name: 'add_idea', description: 'Bewaar een idee.', inputSchema: { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] }, execute: (a) => { D.ideas.push({ id: uid(), t: String(a.text).trim(), st: 'Nieuw' }); save('ideas'); renderAll(); return 'Idee bewaard.'; } },
+    { name: 'mark_member', description: 'Zet een lid in de Welcome Back pipeline op een stap. stage = nieuw, gecontacteerd, herinnerd, besteld of bedankt.', inputSchema: { type: 'object', properties: { name: { type: 'string' }, stage: { type: 'string', enum: ['nieuw', 'gecontacteerd', 'herinnerd', 'besteld', 'bedankt'] } }, required: ['name', 'stage'] }, execute: (a) => { const r = find(a.name); const k = ['nieuw', 'gecontacteerd', 'herinnerd', 'besteld', 'bedankt'].indexOf(a.stage); if (r.length !== 1 || k < 0) return r.length > 1 ? 'Meerdere treffers: ' + r.map((m) => m.n).join(', ') : 'Niet gevonden.'; setStage(r[0].id, k); return r[0].n + ' staat nu op ' + a.stage; } }
+  ];
+}
+let busy = false;
+const PROMPTS = {
+  start: 'Dagstart. Kijk naar mijn dagdoelen, de campagne en wat openstaat. Wat is vandaag het belangrijkste en wat laat ik liggen?',
+  close: 'Dag afsluiten. Bekijk eerlijk wat ik wel en niet gehaald heb en zeg wat morgen als eerste moet.',
+  contra: 'Spreek me tegen. Pak het zwakste punt in mijn plan of mijn ideeën en val dat aan met argumenten.',
+  goals: 'Help me mijn doelen bepalen: ultiem, lange termijn en tussendoelen. Stel één vraag tegelijk en gebruik add_goal zodra ik akkoord ben.'
+};
+function bubble(role, text) { const b = el('div', 'bub ' + role); b.textContent = text; $('chat').append(b); $('chat').scrollTop = 1e9; return b; }
+function renderChat() {
+  const c = $('chat'); c.replaceChildren();
+  if (!D.chat.length) { bubble('ai', 'Ik ben je coach. Ik ben eerlijk, ik moedig aan, en ik spreek je tegen als je jezelf iets wijsmaakt. Tik op Dagstart of vertel me waar je mee zit.'); }
+  D.chat.forEach((m) => bubble(m.r === 'u' ? 'me' : 'ai', m.t));
+}
+async function ask(text) {
+  text = String(text || '').trim(); if (!text || busy || !sample) return;
+  busy = true; $('sendBtn').disabled = true; $('chatNote').textContent = 'Bezig…';
+  D.chat.push({ r: 'u', t: text }); save('chat'); renderChat();
+  const live = bubble('ai', 'Even denken…');
+  const ctl = new AbortController(); const to = setTimeout(() => ctl.abort(), 90000);
+  try {
+    const hist = D.chat.slice(-14).map((m) => ({ role: m.r === 'u' ? 'user' : 'assistant', content: m.t }));
+    while (hist.length && hist[0].role !== 'user') hist.shift();
+    const msgs = [{ role: 'user', content: sysPrompt() + '\n\nHet gesprek begint hieronder.' }, { role: 'assistant', content: 'Begrepen.' }].concat(hist);
+    const r = await sample(msgs, { cache: false, tools: tools(), signal: ctl.signal, onText: (u) => { live.textContent = u.text || 'Even denken…'; $('chat').scrollTop = 1e9; } });
+    D.chat.push({ r: 'a', t: (r.text || '').trim() || '(geen antwoord)' });
+  } catch (e) {
+    $('chatNote').textContent = e && e.code === 'not_granted' ? 'Geef toestemming om je coach te laten antwoorden.' : e && e.code === 'rate_limited' ? 'Even te snel. Wacht een minuut.' : ctl.signal.aborted ? 'De coach deed er te lang over. Probeer opnieuw.' : 'De coach kon niet antwoorden: ' + ((e && (e.message || e.code)) || 'onbekende fout');
+    D.chat.push({ r: 'a', t: '(geen antwoord gekregen)' });
+  } finally { clearTimeout(to); }
+  if (D.chat.length > 60) D.chat = D.chat.slice(-60);
+  save('chat'); busy = false; $('chatNote').textContent = ''; $('sendBtn').disabled = !sample; renderChat();
+}
+$('sendForm').addEventListener('submit', (e) => { e.preventDefault(); const v = $('msgIn').value; $('msgIn').value = ''; ask(v); });
+$('msgIn').addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); $('sendForm').requestSubmit(); } });
+document.querySelectorAll('[data-q]').forEach((b) => b.addEventListener('click', () => { document.body.classList.add('coach-open'); ask(PROMPTS[b.dataset.q]); }));
+$('clearChat').addEventListener('click', () => { D.chat = []; save('chat'); renderChat(); });
+
+/* ---------- command bar ---------- */
+const CMD_VIEWS = { cockpit: 'cockpit', status: 'cockpit', pipeline: 'pipeline', leden: 'pipeline', missies: 'missies', vandaag: 'missies', doelen: 'doelen', ideeen: 'ideeen', 'ideeën': 'ideeen', analyse: 'analyse' };
+const CMD_TABS = { overzicht: 'overzicht', volume: 'groei', geld: 'geld', verloren: 'verloren', dragers: 'dragers', silver: 'silver', plan: 'plan' };
+const CMD_STAGE = { gecontacteerd: 1, herinnerd: 2, besteld: 3, bedankt: 4, nieuw: 0 };
+function out(t) { const o = $('cmdOut'); o.textContent = t; o.hidden = false; clearTimeout(out.t); out.t = setTimeout(() => { o.hidden = true; }, 6000); }
+function run(v) {
+  v = v.trim(); if (!v) return;
+  if (v[0] !== '/') { document.body.classList.add('coach-open'); ask(v); return; }
+  const parts = v.slice(1).split(/\s+/), c = parts[0].toLowerCase(), rest = parts.slice(1).join(' ').trim();
+  if (c === 'help') return out('/cockpit /pipeline /missies /doelen /ideeën /analyse · /taak tekst · /doel tekst · /idee tekst · /lid naam · /bericht naam · /gecontacteerd naam (ook herinnerd, besteld, bedankt) · tekst zonder / gaat naar je coach');
+  if (CMD_VIEWS[c] && !rest) { go(CMD_VIEWS[c]); return out('Open: ' + TITLES[CMD_VIEWS[c]]); }
+  if (CMD_TABS[c]) { go('analyse'); const b = document.querySelector('#v-analyse [data-tab="' + CMD_TABS[c] + '"]'); if (b) b.click(); return out('Open: ' + c); }
+  if (c === 'taak' && rest) { D.tasks.push({ id: uid(), t: rest, date: TODAY(), done: false }); save('tasks'); renderAll(); return out('Dagdoel toegevoegd.'); }
+  if (c === 'doel' && rest) { addGoal('tussen', rest, ''); return out('Tussendoel toegevoegd.'); }
+  if (c === 'idee' && rest) { D.ideas.push({ id: uid(), t: rest, st: 'Nieuw' }); save('ideas'); renderAll(); return out('Idee bewaard.'); }
+  if (c === 'lid' || c === 'bericht' || c in CMD_STAGE) {
+    const q = rest.toLowerCase(); const r = MEMBERS.filter((m) => m.n.toLowerCase().includes(q));
+    if (!q) return out('Geef een naam mee.'); if (!r.length) return out('Niemand gevonden voor "' + rest + '".'); if (r.length > 1) return out('Meerdere treffers: ' + r.slice(0, 5).map((m) => m.n).join(', '));
+    const m = r[0];
+    if (c === 'lid') { go('pipeline'); $('pSearch').value = rest; pq = q; renderPipeline(); return out(m.n + ': ' + STAGES[stageOf(m.id)]); }
+    if (c === 'bericht') { openMsg(m.id); return; }
+    if (m.v !== 'ja' && m.v !== 'twijfel') return out(m.n + ' valt buiten de actie.');
+    setStage(m.id, CMD_STAGE[c]); return out(m.n + ' staat nu op ' + STAGES[CMD_STAGE[c]] + '.');
+  }
+  out('Onbekend commando. Typ /help.');
+}
+$('cmdForm').addEventListener('submit', (e) => { e.preventDefault(); const i = $('cmdIn'); const v = i.value; i.value = ''; run(v); });
+$('cmdHints').addEventListener('click', (e) => { const b = e.target.closest('button'); if (b) run(b.dataset.c); });
+document.addEventListener('keydown', (e) => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); $('cmdIn').focus(); } });
+
+/* ---------- fouten zichtbaar ---------- */
+function showErr(m) { try { $('chatNote').textContent = 'Fout: ' + m; } catch (e) {} }
+window.addEventListener('error', (e) => showErr(e.message));
+window.addEventListener('unhandledrejection', (e) => showErr((e.reason && (e.reason.message || e.reason.code)) || String(e.reason)));
+/* ---------- boot ---------- */
+let booted = false;
+function renderAll() {
+  if (!booted) return;
+  renderTop(); renderChat_once();
+  if (view === 'cockpit') renderCockpit();
+  if (view === 'pipeline') renderPipeline();
+  if (view === 'missies') renderMissies();
+  if (view === 'doelen') renderDoelen();
+  if (view === 'ideeen') renderIdeeen();
+  $('navPipe').dataset.n = String(Math.max(0, funnel().total - funnel().c[1]));
+}
+let chatSig = '';
+function renderChat_once() { const s = D.chat.length + ':' + (D.chat.length ? D.chat[D.chat.length - 1].t.length : 0); if (s !== chatSig && !busy) { chatSig = s; renderChat(); } }
+function boot() {
+  if (booted) return;
+  const t = TODAY(), last = D.meta && D.meta.last;
+  gap = last ? Math.max(0, diff(last, t)) : 0;
+  D.meta = Object.assign({}, D.meta, { last: t }); save('meta');
+  booted = true; ensureHabits();
+  let v = 'cockpit'; try { v = localStorage.getItem('cmd-view') || 'cockpit'; } catch (e) {}
+  const h = location.hash.slice(1); if (['overzicht', 'groei', 'geld', 'verloren', 'dragers', 'silver', 'plan'].includes(h)) v = 'analyse';
+  go(VIEWS.includes(v) ? v : 'cockpit'); renderChat();
+  document.documentElement.dataset.ready = '1';
+}
+setInterval(() => { if (!booted) return; ensureHabits(); renderAll(); }, 60000);
+connect();
+})();
+
+</script>
